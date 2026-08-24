@@ -248,7 +248,7 @@ Two things in the two-hour slot: the **Part II final practical** (about 35–40 
 You'll work in three kinds of repository, split by who owns them and who can see them:
 
 1. **Course materials** (slides, labs, data, problem-set prompts) live in a **public** repository — open courseware, like my ICPSR books.
-2. **Your coursework** — labs, problem sets, and your semester paper — lives in **one private repository created for you through GitHub Classroom**, owned by the course organization. Only you, Boris, and Amanda can see it. Your drafts, dead ends, and mistakes are nobody else's business; this repo is your workshop, and every submission is a pull request inside it.
+2. **Your coursework** — labs, problem sets, and your semester paper — lives in **one private repository created for you by the course staff**, owned by the course organization. Only you, Boris, and Amanda can see it. Your drafts, dead ends, and mistakes are nobody else's business; this repo is your workshop, and every submission is a pull request inside it.
 3. **Your website and CV are yours to keep after the course** (Week 6). Their source may live in private repositories. If you want a public professional site, deploy the website from your personal GitHub account to `username.github.io`; otherwise, render it locally and submit it privately. Posting a public-safe CV is optional. Do not publish a home address, personal phone number, or anything else you do not want indexed.
 
 Setting all this up is the subject of Week 2 (coursework repo) and Week 6 (website + CV); until then, materials will be available on Posit Cloud. You'll need a free GitHub account — create one before the first class (any username you'd be comfortable putting on a CV).
