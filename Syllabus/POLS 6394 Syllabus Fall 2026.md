@@ -11,7 +11,8 @@
 **Teaching Assistant:** Amanda Austin (in class at every meeting)
 
 **Class Meeting:** Tuesday/Thursday 1:00–2:20 PM
-**Location:** TBD
+**Location:** PGH 310
+**Required:** A laptop, brought to every class meeting
 
 ---
 
@@ -58,10 +59,12 @@ By the end of the semester, students will be able to:
 | In-class lab work (committed and pushed before leaving class) | 10% |
 | Take-home problem sets (7 or 8, submitted via GitHub) | 15% |
 | Part I midterm practical (in class, October 29 — AI off) | 15% |
-| Part II final practical (exam period, December 14 — AI required) | 10% |
-| Live checks and code walkthroughs | 10% |
+| Part II final practical (exam period, December 14 — AI required) | 15% |
+| Problem-set walkthroughs | 5% |
 | Part II AI-critique assignments (2) | 10% |
 | Semester research and portfolio project | 30% |
+
+Your lowest score is dropped separately in each of these three categories: in-class lab work, take-home problem sets, and problem-set walkthroughs.
 
 ### In-Class Lab Work (10%)
 
@@ -71,21 +74,25 @@ Before class, you'll receive that session's Quarto workbook. Keep it open for gu
 
 Seven or eight take-home problem sets extend the lab work; the full schedule will be posted during Week 1. Unless the schedule gives a later date, a problem set is due at **10:00 AM on the day of the next class**. They are submitted as pull requests in your private course repository and graded for good-faith completion rather than polish. We may begin class by discussing approaches, common errors, or questions from the submitted work.
 
-Questions are welcome. Show us what you tried and what you expected. Amanda and I will clarify the prompt, help identify where an error begins, and point you toward a relevant example or piece of documentation. We will not supply a finished pipeline or debug a blank file. You may discuss a problem and troubleshoot with classmates, but each student submits their own code. Live checks draw directly from recent problem sets.
+Questions are welcome. Show me what you tried and what you expected. I will clarify the prompt, help identify where an error begins, and point you toward a relevant example or piece of documentation. Amanda will provide the same help during class. I will not supply a finished pipeline or debug a blank file. You may discuss a problem and troubleshoot with classmates, but each student submits their own code. The walkthroughs draw directly from recent problem sets.
 
-The Part I AI rule applies to take-home problem sets. These sets prepare you for the live checks and midterm; using AI instead of doing the work will leave you unprepared for both.
+The Part I AI rule applies to take-home problem sets. These sets prepare you for the walkthroughs and midterm; using AI instead of doing the work will leave you unprepared for both.
 
 ### Part I Midterm Practical (15%)
 
 The second half of class on **Thursday, October 29** — the last day of Part I — is a supervised practical: a realistic task (import a dataset you have not seen, clean it, summarize it, produce one polished figure) done solo, in the room, with AI off. Documentation and your own past work are fair game. Committed, sensible, unfinished work earns most of the credit; time pressure is handled generously.
 
-### Part II Final Practical (10%)
+### Part II Final Practical (15%)
 
 During the **exam period (Monday, December 14)**, alongside your final presentation, you sit a supervised practical in which AI use is **required**. You get a task you haven't seen and about 35–40 minutes with your full toolkit — Codex, chat, and the API. Grading is based on whether the result is verified correct and on a short account of what the AI got wrong and how you caught it.
 
-### Live Checks and Code Walkthroughs (10%)
+If a UH-recognized excused absence prevents you from taking either practical at the scheduled time, contact me to arrange a rescheduled practical. Labs, problem sets, and walkthroughs are covered by the dropped-score rule rather than individual absence makeups.
 
-Each student will complete about four unannounced live checks during the semester. A check may be a short solo practical exercise at the beginning of class (10–15 minutes) or a walkthrough of your own submitted code — what line 12 does, why you chose this approach, or what happens if the input is empty. Your lowest live-check score is dropped. An excused absence can be made up within one week rather than using the drop.
+### Problem-Set Walkthroughs (5%)
+
+About four times during the semester, I will schedule a short conversation with you about a recently submitted problem set. You will have your code, output, and notes open. I will ask you to explain what the task required, walk through one pipeline or choice, interpret the result, and consider a small change to the input. You will not be asked to write code from a blank screen.
+
+The aim is explanation and diagnosis, with no reward for speed. Finding an error while explaining your work and describing how you would correct it demonstrates understanding. I will identify the relevant problem in advance so you can review your submission.
 
 ### Part II AI-Critique Assignments (10%)
 
@@ -134,9 +141,9 @@ There is no required textbook to purchase. The backbone readings are free, curre
 - Kieran Healy, *The Plain Person's Guide to Plain Text Social Science* — plain-text.co
 - Hadley Wickham et al., *R for Data Science*, 2nd ed. — r4ds.hadley.nz (reference)
 
-Recommended for your permanent shelf (not required): Edward Tufte, *The Visual Display of Quantitative Information*, and the print edition of Healy's *Data Visualization*.
+Recommended for your permanent shelf (not required): Edward Tufte, *The Visual Display of Quantitative Information*.
 
-**About readings in this course:** this is a skills course, and its readings look like the field's actual conversation — **blog posts and sections of free online books**, plus a small number of journal articles (provided as PDFs). Expect posts by working quantitative social scientists on both sides of the AI-in-research controversy, chapters from the online books above, and classics on replication as the scientific standard. Readings are short, assigned per week, and fair game for discussion and live checks.
+**About readings in this course:** this is a skills course, and its readings look like the field's actual conversation — **blog posts and sections of free online books**, plus a small number of journal articles (provided as PDFs). Expect posts by working quantitative social scientists on both sides of the AI-in-research controversy, chapters from the online books above, and classics on replication as the scientific standard. Readings are short, assigned per week, and fair game for discussion.
 
 **Required course costs (~$50 total, in place of a textbook):**
 
@@ -144,8 +151,6 @@ Recommended for your permanent shelf (not required): Edward Tufte, *The Visual D
 2. **~$10 of OpenAI API credit** for the programmatic LLM work (the ellmer/silicon-sampling week and any API use in your final project). GPT-5.6 Luna is the workhorse for routine and batch calls; GPT-5.6 Terra is used for the comparison eval and harder tasks.
 
 Both purchases are with one vendor (OpenAI); note the API credit is billed separately from the Plus subscription.
-
-Treat the ~$50 as the course's lab fee; it's still cheaper than most single assigned textbooks.
 
 You'll also need: a laptop you can bring to every class, a free GitHub account, and a Posit Cloud account (free tier to start; the course provides a shared workspace).
 
@@ -161,7 +166,7 @@ You'll also need: a laptop you can bring to every class, a free GitHub account, 
 
 ### Week 1 (August 25, 27): The Plain-Text Research Life
 
-Why this course exists and why Part I bans AI. Posit Cloud orientation; RStudio and projects; files, folders, and the anatomy of a reproducible pipeline. Render your first Quarto document on day one.
+Why this course exists and why Part I bans AI. Posit Cloud orientation; RStudio and projects; files, folders, and the anatomy of a reproducible pipeline. Render your first Quarto document on day one, then publish a supplied public-data example to Posit Connect Cloud for a short preview of where the workflow leads.
 
 **Read:** Healy, *Plain Person's Guide*, chs. 1–2, 4, 7 (skip the Emacs material); Gentzkow & Shapiro, *Code and Data for the Social Sciences: A Practitioner's Guide* (2014), chs. 1–3 — why professionals organize code and data the way this course will make you.
 
@@ -248,14 +253,14 @@ Two things in the two-hour slot: the **Part II final practical** (about 35–40 
 You'll work in three kinds of repository, split by who owns them and who can see them:
 
 1. **Course materials** (slides, labs, data, problem-set prompts) live in a **public** repository — open courseware, like my ICPSR books.
-2. **Your coursework** — labs, problem sets, and your semester paper — lives in **one private repository created for you by the course staff**, owned by the course organization. Only you, Boris, and Amanda can see it. Your drafts, dead ends, and mistakes are nobody else's business; this repo is your workshop, and every submission is a pull request inside it.
+2. **Your coursework** — labs, problem sets, and your semester paper — lives in **one private repository I create for you**, owned by the course organization. Only you, Amanda, and I can see it. Your drafts, dead ends, and mistakes are nobody else's business; this repo is your workshop, and every submission is a pull request inside it.
 3. **Your website and CV are yours to keep after the course** (Week 6). Their source may live in private repositories. If you want a public professional site, deploy the website from your personal GitHub account to `username.github.io`; otherwise, render it locally and submit it privately. Posting a public-safe CV is optional. Do not publish a home address, personal phone number, or anything else you do not want indexed.
 
 Setting all this up is the subject of Week 2 (coursework repo) and Week 6 (website + CV); until then, materials will be available on Posit Cloud. You'll need a free GitHub account — create one before the first class (any username you'd be comfortable putting on a CV).
 
 ### AI-Assisted Grading
 
-I use AI agents to assist with grading under rubrics I write and supervise. Agents run mechanical checks (does your repo render? do your results reproduce?) and draft rubric-based feedback, and I review every draft before any grade is assigned. No grade is ever decided by an AI. If you have concerns about your work being processed this way, talk to me.
+I may use AI agents to assist with grading under rubrics I write and supervise. Agents run mechanical checks (does your repo render? do your results reproduce?) and draft rubric-based feedback, and I review every draft before any grade is assigned.
 
 ### AI Policy
 
@@ -265,11 +270,9 @@ I use AI agents to assist with grading under rubrics I write and supervise. Agen
 
 **Data used with AI tools:** work from public, synthetic, or anonymized copies that would be safe to release publicly. Remove names, email addresses, phone numbers, street addresses, respondent contact information, and any key that connects records back to people. Random case ID numbers may remain when the linking key is not included. Check whether combinations such as a rare occupation, precise location, and exact age could still identify someone; coarsen, alter, or replace those fields in the AI-facing copy when needed. Keep the protected original outside any repository or folder an AI tool can access, and document any changes made to the working copy.
 
-**Always, in both parts:** you must be able to explain any line of code you submit. Live checks and walkthroughs enforce this. Inability to explain submitted work may trigger an individual follow-up review and can result in loss of credit when you cannot establish authorship or understanding; it is evidence to investigate, not by itself a finding of academic dishonesty.
+**Always, in both parts:** you must be able to explain any line of code you submit. Problem-set walkthroughs and the practicals give you opportunities to demonstrate this. Inability to explain submitted work may trigger an individual follow-up review and can result in loss of credit when you cannot establish authorship or understanding; it is evidence to investigate, not by itself a finding of academic dishonesty.
 
-### Attendance and Participation
-
-This course is taught in the room. Twenty percent of your grade comes from regular in-class labs and live checks, and another 25 percent comes from the two supervised practicals. If you must miss a class, tell me ahead of time; the in-class lab for an excused absence can be made up within a week. Unexcused absences forfeit that day's lab credit. If you have more than a minor disruption to your ability to attend, contact me and the Graduate Studies Chair.
+### Classroom Participation
 
 Don't be afraid of saying something "wrong," and don't be afraid of asking questions — in a four-person skills course, your confusion is almost certainly shared, and surfacing it is a contribution. Amanda and I will both be present at every class, so ask for help as soon as you are stuck.
 
@@ -281,9 +284,9 @@ Keep your laptop on course work during class; texting and social media diminish 
 
 By Microsoft Teams appointment via [Calendly](https://calendly.com/bshor). We can talk about course material, your projects, your experience in the department, or your future plans. In the final weeks, office hours double as project clinics.
 
-### Email
+### Communication
 
-I frequently send out announcements via email, so be sure to check your account.
+Use Microsoft Teams chat for course questions and messages. I will also post class announcements in Teams, so check the course Team regularly.
 
 ### Civility
 
@@ -299,7 +302,7 @@ Regular class attendance, participation, and engagement in coursework are import
 
 ### Religious Observance
 
-If you have religious holidays which conflict with the class, this is fine, but email me ahead of time.
+If you have religious holidays which conflict with the class, this is fine, but send me a Teams chat message ahead of time.
 
 ### Academic Honesty
 
