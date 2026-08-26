@@ -28,7 +28,7 @@ R is the course's primary programming language. We also work directly with Quart
 
 ## Instructional Approach
 
-This is a hands-on skills course, not a discussion seminar and not a lecture course. Each 80-minute class mixes guided instruction with lab time — roughly half and half — and you'll write code in every single class meeting. We work in shared Quarto documents with deliberate blank space: I demonstrate, then you fill in the gaps while Amanda and I circulate. The first session of each instructional pair introduces new material; the second extends it and is more lab-heavy. September 3 is reserved as a removable flex studio because of possible APSA travel; whether or not it meets, the required sequence is unchanged.
+This is a hands-on skills course, not a discussion seminar and not a lecture course. Each 80-minute class mixes guided instruction with lab time — roughly half and half — and you'll write code in every single class meeting. We work in shared Quarto documents with deliberate blank space: I demonstrate, then you fill in the gaps while Amanda and I circulate. The first session of each instructional pair introduces new material; the second extends it and is more lab-heavy. There is no class on September 3.
 
 Bring your laptop to every class. You can't pass this course without attending it: a large share of your grade is earned by work committed and pushed during class time.
 
@@ -158,7 +158,7 @@ You'll also need: a laptop you can bring to every class, a free GitHub account, 
 
 ## Schedule of Classes
 
-*Preliminary. The first meeting of each instructional pair introduces; the second extends and practices. September 3 is a flex studio whose status will be confirmed by the first class; no later required topic depends on it. Readings are listed as preparation; the working materials are Quarto documents distributed via the course repository.*
+*Preliminary. The first meeting of each instructional pair introduces; the second extends and practices. There is no class on September 3. Readings are listed as preparation; the working materials are Quarto documents distributed via the course repository.*
 
 ## Part I: Computing Without a Copilot (Weeks 1–10)
 
@@ -174,7 +174,7 @@ Why this course exists and why Part I bans AI. Posit Cloud orientation; RStudio 
 
 Version control as the researcher's safety net: commit, push, pull; connecting RStudio to GitHub; burn-it-all-down recovery. The course pull-request workflow starts here and is used for every submission thereafter.
 
-**Thursday, September 3 is reserved as a flex studio, subject to APSA travel.** If held, it will provide repository setup, troubleshooting, and guided practice rather than unique required content. Its status will be confirmed by the first class, and the September 8 session works either way.
+**There is no class on Thursday, September 3.** The course resumes Tuesday, September 8.
 
 **Read:** Bryan, *Happy Git*, Installation + "Early GitHub Wins" sections.
 
