@@ -166,7 +166,7 @@ You'll also need: a laptop you can bring to every class, a free GitHub account, 
 
 ### Week 1 (August 25, 27): The Plain-Text Research Life
 
-Why this course exists and why Part I bans AI. Posit Cloud orientation; RStudio and projects; files, folders, and the anatomy of a reproducible pipeline. Render your first Quarto document on day one, then publish a supplied public-data example to Posit Connect Cloud for a short preview of where the workflow leads.
+Why this course exists and why Part I bans AI. Posit Cloud orientation; RStudio and projects; files, folders, and the anatomy of a reproducible pipeline. On Thursday, create a short Quarto paper and presentation, then publish one of them to Posit Connect Cloud.
 
 **Read:** Healy, *Plain Person's Guide*, chs. 1–2, 4, 7 (skip the Emacs material); Gentzkow & Shapiro, *Code and Data for the Social Sciences: A Practitioner's Guide* (2014), chs. 1–3 — why professionals organize code and data the way this course will make you.
 
@@ -176,7 +176,7 @@ Version control as the researcher's safety net: commit, push, pull; connecting R
 
 **There is no class on Thursday, September 3.** The course resumes Tuesday, September 8.
 
-**Read:** Bryan, *Happy Git*, Installation + "Early GitHub Wins" sections.
+**Read:** Bryan, *Happy Git*, “Why Git? Why GitHub?,” “Repo, Commit, Diff, Tag,” and “Early GitHub Wins.”
 
 ### Week 3 (September 10, 15): Tidyverse I — Wrangling
 
