@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="02a-git-locally_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02a-git-locally_files/libs/quarto-html/tabby.min.js"></script>
+<script src="02a-git-locally_files/libs/quarto-html/popper.min.js"></script>
+<script src="02a-git-locally_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="02a-git-locally_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02a-git-locally_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="02a-git-locally_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <title>Git, Locally</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="02a-git-locally_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="02a-git-locally_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="02a-git-locally_files/libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link href="02a-git-locally_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="02a-git-locally_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="02a-git-locally_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="02a-git-locally_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="02a-git-locally_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="02a-git-locally_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Git, Locally</h1>
+  <p class="subtitle">POLS 6394 · Week 2 · Tuesday, September 1</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<ul>
+<li>Why version control (the <code>final_v2_REALLY.docx</code> problem)</li>
+<li>The mental model: repo, commit, diff</li>
+<li>The stage-and-commit cycle, and writing messages</li>
+<li>Reading history and getting things back</li>
+<li>RStudio’s Git tab in the Environment–History–Git pane, and the terminal underneath</li>
+<li><code>.gitignore</code>: what not to track</li>
+</ul>
+</section>
+<section>
+<section id="why-version-control" class="title-slide slide level1 center">
+<h1>Why Version Control</h1>
+
+</section>
+<section id="the-final_v2_really.docx-problem" class="slide level2">
+<h2>The <code>final_v2_REALLY.docx</code> problem</h2>
+<ul>
+<li><code>paper_draft.docx</code></li>
+<li><code>paper_draft_v2.docx</code></li>
+<li><code>paper_draft_v2_amy_comments.docx</code></li>
+<li><code>paper_draft_FINAL.docx</code></li>
+<li><code>paper_draft_FINAL_v2.docx</code></li>
+<li><code>paper_draft_FINAL_v2_REALLY.docx</code></li>
+</ul>
+<p>Which one has the result you fixed back in March? Nobody knows.</p>
+</section>
+<section id="what-version-control-gives-you" class="slide level2">
+<h2>What version control gives you</h2>
+<ul>
+<li>One canonical file; the history lives <em>beside</em> it, not in the filename</li>
+<li>Every recorded version is labeled, dated, and reversible</li>
+<li>See exactly what changed between any two points</li>
+<li>Restore an earlier version when an experiment breaks</li>
+<li>Use the same history to collaborate next week</li>
+</ul>
+</section>
+<section id="git-and-github-do-different-jobs" class="slide level2">
+<h2>Git and GitHub do different jobs</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Git</th>
+<th>GitHub</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Runs where you are working</td>
+<td>Hosts a remote copy on the web</td>
+</tr>
+<tr class="even">
+<td>Records commits and diffs</td>
+<td>Shares and synchronizes repositories</td>
+</tr>
+<tr class="odd">
+<td>Works without an internet connection</td>
+<td>Supports collaboration and off-site recovery</td>
+</tr>
+</tbody>
+</table>
+<p>Today we use Git locally inside Posit Cloud. Next class we add GitHub.</p>
+<p><small><a href="https://happygitwithr.com/big-picture">Bryan, “Why Git? Why GitHub?”</a></small></p>
+</section></section>
+<section>
+<section id="the-mental-model" class="title-slide slide level1 center">
+<h1>The Mental Model</h1>
+
+</section>
+<section id="four-words-from-the-reading" class="slide level2">
+<h2>Four words from the reading</h2>
+<ul>
+<li><strong>Repository (repo)</strong>: the whole project folder — code, reports, figures, and appropriate data</li>
+<li><strong>Commit</strong>: a labeled snapshot of the whole project at a moment</li>
+<li><strong>Diff</strong>: the line-by-line difference between two snapshots</li>
+<li><strong>Tag</strong>: a name attached to an important commit, such as <code>journal-submission</code></li>
+</ul>
+<p>Git stores commits as a chain, so your project’s history is a string of snapshots. A useful mental model is a save point in a video game. We’ll recognize tags today but won’t create one.</p>
+</section>
+<section id="where-your-changes-live-three-places" class="slide level2">
+<h2>Where your changes live: three places</h2>
+<ul>
+<li><strong>Working directory</strong> — your files as they are right now</li>
+<li><strong>Staging area</strong> — changes you’ve marked for the <em>next</em> commit</li>
+<li><strong>History</strong> — commits already recorded</li>
+</ul>
+<p>A commit moves changes: working directory → stage → history. The staging area is the part that feels strange at first; it lets you commit some changes now and hold others back.</p>
+</section>
+<section id="why-begin-in-the-terminal" class="slide level2">
+<h2>Why begin in the Terminal?</h2>
+<ul>
+<li>For most people, RStudio’s Git controls will be more comfortable for everyday work.</li>
+<li>We’ll start by typing the commands because each step is visible: inspect, stage, commit.</li>
+<li>It is like learning arithmetic on paper before using a calculator. Understanding the mechanics makes the convenient tool easier to use correctly.</li>
+<li>A short command is sometimes faster than navigating menus, and the same commands work on Posit Cloud, a laptop, or a server.</li>
+</ul>
+<p>Then we’ll repeat the cycle with RStudio’s Git controls.</p>
+<p>Later in the course, we’ll direct LLM coding agents to work with Git. An agent can inspect changes, create commits, restore files, and reverse a commit. The history lets you check its work and correct mistakes.</p>
+</section></section>
+<section>
+<section id="the-commit-cycle" class="title-slide slide level1 center">
+<h1>The Commit Cycle</h1>
+
+</section>
+<section id="stage-then-commit" class="slide level2">
+<h2>Stage, then commit</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status              <span class="co"># what has changed?</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .               <span class="co"># stage every unignored change here</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add project README"</span>  <span class="co"># record the stage; -m supplies its label</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>add</code> chooses <em>what</em> goes in; <code>commit</code> records it with a message</li>
+<li><code>status</code> is the command you will run most — run it constantly</li>
+</ul>
+</section>
+<section id="anatomy-of-a-good-commit-message" class="slide level2">
+<h2>Anatomy of a good commit message</h2>
+<ul>
+<li>The diff records the changed lines; the message explains the purpose of the change</li>
+<li>Use a present-tense summary under ~50 characters</li>
+<li>Good: <code>Fix year parsing in cigarette data</code></li>
+<li>Bad: <code>changes</code>, <code>final</code>, <code>asdf</code></li>
+<li>Write a message that will still make sense when you return six months later</li>
+<li>One logical change per commit — not a whole day’s work in one blob</li>
+</ul>
+</section>
+<section id="your-turn-check-the-starting-point" class="slide level2">
+<h2>Your Turn: check the starting point</h2>
+<p>Open the 02a lesson project and its Terminal tab. Run one command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Git should say <code>fatal: not a git repository</code>. That error is expected because we haven’t initialized the repository yet.</p>
+</section>
+<section id="optional-check-who-does-git-think-you-are" class="slide level2">
+<h2>Optional check: who does Git think you are?</h2>
+<p>You don’t need to run these during today’s guided sequence. Use them when you’re unsure which identity Git will record:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.name</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config user.email</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The first line asks for the effective author name.</li>
+<li>The second asks for the effective author email.</li>
+<li>No output means that value has not been configured.</li>
+</ul>
+</section>
+<section id="tell-git-who-you-are" class="slide level2">
+<h2>Tell git who you are</h2>
+<p>Use the name and email associated with your GitHub account. These become part of every commit you make in this Cloud project.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Your Name"</span></span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@example.com"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The first line stores the author name attached to commits.</li>
+<li>The second stores the author email.</li>
+<li><code>--global</code> keeps each setting available throughout this Cloud project; quotation marks keep the full value together.</li>
+</ul>
+<p>Run these once. They’re setup commands, and you don’t need to memorize them. Stop if the Terminal prints an error.</p>
+</section>
+<section id="start-the-repository" class="slide level2">
+<h2>Start the repository</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>git init</code> creates the hidden Git repository inside the current folder.</li>
+<li><code>git status</code> reports the repository’s state without changing anything.</li>
+</ul>
+<p>Read the output before continuing. It should say:</p>
+<ul>
+<li><code>On branch master</code></li>
+<li><code>No commits yet</code></li>
+<li><code>Untracked files</code></li>
+</ul>
+<p>Git created a default branch called <code>master</code>. A branch is a named line of history. Today, every commit goes onto that line.</p>
+<p><strong>Untracked</strong> means git sees a file in the folder, but no commit contains it yet. The file is still there; git simply has no saved history for it.</p>
+</section>
+<section id="where-the-repository-lives" class="slide level2">
+<h2>Where the repository lives</h2>
+<ul>
+<li>Your visible project files live in <code>/cloud/project/</code>.</li>
+<li>Git stores the repository’s history and settings in the hidden <code>/cloud/project/.git/</code> folder.</li>
+<li>Both are currently inside this Posit Cloud project.</li>
+<li>Nothing has been sent to GitHub. We create the remote copy next class.</li>
+</ul>
+<p>Here, <strong>local</strong> means the environment where git is running. That environment happens to be a computer operated by Posit rather than your laptop.</p>
+</section>
+<section id="your-turn-record-the-first-snapshot" class="slide level2">
+<h2>Your Turn: record the first snapshot</h2>
+<p><code>git add .</code> puts every unignored change in the current folder into the staging area. The period means “this folder.” It does not commit or upload anything.</p>
+<p>Run one line, then read <code>git status</code> before moving on:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Start Git practice project"</span></span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The first line stages the files.</li>
+<li>The second confirms what is staged.</li>
+<li><code>git commit</code> records the snapshot; <code>-m</code> supplies its quoted message.</li>
+<li>The final status verifies that no changes remain outside the snapshot.</li>
+</ul>
+<p>The commit message describes the starting project. The final status should say the working tree is clean.</p>
+<p>Git prints a short report after the commit. The message should match yours; the remaining counts and file metadata can be ignored today.</p>
+</section></section>
+<section>
+<section id="history" class="title-slide slide level1 center">
+<h1>History</h1>
+
+</section>
+<section id="reading-your-history" class="slide level2">
+<h2>Reading your history</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>git log</code> reads the commit history. <code>--oneline</code> displays each commit as one compact line.</p>
+<pre class="text"><code>a1c3f9e Add state policy import script
+7b21d04 Add project README
+3f88a10 Initial commit</code></pre>
+<ul>
+<li>Each line: a short commit ID plus your message</li>
+<li>Parentheses such as <code>HEAD -&gt; master</code> mark your current position; you can ignore them today</li>
+<li>Plain <code>git log</code> shows full author, date, and message</li>
+<li>Together, the messages provide a concise history of the project</li>
+</ul>
+</section>
+<section id="seeing-what-changed-diff" class="slide level2">
+<h2>Seeing what changed: diff</h2>
+<ul>
+<li><code>git diff</code> — unstaged changes vs.&nbsp;the last commit</li>
+<li><code>git diff --staged</code> — what you’re about to commit</li>
+<li>Lines marked <code>-</code> were removed, <code>+</code> were added</li>
+<li>Focus on the <code>-</code> and <code>+</code> lines; ignore the header, hashes, and permission metadata today</li>
+<li>The <strong>Diff</strong> button in the Git tab shows the same thing, in color</li>
+</ul>
+<p>Read the diff before every commit. It’s your last check before you record something.</p>
+</section>
+<section id="your-turn-make-a-change-watch-git-see-it" class="slide level2">
+<h2>Your Turn: make a change, watch git see it</h2>
+<p><em>~2 minutes</em></p>
+<ul>
+<li>Edit your README — add a line about your research interests. Save.</li>
+<li>Run, in order:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>status</code> names the changed file; <code>diff</code> shows the exact lines.</li>
+<li>If the Terminal shows <code>(END)</code>, press <code>q</code> to close the viewer and return to the prompt.</li>
+<li>Then stage and commit it. That’s commit two.</li>
+</ul>
+</section></section>
+<section>
+<section id="rstudios-git-controls" class="title-slide slide level1 center">
+<h1>RStudio’s Git Controls</h1>
+
+</section>
+<section id="the-git-tab-and-the-terminal" class="slide level2">
+<h2>The Git tab and the terminal</h2>
+<ul>
+<li>RStudio’s <strong>Git tab</strong> in the <strong>Environment–History–Git pane</strong>: checkboxes to stage, a Commit button, and a history viewer</li>
+<li>The <strong>Terminal</strong>: the same actions, typed as commands</li>
+<li>The Git tab runs these commands for you</li>
+<li>Learn both: the pane is faster day-to-day; the terminal is what works on a server with no buttons (Week 8)</li>
+</ul>
+</section>
+<section id="your-turn-use-rstudios-git-controls" class="slide level2">
+<h2>Your Turn: use RStudio’s Git controls</h2>
+<ol type="1">
+<li>Add one new sentence to <code>README.md</code>, then save.</li>
+<li>Open the <strong>Git tab</strong> in the <strong>Environment–History–Git pane</strong>. <code>M</code> means the file is modified.</li>
+<li>Select <code>README.md</code>, click <strong>Diff</strong>, and find your added <code>+</code> line.</li>
+<li>Click <strong>Close</strong> to leave the Diff view.</li>
+<li>Check the <strong>Staged</strong> box beside <code>README.md</code>.</li>
+<li>Click <strong>Commit</strong> in the Git tab.</li>
+<li>Enter <code>Add GitHub goal</code> in the commit-message box, then click <strong>Commit</strong>.</li>
+<li>Git shows a confirmation report. Click <strong>Close</strong>.</li>
+</ol>
+<p>You have now used the same inspect–stage–commit cycle in both interfaces.</p>
+</section>
+<section id="later-git-through-an-llm" class="slide level2">
+<h2>Later: Git through an LLM</h2>
+<p>An LLM coding agent can:</p>
+<ul>
+<li>inspect <code>git status</code>, diffs, and history</li>
+<li>decide which changed files belong together</li>
+<li>stage the files and create a commit with a useful message</li>
+<li>restore an earlier file or reverse a commit</li>
+</ul>
+<p>When an agent handles Git, inspect its diff and history before accepting the work.</p>
+</section>
+<section id="the-four-commands-that-cover-most-days" class="slide level2">
+<h2>The four commands that cover most days</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status     <span class="co"># what has changed</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .      <span class="co"># stage every unignored change here</span></span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit     <span class="co"># record the staged changes</span></span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log        <span class="co"># review the history</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For now, run <code>git status</code> before and after each Git action.</p>
+</section></section>
+<section>
+<section id="what-not-to-track" class="title-slide slide level1 center">
+<h1>What Not to Track</h1>
+
+</section>
+<section id="gitignore" class="slide level2">
+<h2><code>.gitignore</code></h2>
+<p>Leave large raw data, rendered outputs, secrets, and system files out of version control. A <code>.gitignore</code> file lists patterns Git should skip.</p>
+<pre class="gitignore"><code>.Rproj.user/
+.Rhistory
+*.html
+Data/raw/
+.Renviron</code></pre>
+<ul>
+<li><p><code>.Rproj.user/</code> is RStudio’s per-session project state.</p></li>
+<li><p><code>.Rhistory</code> is the Console command history.</p></li>
+<li><p><code>*.html</code> means every filename ending in <code>.html</code>; <code>*</code> is the wildcard.</p></li>
+<li><p><code>Data/raw/</code> is the named raw-data folder and everything inside it.</p></li>
+<li><p><code>.Renviron</code> may hold credentials and must never enter Git history.</p></li>
+<li><p>Commit the <em>code</em> that produces outputs; regenerate the outputs when needed</p></li>
+<li><p>Plain-text files such as <code>.R</code>, <code>.qmd</code>, <code>.md</code>, and <code>.csv</code> produce readable line-by-line diffs</p></li>
+<li><p>Git can store PDFs and images, but it cannot show their changes as useful line-by-line diffs</p></li>
+<li><p><code>.Renviron</code> holds secrets like API keys (Week 9) — never commit it</p></li>
+</ul>
+</section>
+<section id="the-supplied-.gitignore" class="slide level2">
+<h2>The supplied <code>.gitignore</code></h2>
+<p>Open <code>.gitignore</code> and read it. This project already excludes RStudio session files, rendered HTML, distributed slides, <code>.Renviron</code>, and the evidence workbook.</p>
+<p>You don’t need to edit it today. Inspect <code>.gitignore</code> before the first commit in an unfamiliar project.</p>
+</section></section>
+<section>
+<section id="if-time-allows" class="title-slide slide level1 center">
+<h1>If Time Allows</h1>
+
+</section>
+<section id="track-the-source-ignore-the-output" class="slide level2">
+<h2>Track the source, ignore the output</h2>
+<ol type="1">
+<li>Create a new Quarto HTML document and save it as <code>git-note.qmd</code>.</li>
+<li>Give it one heading and one sentence, then render it.</li>
+<li>Run <code>git status</code>.</li>
+</ol>
+<p>Git should list <code>git-note.qmd</code> as untracked. It should not list <code>git-note.html</code>, because <code>*.html</code> is in <code>.gitignore</code>.</p>
+<p>Use RStudio’s Git controls to stage <code>git-note.qmd</code> and commit it with the message <code>Add Git practice note</code>.</p>
+<p>In most research projects, commit the source and regenerate its output when needed.</p>
+</section>
+<section id="name-this-checkpoint" class="slide level2">
+<h2>Name this checkpoint</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag first-git-session    <span class="co"># attach a readable name to the current commit</span></span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag                      <span class="co"># list the repository's tags</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The first line names the current commit without creating a new commit.</li>
+<li>The second line should print <code>first-git-session</code>.</li>
+<li>Open Git history and find the new Quarto-file commit.</li>
+</ul>
+<p>A tag is useful for a manuscript submission, public release, or other version you may need to find again.</p>
+</section>
+<section id="before-next-class" class="slide level2">
+<h2>Before Next Class</h2>
+<ul>
+<li><strong>There is no class Thursday, September 3.</strong></li>
+<li>Before Tuesday, Sept 8:
+<ul>
+<li>Confirm that your GitHub account uses a professional username</li>
+<li>Send Amanda your username if you have not already done so</li>
+</ul></li>
+<li><strong>Read:</strong> Bryan, <em>Happy Git and GitHub</em>, “Early GitHub Wins.”</li>
+<li>Tuesday: we clone your private coursework repository and make the first pull-request submission.</li>
+</ul>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>POLS 6394 · Fall 2026</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="02a-git-locally_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="02a-git-locally_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="02a-git-locally_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="02a-git-locally_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
