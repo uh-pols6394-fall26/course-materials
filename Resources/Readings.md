@@ -24,7 +24,8 @@ Complete each reading before the class under which it appears. The syllabus assi
 
 **Required**
 
-- Jenny Bryan, [*Happy Git and GitHub for the useR*: Installation](https://happygitwithr.com/install-intro).
+- Jenny Bryan, [*Happy Git and GitHub for the useR*: Why Git? Why GitHub?](https://happygitwithr.com/big-picture).
+- Bryan, [*Happy Git and GitHub for the useR*: Repo, Commit, Diff, Tag](https://happygitwithr.com/git-basics).
 
 ### Thursday, September 3: No Class
 

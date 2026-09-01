@@ -207,18 +207,106 @@
 </div>
 
 </section>
-<section id="today" class="slide level2">
+<section class="slide level2">
+
+<style>
+.reveal .slides section.dense {
+  font-size: calc(var(--r-main-font-size) - 2.667px);
+}
+</style>
+</section>
+<section id="today" class="slide level2 dense">
 <h2>Today</h2>
 <ul>
-<li>Why version control (the <code>final_v2_REALLY.docx</code> problem)</li>
+<li>What version control is</li>
+<li>Why Git became the standard</li>
+<li>How GitHub differs from Git</li>
 <li>The mental model: repo, commit, diff</li>
 <li>The stage-and-commit cycle, and writing messages</li>
 <li>Reading history and getting things back</li>
-<li>RStudio’s Git tab in the Environment–History–Git pane, and the terminal underneath</li>
+<li>RStudio’s Git tab and the Terminal commands beneath it</li>
 <li><code>.gitignore</code>: what not to track</li>
 </ul>
 </section>
-<section id="the-terminal-and-cli" class="slide level2">
+<section>
+<section id="why-version-control" class="title-slide slide level1 center">
+<h1>Why Version Control</h1>
+
+</section>
+<section id="what-is-version-control" class="slide level2 dense">
+<h2>What is version control?</h2>
+<p><strong>Version control</strong> is a system for recording changes to a set of files over time.</p>
+<ul>
+<li>Keep one working copy and record named checkpoints behind it</li>
+<li>See what changed, when it changed, and who changed it</li>
+<li>Restore an earlier version after a mistake</li>
+<li>Combine several people’s work</li>
+</ul>
+<p>Without it, revision history becomes filenames such as <code>paper_draft.docx</code>, <code>paper_draft_v2_amy_comments.docx</code>, and <code>paper_draft_FINAL_v2_REALLY.docx</code>.</p>
+</section>
+<section id="what-a-shared-folder-leaves-unresolved" class="slide level2 dense">
+<h2>What a shared folder leaves unresolved</h2>
+<p>A shared Dropbox folder makes exchanging files easy. Coordinating edits is still up to the people using it.</p>
+<p>Suppose Boris and Amanda both open <code>analysis.R</code>:</p>
+<ol type="1">
+<li>Boris changes the data-import code.</li>
+<li>Amanda adds validation checks.</li>
+<li>Both save without knowing the other is editing.</li>
+</ol>
+<p>Dropbox may produce a conflicted copy or an overwritten change. Git preserves both contributions, shows the differences, and flags overlaps for Boris and Amanda to reconcile.</p>
+</section>
+<section id="git-dominates-version-control" class="slide level2 dense">
+<h2>Git dominates version control</h2>
+<ul>
+<li>Git is the standard for most modern software and data projects; <strong>Subversion</strong> and <strong>Mercurial</strong> are alternatives.</li>
+<li>Linus Torvalds created Git in 2005 to manage development of the Linux kernel.</li>
+<li>Linux passed 40 million source-tree lines in 2025 and has involved many thousands of contributors.</li>
+<li>Git lets those contributors work independently and combine their changes into a controlled history.</li>
+</ul>
+<p><small><a href="https://docs.kernel.org/process/1.Intro.html">Linux kernel development process</a> · <a href="https://www.heise.de/en/news/Linux-breaks-through-the-40-million-line-mark-10256571.html">40-million-line milestone</a></small></p>
+</section>
+<section id="github-dominates-git-hosting" class="slide level2 dense">
+<h2>GitHub dominates Git hosting</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Git</th>
+<th>GitHub</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Version-control software</td>
+<td>A web service built around Git</td>
+</tr>
+<tr class="even">
+<td>Runs where you are working</td>
+<td>Hosts remote copies of repositories</td>
+</tr>
+<tr class="odd">
+<td>Records commits and diffs</td>
+<td>Shares and synchronizes repositories</td>
+</tr>
+<tr class="even">
+<td>Works without an internet connection</td>
+<td>Supports collaboration and off-site recovery</td>
+</tr>
+</tbody>
+</table>
+<p>Other hosts include <strong>GitLab</strong> and <strong>Bitbucket</strong>. Linux uses Git but hosts its official repository at <strong>kernel.org</strong>.</p>
+<p>Today we use Git inside Posit Cloud. Next class we connect it to GitHub.</p>
+<p><small><a href="https://happygitwithr.com/big-picture">Bryan, “Why Git? Why GitHub?”</a></small></p>
+</section></section>
+<section>
+<section id="how-we-work-today" class="title-slide slide level1 center">
+<h1>How We Work Today</h1>
+
+</section>
+<section id="the-terminal-and-cli" class="slide level2 dense">
 <h2>The Terminal and CLI</h2>
 <p>The <strong>Terminal</strong> is an RStudio pane that gives you access to the computer’s <strong>shell</strong>. The shell reads typed commands and runs programs.</p>
 <table class="caption-top">
@@ -244,71 +332,13 @@
 <li><strong>Terminal</strong>: <code>/cloud/project$</code> prompt; runs shell commands</li>
 <li>Many modern agentic coding tools use a CLI, including the Codex work later in this course.</li>
 </ul>
-</section>
-<section>
-<section id="why-version-control" class="title-slide slide level1 center">
-<h1>Why Version Control</h1>
-
-</section>
-<section id="the-final_v2_really.docx-problem" class="slide level2">
-<h2>The <code>final_v2_REALLY.docx</code> problem</h2>
-<ul>
-<li><code>paper_draft.docx</code></li>
-<li><code>paper_draft_v2.docx</code></li>
-<li><code>paper_draft_v2_amy_comments.docx</code></li>
-<li><code>paper_draft_FINAL.docx</code></li>
-<li><code>paper_draft_FINAL_v2.docx</code></li>
-<li><code>paper_draft_FINAL_v2_REALLY.docx</code></li>
-</ul>
-<p>Which one has the result you fixed back in March? Nobody knows.</p>
-</section>
-<section id="what-version-control-gives-you" class="slide level2">
-<h2>What version control gives you</h2>
-<ul>
-<li>One canonical file; the history lives <em>beside</em> it, not in the filename</li>
-<li>Every recorded version is labeled, dated, and reversible</li>
-<li>See exactly what changed between any two points</li>
-<li>Restore an earlier version when an experiment breaks</li>
-<li>Use the same history to collaborate next week</li>
-</ul>
-</section>
-<section id="git-and-github-do-different-jobs" class="slide level2">
-<h2>Git and GitHub do different jobs</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Git</th>
-<th>GitHub</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Runs where you are working</td>
-<td>Hosts a remote copy on the web</td>
-</tr>
-<tr class="even">
-<td>Records commits and diffs</td>
-<td>Shares and synchronizes repositories</td>
-</tr>
-<tr class="odd">
-<td>Works without an internet connection</td>
-<td>Supports collaboration and off-site recovery</td>
-</tr>
-</tbody>
-</table>
-<p>Today we use Git locally inside Posit Cloud. Next class we add GitHub.</p>
-<p><small><a href="https://happygitwithr.com/big-picture">Bryan, “Why Git? Why GitHub?”</a></small></p>
 </section></section>
 <section>
 <section id="the-mental-model" class="title-slide slide level1 center">
 <h1>The Mental Model</h1>
 
 </section>
-<section id="four-words-from-the-reading" class="slide level2">
+<section id="four-words-from-the-reading" class="slide level2 dense">
 <h2>Four words from the reading</h2>
 <ul>
 <li><strong>Repository (repo)</strong>: the whole project folder — code, reports, figures, and appropriate data</li>
@@ -316,7 +346,7 @@
 <li><strong>Diff</strong>: the line-by-line difference between two snapshots</li>
 <li><strong>Tag</strong>: a name attached to an important commit, such as <code>journal-submission</code></li>
 </ul>
-<p>Git stores commits as a chain, so your project’s history is a string of snapshots. A useful mental model is a save point in a video game. We’ll recognize tags today but won’t create one.</p>
+<p>Git stores commits as a chain, so your project’s history is a string of snapshots. A useful mental model is a save point in a video game. The optional extension creates a tag if time permits.</p>
 </section>
 <section id="where-your-changes-live-three-places" class="slide level2">
 <h2>Where your changes live: three places</h2>
@@ -327,16 +357,15 @@
 </ul>
 <p>A commit moves changes: working directory → stage → history. The staging area is the part that feels strange at first; it lets you commit some changes now and hold others back.</p>
 </section>
-<section id="why-begin-in-the-terminal" class="slide level2">
+<section id="why-begin-in-the-terminal" class="slide level2 dense">
 <h2>Why begin in the Terminal?</h2>
 <ul>
-<li>For most people, RStudio’s Git controls will be more comfortable for everyday work.</li>
-<li>We’ll start by typing the commands because each step is visible: inspect, stage, commit.</li>
-<li>It is like learning arithmetic on paper before using a calculator. Understanding the mechanics makes the convenient tool easier to use correctly.</li>
-<li>A short command is sometimes faster than navigating menus, and the same commands work on Posit Cloud, a laptop, or a server.</li>
+<li>RStudio’s Git controls will be more comfortable for most everyday work.</li>
+<li>Typing the commands once makes each step visible: inspect, stage, commit. It is the pencil-and-paper step before the calculator.</li>
+<li>The same commands work in Posit Cloud, on a laptop, and on a server.</li>
+<li>Coding agents use these commands too. Knowing them helps you inspect and correct an agent’s work later.</li>
 </ul>
 <p>Then we’ll repeat the cycle with RStudio’s Git controls.</p>
-<p>Later in the course, we’ll direct LLM coding agents to work with Git. An agent can inspect changes, create commits, restore files, and reverse a commit. The history lets you check its work and correct mistakes.</p>
 </section></section>
 <section>
 <section id="the-commit-cycle" class="title-slide slide level1 center">
@@ -347,10 +376,10 @@
 <h2>Stage, then commit</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status              <span class="co"># what has changed?</span></span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .               <span class="co"># stage every unignored change here</span></span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add project README"</span>  <span class="co"># record the stage; -m supplies its label</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Start Git practice project"</span>  <span class="co"># record the staged files</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>add</code> chooses <em>what</em> goes in; <code>commit</code> records it with a message</li>
-<li><code>status</code> is the command you will run most — run it constantly</li>
+<li>Run <code>status</code> before and after each Git action</li>
 </ul>
 </section>
 <section id="anatomy-of-a-good-commit-message" class="slide level2">
@@ -364,20 +393,18 @@
 <li>One logical change per commit — not a whole day’s work in one blob</li>
 </ul>
 </section>
-<section id="your-turn-check-the-starting-point" class="slide level2">
+<section id="your-turn-check-the-starting-point" class="slide level2 dense">
 <h2>Your Turn: check the starting point</h2>
-<p>Open the 02a lesson project and its <strong>Terminal</strong> tab.</p>
+<p>Open the 02a lesson project’s <strong>Terminal</strong> tab.</p>
 <ul>
-<li>The R <strong>Console</strong> has a <code>&gt;</code> prompt.</li>
-<li>The <strong>Terminal</strong> has a <code>/cloud/project$</code> prompt.</li>
-<li>Paste into the Terminal with <strong>Ctrl+Shift+V</strong>.</li>
-<li>If the line becomes strange, press <strong>Ctrl+C</strong> until a fresh prompt appears. Nothing runs until you press Enter.</li>
+<li><strong>Console:</strong> <code>&gt;</code> prompt; runs R code.</li>
+<li><strong>Terminal:</strong> <code>/cloud/project$</code> prompt; runs shell commands.</li>
+<li>Paste with <strong>Ctrl+Shift+V</strong>. If the line becomes strange, press <strong>Ctrl+C</strong> for a fresh prompt.</li>
 </ul>
-<p>List the project files, then ask git about the folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>ls</code> means “list”; <code>-l</code> shows one file per line with details. <code>git status</code> asks git what it currently sees.</p>
-<p>Git should say <code>fatal: not a git repository</code>. That error is expected because we haven’t initialized the repository yet.</p>
+<p>Run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span>       <span class="co"># list the project files</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status  <span class="co"># ask Git about this folder</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Expect <code>fatal: not a git repository</code>. We have not initialized it yet.</p>
 </section>
 <section id="optional-check-who-does-git-think-you-are" class="slide level2">
 <h2>Optional check: who does Git think you are?</h2>
@@ -390,8 +417,8 @@
 <li>No output means that value has not been configured.</li>
 </ul>
 </section>
-<section id="tell-git-who-you-are" class="slide level2">
-<h2>Tell git who you are</h2>
+<section id="tell-git-who-you-are" class="slide level2 dense">
+<h2>Tell Git who you are</h2>
 <p>Use the name and email associated with your GitHub account. These become part of every commit you make in this Cloud project.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Your Name"</span></span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@example.com"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -402,67 +429,47 @@
 </ul>
 <p>Run these once. They’re setup commands, and you don’t need to memorize them. Stop if the Terminal prints an error.</p>
 </section>
-<section id="start-the-repository" class="slide level2">
-<h2>Start the repository</h2>
+<section id="task-1-start-the-repository" class="slide level2 dense">
+<h2>Task 1: Start the repository</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>git init</code> creates the hidden Git repository inside the current folder.</li>
-<li><code>git status</code> reports the repository’s state without changing anything.</li>
+<li><code>git init</code> creates the hidden repository in this folder.</li>
+<li><code>git status</code> inspects it without changing anything.</li>
 </ul>
-<p>Read the output before continuing. It should say:</p>
-<ul>
-<li><code>On branch master</code></li>
-<li><code>No commits yet</code></li>
-<li><code>Untracked files</code></li>
-</ul>
-<p>Git created a default branch called <code>master</code>. A branch is a named line of history. Today, every commit goes onto that line.</p>
-<p><strong>Untracked</strong> means git sees a file in the folder, but no commit contains it yet. The file is still there; git simply has no saved history for it.</p>
+<p>Look for <code>On branch master</code>, <code>No commits yet</code>, and <code>Untracked files</code>. <code>master</code> is the default line of history. <strong>Untracked</strong> means Git sees a file that no commit contains yet.</p>
 </section>
-<section id="where-the-repository-lives" class="slide level2">
+<section id="where-the-repository-lives" class="slide level2 dense">
 <h2>Where the repository lives</h2>
 <ul>
-<li>Your visible project files live in <code>/cloud/project/</code>.</li>
-<li>Git stores the repository’s history and settings in the hidden <code>/cloud/project/.git/</code> folder.</li>
-<li>Both are currently inside this Posit Cloud project.</li>
-<li>Nothing has been sent to GitHub. We create the remote copy next class.</li>
+<li>Visible project files: <code>/cloud/project/</code></li>
+<li>Git history and settings: hidden <code>/cloud/project/.git/</code></li>
+<li>Both are inside this Posit Cloud project. Nothing has gone to GitHub.</li>
 </ul>
-<p>Here, <strong>local</strong> means the environment where git is running. That environment happens to be a computer operated by Posit rather than your laptop.</p>
+<p>Here, <strong>local</strong> means wherever Git is running, which today is Posit’s computer rather than your laptop.</p>
 </section>
-<section id="your-turn-record-the-first-snapshot" class="slide level2">
-<h2>Your Turn: record the first snapshot</h2>
+<section id="record-the-first-snapshot" class="slide level2 dense">
+<h2>Record the first snapshot</h2>
 <p><code>git add .</code> puts every unignored change in the current folder into the staging area. The period means “this folder.” It does not commit or upload anything.</p>
-<p>Run one line, then read <code>git status</code> before moving on:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Start Git practice project"</span></span>
-<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>The first line stages the files.</li>
-<li>The second confirms what is staged.</li>
-<li><code>git commit</code> records the snapshot; <code>-m</code> supplies its quoted message.</li>
-<li>The final status verifies that no changes remain outside the snapshot.</li>
-</ul>
-<p>The commit message describes the starting project. The final status should say the working tree is clean.</p>
-<p>Git prints a short report after the commit. The message should match yours; the remaining counts and file metadata can be ignored today.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .                              <span class="co"># stage the files</span></span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status                             <span class="co"># confirm what is staged</span></span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Start Git practice project"</span>  <span class="co"># record the snapshot</span></span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status                             <span class="co"># confirm nothing remains uncommitted</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>-m</code> supplies the quoted commit message. After the commit, Git should report that the working tree is clean.</p>
 </section></section>
 <section>
 <section id="history" class="title-slide slide level1 center">
 <h1>History</h1>
 
 </section>
-<section id="reading-your-history" class="slide level2">
+<section id="reading-your-history" class="slide level2 dense">
 <h2>Reading your history</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>git log</code> reads the commit history. <code>--oneline</code> displays each commit as one compact line.</p>
-<pre class="text"><code>a1c3f9e Add state policy import script
-7b21d04 Add project README
-3f88a10 Initial commit</code></pre>
 <ul>
 <li>Each line: a short commit ID plus your message</li>
 <li>Parentheses such as <code>HEAD -&gt; master</code> mark your current position; you can ignore them today</li>
-<li>Plain <code>git log</code> shows full author, date, and message</li>
-<li>Together, the messages provide a concise history of the project</li>
+<li>Plain <code>git log</code> shows the full author, date, and message</li>
 </ul>
 </section>
 <section id="seeing-what-changed-diff" class="slide level2">
@@ -476,20 +483,30 @@
 </ul>
 <p>Read the diff before every commit. It’s your last check before you record something.</p>
 </section>
-<section id="your-turn-make-a-change-watch-git-see-it" class="slide level2">
-<h2>Your Turn: make a change, watch git see it</h2>
+<section id="task-2-make-a-change-watch-git-see-it" class="slide level2 dense">
+<h2>Task 2: Make a change, watch Git see it</h2>
 <p><em>~2 minutes</em></p>
 <ul>
 <li>Edit your README — add a line about your research interests. Save.</li>
 <li>Run, in order:</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>status</code> names the changed file; <code>diff</code> shows the exact lines.</li>
 <li>If the Terminal shows <code>(END)</code>, press <code>q</code> to close the viewer and return to the prompt.</li>
 <li>Then stage and commit it. That’s commit two.</li>
 </ul>
+</section>
+<section id="task-3-break-it-then-get-it-back" class="slide level2">
+<h2>Task 3: Break it, then get it back</h2>
+<ol type="1">
+<li>Delete the research-interest line from <code>README.md</code> and save.</li>
+<li>Keep the file open in the Source pane.</li>
+<li>Run <code>git status</code>, then <code>git diff</code>.</li>
+<li>Run <code>git restore README.md</code>.</li>
+<li>Watch the committed version reappear, then confirm that <code>git status</code> is clean.</li>
+</ol>
 </section></section>
 <section>
 <section id="rstudios-git-controls" class="title-slide slide level1 center">
@@ -497,7 +514,7 @@
 
 </section>
 <section id="the-git-tab-and-the-terminal" class="slide level2">
-<h2>The Git tab and the terminal</h2>
+<h2>The Git tab and the Terminal</h2>
 <ul>
 <li>RStudio’s <strong>Git tab</strong> in the <strong>Environment–History–Git pane</strong>: checkboxes to stage, a Commit button, and a history viewer</li>
 <li>The <strong>Terminal</strong>: the same actions, typed as commands</li>
@@ -505,30 +522,35 @@
 <li>Learn both: the pane is faster day-to-day; the terminal is what works on a server with no buttons (Week 8)</li>
 </ul>
 </section>
-<section id="make-the-git-tab-appear" class="slide level2">
-<h2>Make the Git tab appear</h2>
-<p>The Cloud project is already configured to use Git, but it had no repository when RStudio opened. The supplied <code>.gitignore</code> file is not the hidden <code>.git</code> folder that <code>git init</code> creates.</p>
+<section id="confirm-git-in-project-options" class="slide level2">
+<h2>Confirm Git in Project Options</h2>
+<p>The project had no repository when RStudio opened. The supplied <code>.gitignore</code> file is not the hidden <code>.git</code> folder that <code>git init</code> creates.</p>
 <ol type="1">
 <li>Save the workbook.</li>
+<li>Open <strong>Tools → Project Options → Git/SVN</strong> and confirm that <strong>Version control system</strong> shows <strong>Git</strong>.</li>
+<li>Close Project Options without changing it.</li>
+</ol>
+<p>RStudio now recognizes the repository created by <code>git init</code>.</p>
+</section>
+<section id="make-the-git-tab-appear" class="slide level2">
+<h2>Make the Git tab appear</h2>
+<ol type="1">
 <li>Refresh the browser tab.</li>
 <li>Reopen <code>02a-workbook.qmd</code> if necessary.</li>
 <li>Find the <strong>Git</strong> tab in the <strong>Environment–History–Git pane</strong>.</li>
 </ol>
-<p>The files and commits remain in place. Refreshing the browser makes RStudio notice the repository created by <code>git init</code>.</p>
+<p>The files and commits remain in place. Project Options confirms that RStudio recognizes the repository; refreshing the browser loads the Git tab.</p>
 </section>
-<section id="your-turn-use-rstudios-git-controls" class="slide level2">
-<h2>Your Turn: use RStudio’s Git controls</h2>
+<section id="task-4-use-rstudios-git-controls" class="slide level2 dense">
+<h2>Task 4: Use RStudio’s Git controls</h2>
 <ol type="1">
 <li>Add one new sentence to <code>README.md</code>, then save.</li>
 <li>Open the <strong>Git tab</strong> in the <strong>Environment–History–Git pane</strong>. <code>M</code> means the file is modified.</li>
 <li>Select <code>README.md</code>, click <strong>Diff</strong>, and find your added <code>+</code> line.</li>
-<li>Click <strong>Close</strong> to leave the Diff view.</li>
-<li>Check the <strong>Staged</strong> box beside <code>README.md</code>.</li>
-<li>Click <strong>Commit</strong> in the Git tab.</li>
-<li>Enter <code>Add GitHub goal</code> in the commit-message box, then click <strong>Commit</strong>.</li>
-<li>Git shows a confirmation report. Click <strong>Close</strong>.</li>
+<li>Click <strong>Close</strong>, then check the <strong>Staged</strong> box beside <code>README.md</code>.</li>
+<li>Click <strong>Commit</strong>, enter <code>Add GitHub goal</code>, and click <strong>Commit</strong> again.</li>
+<li>Close Git’s confirmation report.</li>
 </ol>
-<p>You have now used the same inspect–stage–commit cycle in both interfaces.</p>
 </section>
 <section id="later-git-through-an-llm" class="slide level2">
 <h2>Later: Git through an LLM</h2>
@@ -543,36 +565,25 @@
 </section>
 <section id="the-four-commands-that-cover-most-days" class="slide level2">
 <h2>The four commands that cover most days</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status     <span class="co"># what has changed</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .      <span class="co"># stage every unignored change here</span></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit     <span class="co"># record the staged changes</span></span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log        <span class="co"># review the history</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For now, run <code>git status</code> before and after each Git action.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status     <span class="co"># what has changed</span></span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .      <span class="co"># stage every unignored change here</span></span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Describe the change"</span>  <span class="co"># record the staged changes</span></span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--oneline</span>                    <span class="co"># review the history</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>During today’s lesson, run <code>git status</code> before and after each Git action.</p>
 </section></section>
 <section>
 <section id="what-not-to-track" class="title-slide slide level1 center">
 <h1>What Not to Track</h1>
 
 </section>
-<section id="gitignore" class="slide level2">
+<section id="gitignore" class="slide level2 dense">
 <h2><code>.gitignore</code></h2>
-<p>Leave large raw data, rendered outputs, secrets, and system files out of version control. A <code>.gitignore</code> file lists patterns Git should skip.</p>
-<pre class="gitignore"><code>.Rproj.user/
-.Rhistory
-*.html
-Data/raw/
-.Renviron</code></pre>
-<ul>
-<li><p><code>.Rproj.user/</code> is RStudio’s per-session project state.</p></li>
-<li><p><code>.Rhistory</code> is the Console command history.</p></li>
-<li><p><code>*.html</code> means every filename ending in <code>.html</code>; <code>*</code> is the wildcard.</p></li>
-<li><p><code>Data/raw/</code> is the named raw-data folder and everything inside it.</p></li>
-<li><p><code>.Renviron</code> may hold credentials and must never enter Git history.</p></li>
-<li><p>Commit the <em>code</em> that produces outputs; regenerate the outputs when needed</p></li>
-<li><p>Plain-text files such as <code>.R</code>, <code>.qmd</code>, <code>.md</code>, and <code>.csv</code> produce readable line-by-line diffs</p></li>
-<li><p>Git can store PDFs and images, but it cannot show their changes as useful line-by-line diffs</p></li>
-<li><p><code>.Renviron</code> holds secrets like API keys (Week 9) — never commit it</p></li>
-</ul>
+<p>Leave large or restricted data, rendered outputs, secrets, and system files out of version control. A <code>.gitignore</code> file lists patterns Git should skip.</p>
+<pre class="gitignore"><code>.Rproj.user/  # RStudio project state
+.Rhistory     # Console command history
+*.html        # every rendered HTML file
+.Renviron     # may contain credentials</code></pre>
+<p>Commit the plain-text source that produces an output. Git can store PDFs and images, but their changes don’t produce useful line-by-line diffs.</p>
 </section>
 <section id="the-supplied-.gitignore" class="slide level2">
 <h2>The supplied <code>.gitignore</code></h2>
@@ -584,27 +595,27 @@ Data/raw/
 <h1>If Time Allows</h1>
 
 </section>
-<section id="track-the-source-ignore-the-output" class="slide level2">
-<h2>Track the source, ignore the output</h2>
+<section id="practice-staging-and-unstaging" class="slide level2 dense">
+<h2>Practice staging and unstaging</h2>
 <ol type="1">
-<li>Create a new Quarto HTML document and save it as <code>git-note.qmd</code>.</li>
-<li>Give it one heading and one sentence, then render it.</li>
-<li>Run <code>git status</code>.</li>
+<li>Create and render a one-sentence <code>git-note.qmd</code>.</li>
+<li>In the <strong>Git</strong> tab, confirm that the QMD appears but its ignored HTML does not.</li>
+<li>Check the <strong>Staged</strong> box beside the QMD.</li>
+<li>Uncheck it and watch the file leave the staging area.</li>
+<li>Check it again, click <strong>Diff</strong>, and inspect the new file.</li>
+<li>Commit it as <code>Add Git practice note</code>.</li>
 </ol>
-<p>Git should list <code>git-note.qmd</code> as untracked. It should not list <code>git-note.html</code>, because <code>*.html</code> is in <code>.gitignore</code>.</p>
-<p>Use RStudio’s Git controls to stage <code>git-note.qmd</code> and commit it with the message <code>Add Git practice note</code>.</p>
-<p>In most research projects, commit the source and regenerate its output when needed.</p>
+<p>The checkbox controls what the next commit will contain. It doesn’t add or remove the file from your project.</p>
 </section>
-<section id="name-this-checkpoint" class="slide level2">
-<h2>Name this checkpoint</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag first-git-session    <span class="co"># attach a readable name to the current commit</span></span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag                      <span class="co"># list the repository's tags</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>The first line names the current commit without creating a new commit.</li>
-<li>The second line should print <code>first-git-session</code>.</li>
-<li>Open Git history and find the new Quarto-file commit.</li>
-</ul>
-<p>A tag is useful for a manuscript submission, public release, or other version you may need to find again.</p>
+<section id="inspect-the-history-in-rstudio" class="slide level2">
+<h2>Inspect the history in RStudio</h2>
+<ol type="1">
+<li>Click the <strong>History</strong> button marked with a clock.</li>
+<li>Select <code>Add Git practice note</code> and inspect its file and diff.</li>
+<li>Select <code>Add GitHub goal</code> and confirm that it changed <code>README.md</code>.</li>
+<li>Close the history window.</li>
+</ol>
+<p>The history view links each commit message to the files and lines recorded in that checkpoint.</p>
 </section>
 <section id="before-next-class" class="slide level2">
 <h2>Before Next Class</h2>
