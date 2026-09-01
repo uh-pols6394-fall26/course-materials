@@ -339,8 +339,16 @@
 </section>
 <section id="your-turn-check-the-starting-point" class="slide level2">
 <h2>Your Turn: check the starting point</h2>
-<p>Open the 02a lesson project and its Terminal tab. Run one command:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Open the 02a lesson project and its <strong>Terminal</strong> tab.</p>
+<ul>
+<li>The R <strong>Console</strong> has a <code>&gt;</code> prompt.</li>
+<li>The <strong>Terminal</strong> has a <code>/cloud/project$</code> prompt.</li>
+<li>Paste into the Terminal with <strong>Ctrl+Shift+V</strong>.</li>
+</ul>
+<p>List the project files, then ask git about the folder:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>ls</code> means “list”; <code>-l</code> shows one file per line with details. <code>git status</code> asks git what it currently sees.</p>
 <p>Git should say <code>fatal: not a git repository</code>. That error is expected because we haven’t initialized the repository yet.</p>
 </section>
 <section id="optional-check-who-does-git-think-you-are" class="slide level2">
