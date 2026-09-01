@@ -218,6 +218,33 @@
 <li><code>.gitignore</code>: what not to track</li>
 </ul>
 </section>
+<section id="the-terminal-and-cli" class="slide level2">
+<h2>The Terminal and CLI</h2>
+<p>The <strong>Terminal</strong> is an RStudio pane that gives you access to the computer’s <strong>shell</strong>. The shell reads typed commands and runs programs.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Interface</th>
+<th>How you control it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>CLI</strong>: command-line interface</td>
+<td>Typed commands</td>
+</tr>
+<tr class="even">
+<td><strong>GUI</strong>: graphical user interface</td>
+<td>Buttons, menus, and checkboxes</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>R <strong>Console</strong>: <code>&gt;</code> prompt; runs R code</li>
+<li><strong>Terminal</strong>: <code>/cloud/project$</code> prompt; runs shell commands</li>
+<li>Many modern agentic coding tools use a CLI, including the Codex work later in this course.</li>
+</ul>
+</section>
 <section>
 <section id="why-version-control" class="title-slide slide level1 center">
 <h1>Why Version Control</h1>
@@ -300,35 +327,6 @@
 </ul>
 <p>A commit moves changes: working directory → stage → history. The staging area is the part that feels strange at first; it lets you commit some changes now and hold others back.</p>
 </section>
-<section id="what-is-a-cli" class="slide level2">
-<h2>What is a CLI?</h2>
-<p>A <strong>command-line interface</strong> controls a program with typed commands. A <strong>graphical user interface</strong> controls it with buttons, menus, and checkboxes.</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Part</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Terminal</strong></td>
-<td>The window where you type shell commands</td>
-</tr>
-<tr class="even">
-<td><strong>Shell</strong></td>
-<td>Reads the command and runs the requested program</td>
-</tr>
-<tr class="odd">
-<td><strong>Git</strong></td>
-<td>One program we run from the shell</td>
-</tr>
-</tbody>
-</table>
-<p><code>ls -l</code> means: run <code>ls</code> with the <code>-l</code> option.<br>
-<code>git status</code> means: run <code>git</code> and ask for <code>status</code>.</p>
-<p>Many modern agentic coding tools also operate through a CLI, including the Codex work later in this course.</p>
-</section>
 <section id="why-begin-in-the-terminal" class="slide level2">
 <h2>Why begin in the Terminal?</h2>
 <ul>
@@ -373,6 +371,7 @@
 <li>The R <strong>Console</strong> has a <code>&gt;</code> prompt.</li>
 <li>The <strong>Terminal</strong> has a <code>/cloud/project$</code> prompt.</li>
 <li>Paste into the Terminal with <strong>Ctrl+Shift+V</strong>.</li>
+<li>If the line becomes strange, press <strong>Ctrl+C</strong> until a fresh prompt appears. Nothing runs until you press Enter.</li>
 </ul>
 <p>List the project files, then ask git about the folder:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span>
@@ -505,6 +504,17 @@
 <li>The Git tab runs these commands for you</li>
 <li>Learn both: the pane is faster day-to-day; the terminal is what works on a server with no buttons (Week 8)</li>
 </ul>
+</section>
+<section id="make-the-git-tab-appear" class="slide level2">
+<h2>Make the Git tab appear</h2>
+<p>RStudio opened this project before we created <code>.git</code>, so the Git tab may not appear during the same session.</p>
+<ol type="1">
+<li>Save the workbook.</li>
+<li>Choose <strong>Tools → Project Options → Git/SVN</strong>.</li>
+<li>Change <strong>Version control system</strong> from <strong>(None)</strong> to <strong>Git</strong>.</li>
+<li>Confirm the restart and reopen <code>02a-workbook.qmd</code>.</li>
+</ol>
+<p>The files and commits remain in place. The restart loads RStudio’s Git controls.</p>
 </section>
 <section id="your-turn-use-rstudios-git-controls" class="slide level2">
 <h2>Your Turn: use RStudio’s Git controls</h2>
