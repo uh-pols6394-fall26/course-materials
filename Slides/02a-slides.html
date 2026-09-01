@@ -507,14 +507,14 @@
 </section>
 <section id="make-the-git-tab-appear" class="slide level2">
 <h2>Make the Git tab appear</h2>
-<p>RStudio opened this project before we created <code>.git</code>, so the Git tab may not appear during the same session.</p>
+<p>The Cloud project is already configured to use Git, but it had no repository when RStudio opened. The supplied <code>.gitignore</code> file is not the hidden <code>.git</code> folder that <code>git init</code> creates.</p>
 <ol type="1">
 <li>Save the workbook.</li>
-<li>Choose <strong>Tools → Project Options → Git/SVN</strong>.</li>
-<li>Change <strong>Version control system</strong> from <strong>(None)</strong> to <strong>Git</strong>.</li>
-<li>Confirm the restart and reopen <code>02a-workbook.qmd</code>.</li>
+<li>Refresh the browser tab.</li>
+<li>Reopen <code>02a-workbook.qmd</code> if necessary.</li>
+<li>Find the <strong>Git</strong> tab in the <strong>Environment–History–Git pane</strong>.</li>
 </ol>
-<p>The files and commits remain in place. The restart loads RStudio’s Git controls.</p>
+<p>The files and commits remain in place. Refreshing the browser makes RStudio notice the repository created by <code>git init</code>.</p>
 </section>
 <section id="your-turn-use-rstudios-git-controls" class="slide level2">
 <h2>Your Turn: use RStudio’s Git controls</h2>
