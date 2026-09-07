@@ -1,0 +1,98 @@
+---
+title: "Workbook 01a — Your First Project"
+subtitle: "POLS 6394 · Tuesday, August 25"
+---
+
+## Today's goal
+
+Keep this workbook open for the whole class. During the first half, use it as a reference while I introduce the course. We will adjust RStudio's options together before the lab begins. Then you will run two short pieces of R code, make a project of your own, draft a plain-text `README.md` about your research interests, and render this workbook to HTML.
+
+## Setup
+
+We will teach Quarto (`.qmd`) files in detail later. For most of today, edit the code inside a code chunk and click the right-facing triangle button at the upper-right corner of the chunk to run it. At the end of the lab, you will click **Render** once to run the whole document and produce an HTML file.
+
+This first chunk loads the tidyverse and reads a course dataset. Click its triangle button once. If it works, your project can see the `Data/` folder.
+
+```{r lab01a-setup}
+#| message: false
+library(tidyverse)
+gap <- read_csv("Data/gapminder/gapminder.csv", show_col_types = FALSE)
+```
+
+# First-half reference
+
+- The course concentrates on the workflow surrounding statistical analysis: programs, data, reproducible outputs, collaboration, and computing tools.
+- Part I builds the ability to read code, debug it, and recognize wrong output before Part II introduces AI tools.
+- A reproducible project connects `raw data → cleaning code → analysis → figures and tables → paper, report, presentation, or web app`.
+- A replication archive supplies the data, code, and instructions another researcher needs to regenerate a result.
+
+# RStudio setup
+
+Before beginning the lab tasks, open **Tools → Global Options** and make these changes:
+
+1. Under **Appearance**, change the editor font size to one that is comfortable to read.
+2. Under **Pane Layout**, move at least one pane to a different location.
+3. Under **General**, set *Save workspace to `.RData` on exit* to **Never**.
+4. Under **Code**, check *Highlight R function calls* and *Use native pipe operator, `|>`*. We will explain both later.
+
+Click **Apply**. You can return to these settings whenever you want.
+
+# Lab
+
+## Task 1: Compute a table from a code chunk
+
+Click the triangle button to run this chunk, then read the result that appears below it.
+
+```{r lab01a-repro-demo}
+gap |>
+  filter(year == 2007) |>
+  summarize(countries = n_distinct(country), median_life = median(lifeExp))
+```
+
+**Your modification:** add one line to the `summarize()` that also reports the mean GDP per capita, `mean_gdp = mean(gdpPercap)`. Re-run the chunk and confirm the new column appears.^[Every line inside `summarize()` after the first needs a comma at the end of the line before it.]
+
+## Task 2: Recompute for a different year
+
+This is the same computation as Task 1. Change `1952` to another year in the data; the years run from 1952 to 2007 in five-year steps.
+
+```{r lab01a-year}
+gap |>
+  filter(year == 1952) |>
+  summarize(countries = n_distinct(country), median_life = median(lifeExp))
+```
+
+Edit the year, click the triangle button, and compare its median life expectancy with Task 1.
+
+## Task 3: Draft your README
+
+In your new project, create a plain-text file called `README.md`. Draft its content here first, then copy it into that file.
+
+- Who you are and your field: `___`
+- A research question or topic you care about: `___`
+- One kind of data you might want to work with this semester: `___`
+
+A heading and a short paragraph are enough. We put this file under version control next week.
+
+## If you finish early
+
+Look through the other **Global Options** tabs. Think about what each option controls before changing it. Note anything you want to ask about when we return to RStudio and Quarto next class.
+
+## What I want to remember
+
+- `___`
+
+## What broke, and why
+
+- `___`
+
+## One question I still have
+
+- `___`
+
+## Before you leave
+
+*(We learn git next week — for today, just save your work.)*
+
+- Save the file.
+- Create `README.md` in your project and paste in your Task 3 sentences.
+- As the final step, return to this workbook and click **Render**. Confirm that the HTML document appears in the Viewer.

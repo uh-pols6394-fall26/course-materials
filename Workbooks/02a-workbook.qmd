@@ -1,0 +1,375 @@
+---
+title: "Workbook 02a — Build a Real History"
+subtitle: "POLS 6394 · Tuesday, September 1"
+---
+
+## Today
+
+Keep this workbook open while we work through Git and read its output. You'll create at least three commits and recover a file after deliberately changing it. Everything today is local; GitHub comes next time.
+
+[Open today's slides](https://uh-pols6394-fall26.github.io/course-materials/Slides/02a-slides.html). They are already rendered; no local rendering is needed.
+
+# Why Version Control
+
+## What is version control?
+
+**Version control** is a system for recording changes to a set of files over time. It lets you keep one working copy of each file while preserving named checkpoints behind it. You can inspect what changed, restore an earlier version, and combine work from several people without passing files such as `paper_FINAL_v2_REALLY.docx` back and forth.
+
+## What a shared folder leaves unresolved
+
+A shared Dropbox folder makes it easy for several people to obtain the same files. It doesn't tell the group who should edit a file, how to combine simultaneous edits, or which version to keep.
+
+Suppose Boris changes the data-import code in `analysis.R` while Amanda adds validation checks to the same file. If they save without coordinating, the shared folder may produce a conflicted copy, preserve only one sequence of edits, or leave them comparing two versions manually.
+
+Git records each person’s work separately and shows the exact differences. If the changes overlap, the group must reconcile them before accepting a combined version. People still need to communicate, but Git gives them a clear record to work from. For collaborators, that record is a major benefit of version control.
+
+## Git dominates version control
+
+Git is the standard version-control system for most modern software and data projects, but it is not the only one. Subversion, usually called SVN, and Mercurial are two alternatives.
+
+Linus Torvalds created Git in 2005 to manage development of the Linux kernel. The Linux source tree passed 40 million total lines in 2025, including code, documentation, comments, and blank lines. More than 1,000 people contribute to a typical kernel release, with many thousands participating across its history. Git gives that work a common history while allowing contributors to work independently.^[[Linux kernel development process](https://docs.kernel.org/process/1.Intro.html); [40-million-line milestone](https://www.heise.de/en/news/Linux-breaks-through-the-40-million-line-mark-10256571.html)]
+
+## GitHub dominates Git hosting
+
+Git is software that records history in a project. **GitHub** is a web service that stores Git repositories and adds tools for sharing, reviewing, and coordinating work. GitHub is the dominant Git hosting service, but alternatives include **GitLab** and **Bitbucket**, and organizations can operate their own Git servers.
+
+The Linux kernel makes the distinction clear: it uses Git, but its official repository is hosted at **kernel.org**, not GitHub. A project can use Git without using GitHub. Today we use Git inside Posit Cloud; next class we connect the repository to GitHub.
+
+# How We Work Today
+
+## The Terminal and CLI
+
+The **Terminal** is an RStudio pane that gives you access to the computer's **shell**. The shell reads a typed command and asks the named program to carry it out.
+
+A **command-line interface**, or **CLI**, lets you control a program by typing commands. A **graphical user interface**, or **GUI**, uses buttons, menus, and checkboxes. RStudio provides both. Its panes and buttons form a GUI; its Console and Terminal are places where you type commands. Many modern agentic coding tools also operate through a CLI, including the Codex work later in this course.
+
+The Console and Terminal run different languages:
+
+- The **Console** has a `>` prompt and runs R code.
+- The **Terminal** has a `/cloud/project$` prompt and runs shell commands.
+
+# The Mental Model
+
+## Four words from the reading
+
+Research projects change constantly. You revise code, reorganize a paper, correct data, and sometimes break something that worked yesterday. Saving over the same files leaves no reliable record of what changed or when.
+
+The visible files in a Git project remain normal files that you edit in RStudio. Git stores the history and settings in a hidden `.git` folder inside the project. A project folder with that Git history is called a **repository**, or **repo**.
+
+A **commit** is a named checkpoint in the project. It records the versions of the tracked files at that moment. Saving a file doesn't create a commit; you decide when the project has reached a useful checkpoint. A series of commits creates a readable history of the work.
+
+A **diff** shows what changed between two versions. A **tag** gives a memorable name to an important commit, such as a manuscript submission.
+
+## Where your changes live: three places
+
+The normal cycle is:
+
+1. **Edit and save** the project files.
+2. **Inspect** the changes with `git status` and `git diff`.
+3. **Stage** the changes that belong in the next checkpoint with `git add`.
+4. **Commit** the staged changes with a short message describing them.
+
+A **diff** compares the same file at two points and shows what was added and removed. The staging step selects what the next commit will contain. Today we will stage all the project's unignored changes at once.
+
+Once a useful version has been committed, Git can help recover it after a bad edit or deletion. Everything today remains inside this Posit Cloud project. GitHub will later store a remote copy of the repository and support collaboration.
+
+## Why begin in the Terminal?
+
+For most people, RStudio's Git controls will be more comfortable for everyday work. We begin by typing the commands because each part of the process is visible. It's like learning arithmetic on paper before using a calculator: understanding the mechanics makes the convenient tool easier to use correctly.
+
+Sometimes typing one command is also faster than navigating menus. The same commands work in Posit Cloud, on a laptop, and on a server that has no RStudio interface. After the command-line cycle is clear, we will repeat it with RStudio's Git controls.
+
+# The Commit Cycle
+
+## Stage, then commit
+
+Git separates choosing changes from recording them. `git add` stages the changes for the next checkpoint; `git commit` records the staged checkpoint.
+
+## Anatomy of a good commit message
+
+The diff records the changed lines. The commit message explains the purpose of the change in a short present-tense statement.
+
+## Your Turn: check the starting point
+
+Open the **Terminal** tab next to the Console. Confirm that you see the `/cloud/project$` prompt.
+
+In the Terminal, paste with **Ctrl+Shift+V**. **Ctrl+V** has a different meaning in terminal programs and will not paste. If you press it by mistake and the command line behaves strangely, press **Ctrl+C** until a fresh prompt appears, then try again. Nothing runs until you press Enter.
+
+Begin by listing the visible files in the working directory:
+
+```bash
+ls -l
+```
+
+`ls` means “list.” The `-l` option displays one file per line with details such as its size and modification date. This project folder is the **working directory** — the set of files git is about to start watching.
+
+Now ask git about the folder:
+
+```bash
+git status
+```
+
+Git should report `fatal: not a git repository`. That error is expected because we haven't initialized the repository yet.
+
+## Optional check: who does Git think you are?
+
+You don't need to run these lines during today's guided sequence. Use them later if you're unsure which identity Git will attach to a commit:
+
+```bash
+git config user.name
+git config user.email
+```
+
+The first line asks Git for the effective author name; the second asks for the effective author email. The commands only read the settings. If a line prints nothing, that value has not been configured.
+
+## Tell Git who you are
+
+GitHub isn't connected yet, so tell Git whose name and email to record with today's commits. Use the email associated with your GitHub account. Run these setup commands in the Terminal, replacing the examples. You don't need to memorize them.
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+The first line stores the author name attached to commits; the second stores the author email. `--global` keeps each setting available throughout this Cloud project, and quotation marks keep the full name or address together. If the Terminal prints an error, stop there and ask.
+
+## Task 1: Start the repository
+
+Start the repository, then pause and read what git reports.
+
+```bash
+git init                   # create a Git repository in this project
+git status                 # inspect the new repository
+```
+
+Read the first lines of the output. Git created a default branch called `master`, reports that there are no commits yet, and lists the project files as **untracked**. A branch is a named line of history. Today, every commit goes onto that line.
+
+**Untracked** means git sees a file in the folder, but no commit contains it yet. The file remains in the folder; git has no saved history for it.
+
+Paste the `git status` output below. Select the output in the Terminal, copy it, and paste it between the fences so Boris and Amanda can confirm the result.
+
+```text
+(paste the output from git status here)
+```
+
+## Where the repository lives
+
+Your visible files live in `/cloud/project/`. Git stores the repository's history and settings in the hidden `/cloud/project/.git/` folder. Both are inside this Posit Cloud project; nothing has been sent to GitHub. Here, **local** means the environment where git is running, even though that environment is a computer operated by Posit rather than your laptop.
+
+## Record the first snapshot
+
+Now stage the starting files. `git add .` puts every unignored change in the current folder into the staging area. The period means “this folder.” It does not commit or upload anything. Run `git status` again and compare it with the previous output.
+
+```bash
+git add .                  # stage the starting files
+git status                 # see what is staged
+```
+
+Git now lists the files under **Changes to be committed**. They are staged for the next snapshot.
+
+Record the first snapshot with a message describing what is in the project.^[Use a present-tense message under ~50 characters. Avoid generic labels such as "changes" or "final".]
+
+```bash
+git commit -m "Start Git practice project"
+git status
+```
+
+`git commit` records the staged snapshot; `-m` supplies its quoted message. The next line verifies that the working tree is clean.
+
+Git prints a short report after the commit. Confirm that it repeats your message; ignore the remaining counts and file metadata today.
+
+# History
+
+## Reading your history
+
+```bash
+git log --oneline
+```
+
+`git log` reads the history, and `--oneline` displays each commit compactly. The log should contain one commit. Parentheses such as `HEAD -> master` mark your current position; you can ignore them today.
+
+Paste the one-line history below:
+
+```text
+(paste the output from git log --oneline here)
+```
+
+## Seeing what changed: diff
+
+`git diff` compares your working files with the last commit and shows the exact lines that changed.
+
+## Task 2: Make a change, watch Git see it
+
+Edit your `README.md` — add a sentence about your research interests — and save. Inspect the change before staging it.
+
+```bash
+git status                 # names the changed file
+git diff                   # shows the exact lines you added
+```
+
+Focus on the lines beginning with `-` and `+`. The header, hashes, and permission metadata can be ignored today.
+
+Paste the diff below:
+
+```text
+(paste the output from git diff here)
+```
+
+If the Terminal shows `(END)`, press `q` to close the viewer and return to the prompt. This `q` controls the viewer; it is not another git command.
+
+Now stage the file and pause at `git status` again.
+
+```bash
+git add .                  # stage every unignored change here
+git status                 # confirm which change is staged
+git commit -m "Add research interest"
+git status                 # confirm the working tree is clean
+```
+
+You now have two commits. Reading the diff before committing gives you one last check of the change.
+
+## Task 3: Break it, then get it back
+
+Git can restore only content that was committed before it was changed or deleted. It cannot recover an untracked file that never entered a snapshot.
+
+Delete the research-interest line from `README.md` and **save**. Confirm the change, then keep `README.md` open in the Source pane while you recover it from the last commit.
+
+```bash
+git status                 # confirms the file changed
+git diff                   # shows what you just destroyed
+git restore README.md      # replace README.md with its last committed version
+git status                 # confirm the working tree is clean again
+```
+
+Watch the deleted sentence reappear in the open Source pane. The last committed version is back. Paste the clean status below:
+
+```text
+(paste the output from git status here)
+```
+
+Now run `git log --oneline` and paste the history below to show your two snapshots:
+
+```text
+(paste your git log --oneline here)
+```
+
+# RStudio's Git Controls
+
+## The Git tab and the Terminal
+
+RStudio's Git tab uses buttons and checkboxes to perform the same operations you just typed in the Terminal.
+
+## Confirm Git in Project Options
+
+When RStudio opened, the project had a `.gitignore` file but no hidden `.git` folder, so there was no Git tab to display. `git init` created the `.git` folder during this session.
+
+1. Save this workbook.
+2. Choose **Tools → Project Options → Git/SVN**.
+3. Confirm that **Version control system** shows **Git**, then close Project Options without changing it.
+
+## Make the Git tab appear
+
+1. Refresh the browser tab.
+2. Reopen `02a-workbook.qmd` if necessary.
+3. Look for the **Git** tab in the **Environment--History--Git pane**.
+
+The repository, workbook, and both commits remain in the project. Project Options confirms that RStudio recognizes the repository. Refreshing the browser loads RStudio's Git controls.
+
+## Task 4: Use RStudio's Git controls
+
+The Git tab performs the same actions as the commands you just used.
+
+1. Add this sentence to `README.md`, then save: `I also want to learn how GitHub works.`
+2. Open the **Git tab** in the **Environment--History--Git pane**. The `M` beside `README.md` means **modified**.
+3. Select `README.md`, click **Diff**, and find the added line marked with `+`.
+4. Click **Close** to leave the Diff view.
+5. Check the **Staged** box beside `README.md`. This does the job of `git add README.md`.
+6. Click **Commit** in the Git tab.
+7. Enter `Add GitHub goal` in the commit-message box near the upper-right, then click **Commit**.
+8. Git displays a confirmation report. Click **Close**.
+
+Return to the Terminal and verify the result:
+
+```bash
+git log --oneline          # show the three commits
+```
+
+The newest commit should be `Add GitHub goal`.
+
+Paste the final three-commit history below:
+
+```text
+(paste the output from git log --oneline here)
+```
+
+## Later: Git through an LLM
+
+Later in the course, we'll direct LLM coding agents to work with Git. An agent can inspect changes, group related files, create commits, restore files, and reverse a commit. Knowing the workflow lets you check its work and recover from a bad change.
+
+## The four commands that cover most days
+
+```bash
+git status                            # inspect the project
+git add .                             # stage every unignored change here
+git commit -m "Describe the change"  # record the staged changes
+git log --oneline                     # review the history
+```
+
+# What Not to Track
+
+## `.gitignore`
+
+A `.gitignore` file tells Git which project files to leave out of version control, including temporary RStudio files, rendered output, and files that may contain credentials.
+
+## The supplied `.gitignore`
+
+Open `.gitignore` and read it. It already excludes RStudio session files, rendered HTML, the slide source, `.Renviron`, and this evidence workbook. Keeping the workbook outside this small practice history lets you paste command output without cluttering the README diffs. You don't need to edit `.gitignore` today.
+
+# If Time Allows
+
+## Practice staging and unstaging
+
+Create a new Quarto HTML document named `git-note.qmd`. Give it one heading and one sentence, then render it.
+
+1. Open the **Git** tab. Confirm that `git-note.qmd` appears but the ignored `git-note.html` does not.
+2. Check the **Staged** box beside `git-note.qmd`. The file is now selected for the next commit.
+3. Uncheck the box. The file remains in the project but leaves the staging area.
+4. Check the box again, then click **Diff** and inspect the new file.
+5. Close the Diff view and click **Commit**.
+6. Enter `Add Git practice note`, commit, and close the confirmation report.
+
+This is the staging area in the GUI: checking and unchecking the box changes what the next commit will contain.
+
+```text
+(write down what changed when you checked and unchecked the box)
+```
+
+## Inspect the history in RStudio
+
+1. In the **Git** tab, click the **History** button marked with a clock.
+2. Select the newest commit, `Add Git practice note`.
+3. Confirm that the commit contains `git-note.qmd`, then inspect its diff.
+4. Select `Add GitHub goal` and confirm that its diff changes `README.md` instead.
+5. Close the history window.
+
+The history view connects each commit message to the files and lines recorded in that checkpoint.
+
+## What I want to remember
+
+- `___`
+
+## What broke, and why
+
+- `___`
+
+## One question I still have
+
+- `___`
+
+## Before Next Class
+
+*(GitHub and pull requests are next week — today is local git only.)*
+
+- Render this document cleanly.
+- Confirm `git log --oneline` shows at least three commits with real messages.
+- Save the file. Next week we clone your private coursework repository and make the first pull-request submission.

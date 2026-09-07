@@ -1,0 +1,290 @@
+---
+title: "Workbook 01b — Your First Paper and Presentation"
+subtitle: "POLS 6394 · Thursday, August 27"
+---
+
+## Today
+
+Keep this workbook open while we create two Quarto documents. During the lab you'll write a mini paper, turn it into a presentation with three content slides, render both, and publish one of your own outputs to Posit Connect Cloud.
+
+## Setup
+
+We don't need any packages or data today. Run this chunk to confirm that R is responding inside the workbook.
+
+```{r lab01b-setup}
+3 + 2
+```
+
+# Guided notes
+
+# What Quarto Makes
+
+## One Source, Several Outputs
+
+The `.qmd` file is the source. Quarto can turn that source into an HTML page, a PDF or Word paper, a revealjs presentation, a website, a dashboard, or a book.
+
+Which output would you usually send to a journal or committee? `___`
+
+## A `.qmd` Can Become a Paper
+
+## Quarto and R Markdown
+
+Quarto uses `.qmd` files. Its predecessor, R Markdown, uses `.Rmd` files and remains common in replication archives. Both combine YAML, Markdown, and code chunks, so the basic reading and editing skills transfer between them. Quarto works with R and Python. Use Quarto for new work in this course.
+
+# Your First Paper
+
+## Why Use PDF?
+
+A PDF keeps the same page layout across computers, normally embeds its fonts, preserves figure placement, and works well for printing and archiving. Journals and committees often expect papers as PDFs.
+
+The fixed layout also has costs. PDFs are awkward to read on phones and small screens, their text does not reflow like a web page, and every revision requires rendering and sending a new copy.
+
+## LaTeX and Typst Make the Same Kind of File
+
+Quarto offers two PDF routes. **PDF (LaTeX)** is well established in academic publishing and supports many journal templates, but it needs a TeX installation. **PDF (Typst)** is faster and comes with Quarto, but it is newer and has fewer publisher-specific templates. Posit Cloud has both. We will use Typst today.
+
+## Your Turn: Create `first-paper.qmd`
+
+Use **Quarto → New Document → PDF (Typst)**. Enter a title and your name or initials, choose the **Source Editor**, and click **Create**. Save the new file in the project root as `first-paper.qmd`.
+
+Render the untouched template once before changing it. If it fails, stop and ask; the setup needs attention before you begin editing.
+
+## What RStudio Gives You
+
+# Read the Source
+
+## Three Parts of a `.qmd`
+
+| Part | Job |
+|---|---|
+| YAML | Sets the title, author, format, and document options. |
+| Markdown | Holds the prose and document structure. |
+| Code chunks | Run R and place results in the document. |
+
+In `first-paper.qmd`, locate each of these three parts before editing anything.
+
+## Headings, Paragraphs, and Emphasis
+
+```markdown
+## A Section Heading
+
+This is a paragraph with **bold text** and *italic text*.
+```
+
+Leave a blank line between paragraphs and use backticks around a file name or short piece of code.
+
+Write one short Markdown sentence below using bold or italic text:
+
+> `___`
+
+## Lists, Links, and Footnotes
+
+```markdown
+- one item
+- another item
+
+[Quarto documentation](https://quarto.org/docs/guide/)
+
+This sentence has a footnote.^[The note appears at the bottom of the page.]
+```
+
+Use `[label](URL)` for a readable link.
+
+## Code Chunks Put R in the Document
+
+The green triangle runs one chunk in the current R session. **Render** starts a fresh session and runs the complete document from top to bottom.
+
+After you render `first-paper.qmd`, record one difference between the source and the finished PDF: `___`
+
+## Your Turn: Write the Mini Paper
+
+## Rendering Builds the Whole Document
+
+Rendering starts a fresh R session, runs the chunks in order, combines the Markdown and results, and writes the finished output. When rendering stops, the error tells you which chunk to inspect first.
+
+## The Console Can Render It Too
+
+## Render the Paper to HTML and PDF
+
+# Two Complete Examples
+
+## Full Demonstrations, Small Assignment
+
+The demonstrations show finished work. The files you create today remain short.
+
+## Live Tour: The Full Paper
+
+`Demos/paper/paper-example.qmd` produces a full paper with an abstract, sections, footnotes, citations, inline R, a generated figure, and references. Its PDF uses LaTeX; your mini paper uses Typst.
+
+## Live Tour: The Full Presentation
+
+`Demos/presentation/presentation-example.qmd` produces a full presentation with a theme, incremental bullets, visible and hidden code, generated plots, columns, and an interactive map.
+
+One difference you noticed between the paper and presentation YAML: `___`
+
+# Your First Presentation
+
+## Start with RStudio's Presentation Template
+
+Use **File → New File → Quarto Presentation**. Enter a title and your name or initials, keep **revealjs** selected, choose the **Source Editor**, and click **Create**. Save the file in the project root as `first-presentation.qmd`.
+
+The presentation still uses YAML, Markdown, and code chunks. In revealjs, each level-two heading begins a new slide.
+
+## Build Three Content Slides
+
+# Put It on the Web
+
+## A Web Page Needs a Host
+
+Rendering creates an HTML file inside your project. Publishing sends that rendered output to a **host**: an internet-connected server that makes the page available at a public URL. We will use Posit Connect Cloud today and GitHub Pages later in the course.
+
+## Watch the First Publish
+
+Your Posit login also works with Connect Cloud, but RStudio needs permission to publish to that account. Watch Boris authenticate and publish once before beginning.
+
+## Give the Page a Recognizable Address
+
+After publishing, open the content page and choose **Edit Settings → URL → Custom name** to replace the generated content ID with a short recognizable name.
+
+## Choose What Goes on a Public Page
+
+Use only text and sample code you're comfortable putting on a public page.
+
+## Your Turn: Publish and Update
+
+Publish either `first-paper.qmd` or `first-presentation.qmd`, make one visible change, and update the same URL.
+
+My Posit Connect Cloud URL: `___`
+
+# Lab
+
+## Tasks 1–3: Create the Mini Paper
+
+**Task 1: Inspect and continue the mini paper**
+
+Open `first-paper.qmd`, which you created and rendered during the guided portion. Confirm that it is saved in the project root and that you can find its PDF output.
+
+In the source, point to the YAML header, the Markdown prose, and the sample R chunk. Change the title to a research question or topic that interests you. Add a one-sentence abstract to the YAML:
+
+```yaml
+abstract: "A very short paper about ___."
+```
+
+**Task 2: Write with Markdown**
+
+Replace the starter prose with this paper structure, using your own words where the blanks appear:
+
+```markdown
+## Research Question
+
+I am interested in **___** because *___*.
+
+## Why It Matters
+
+- One reason this matters: ___
+- One thing I would need to measure: ___
+
+The [Quarto documentation](https://quarto.org/docs/guide/) shows how the document is built.^[This is a practice footnote.]
+```
+
+Render again and confirm that the Markdown formatting appears in the PDF.
+
+**Task 3: Add a calculation and render the paper**
+
+Run this complete chunk in the workbook, then use it to replace the sample code in `first-paper.qmd`.
+
+```{r lab01b-numbers}
+numbers <- c(4, 8, 15, 16, 23, 42)
+mean(numbers)
+```
+
+`<-` assigns a value to an object. `c()` collects several values into one vector. `mean()` takes that vector and returns one number.
+
+Change one number and run the chunk again. Add `## A Small Calculation` immediately above the chunk.
+
+Change the paper's YAML so it renders to both HTML and PDF:
+
+```yaml
+format:
+  html: default
+  typst: default
+```
+
+Render `first-paper.qmd` and confirm that it contains:
+
+1. the title and author from YAML;
+2. the heading, paragraphs, list, emphasis, link, and footnote from Markdown; and
+3. the code and result from the R chunk.
+
+In the **Console** pane, run `quarto::quarto_render("first-paper.qmd")`. Confirm that it creates or updates both `first-paper.html` and `first-paper.pdf`. Typst produces the PDF.
+
+If rendering fails, begin with the first error and the chunk it names. Ask Boris or Amanda when the message isn't clear.
+
+## Tasks 4–5: Create the Mini Presentation
+
+**Task 4: Inspect and continue the mini presentation**
+
+Open `first-presentation.qmd`, which you created and rendered during the guided portion. Confirm that it is saved in the project root and that you can move through the untouched presentation.
+
+**Task 5: Build and render three content slides**
+
+Replace the sample slides with three level-two sections:
+
+```markdown
+## Research Question
+
+One or two sentences adapted from your mini paper.
+
+## Why It Matters
+
+- one reason
+- another reason
+
+## A Small Calculation
+```
+
+Copy the calculation chunk from `first-paper.qmd` below the final heading. Render the presentation and use the arrow keys to move through it.
+
+## Task 6: Publish and Revise
+
+Open either `first-paper.qmd` or `first-presentation.qmd` and render the HTML format. Click **Publish** in the preview or Viewer toolbar, choose **Posit Connect Cloud**, sign in, and publish it. Open the public URL.
+
+On the Connect Cloud content page, choose **Edit Settings → URL → Custom name** and enter a short name such as `first-paper`. Copy the resulting URL.
+
+Change one sentence in the source you published, render again, and publish the update. Refresh the same URL and confirm that it changed. Record the URL under **Publishing** above.
+
+## Before Next Class
+
+**What I want to remember**
+
+- `___`
+
+**What broke, and why**
+
+- `___`
+
+**One question I still have**
+
+- `___`
+
+**Before you leave**
+
+*(We'll learn git next week; today, save your files.)*
+
+- Render this workbook cleanly to HTML.
+- Render `first-paper.qmd` cleanly to HTML and a Typst PDF.
+- Render `first-presentation.qmd` cleanly to revealjs.
+- Save the workbook and both new `.qmd` files.
+- Record your Posit Connect Cloud URL if publishing succeeded.
+
+# If Time Remains
+
+## Source Mode and Visual Mode
+
+Switch either new `.qmd` file from Source mode to Visual mode and back. Both modes edit the same file. Decide which view you prefer for writing prose and which helps you see the document's structure.
+
+## A Few Useful Chunk Options
+
+## A Self-Contained HTML File
+
+Add `embed-resources: true` under the HTML format in `first-paper.qmd`, render again, and inspect the Files pane. A self-contained HTML file does not need a neighboring `_files/` folder when you share it.

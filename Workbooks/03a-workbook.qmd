@@ -1,0 +1,333 @@
+---
+title: "Workbook 03a — GitHub and the Course Workflow"
+subtitle: "POLS 6394 · Tuesday, September 8"
+format:
+  html:
+    embed-resources: true
+---
+
+## Today's goal
+
+Today we connect your laptop to GitHub, clone the private course repository that Amanda and I prepared for you, and send one commit back to GitHub.
+
+# Your Course Repository
+
+## Git, GitHub, GitHub CLI, and RStudio
+
+These tools work together but have different jobs.
+
+| Tool | Job |
+|---|---|
+| Git | records versions of files on your computer |
+| GitHub | stores and shares a Git repository online |
+| GitHub CLI (`gh`) | connects your computer to your GitHub account |
+| RStudio | supplies buttons for common Git operations |
+
+Your repository is named `course-YOUR-USERNAME`. Only you, Amanda, and I can see it.
+
+Clean 01a, 01b, and 02a workbooks are included for reference. They don't contain your earlier answers; you don't need to redo them.
+
+# Identify and Authenticate
+
+## RStudio's Console and Terminal
+
+RStudio contains two different places where you can type commands:
+
+- The **Console** runs R code and usually begins each input line with `>`.
+- The **Terminal** runs a system shell. We use it for programs such as Git and GitHub CLI.
+
+RStudio displays the Terminal inside the IDE, but the commands still follow the rules of the shell it opened. The Terminal lets us ask the computer where we are, see which files are there, and run tools that do not have RStudio buttons.
+
+## Linux: do nothing
+
+RStudio opens a standard Linux shell. Leave the default Terminal setting in place. The commands in this lesson will work as shown, and paths use forward slashes, such as `/home/name/course-project`.
+
+## Mac: do nothing
+
+RStudio opens the Mac's default shell, normally `zsh`. Leave the default Terminal setting in place. The commands in this lesson will work as shown, and paths use forward slashes, such as `/Users/name/course-project`.
+
+## Windows: choose Git Bash
+
+Git Bash is supplied with Git for Windows. It provides the commands and path conventions used in this lesson while working with your Windows programs and files.
+
+Choose **Tools → Global Options → Terminal**. Set **New terminals open with** to **Git Bash**, click **Apply**, and open a new Terminal. A Windows path such as `C:\Users\Name` appears as `/c/Users/Name` in Git Bash.
+
+## Find where the Terminal starts
+
+Run each line separately:
+
+```bash
+pwd
+ls
+```
+
+`pwd` is short for **print working directory**. It prints the folder where the Terminal is currently working. Any command that reads or changes a file will begin from this location unless you give it another path.
+
+`ls` is short for **list**. It prints the names of the files and folders in the working directory. Before cloning, you may see your home folder and personal files. The course folder doesn't exist on your laptop yet.
+
+Paste the results here:
+
+```
+
+
+
+```
+
+## Check the programs
+
+In RStudio, open the **Terminal** tab, usually beside the Console. If it is not visible, choose **Tools → Terminal → New Terminal**. Run each line separately:
+
+```bash
+git --version
+gh --version
+```
+
+`git` and `gh` name the programs. `--version` asks each one to identify itself. A version number means the program is available to RStudio's Terminal.
+
+## Check Git's identity
+
+```bash
+git config --global user.name
+git config --global user.email
+```
+
+`config` reads a Git setting. `--global` means the setting applies across your account on this laptop. The final part names the setting to read.
+
+If both answers are correct, do not change them. Otherwise, replace the examples below and run only the line that needs correction:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+The quotation marks keep each value together. These settings identify your commits; they do not sign you into GitHub.
+
+## Authenticate with GitHub CLI
+
+Run:
+
+```bash
+gh auth login --web --git-protocol https --clipboard
+```
+
+- `gh auth login` begins GitHub authentication.
+- `--web` uses GitHub's browser sign-in.
+- `--git-protocol https` selects the connection used in this course.
+- `--clipboard` copies the temporary sign-in code.
+
+When the browser opens, paste the temporary code, confirm the correct GitHub account, and authorize GitHub CLI. Return to RStudio's Terminal and run these lines separately:
+
+```bash
+gh auth setup-git
+gh auth status
+```
+
+`setup-git` tells Git to use GitHub CLI's stored credential when it contacts GitHub. `status` reports the recognized account without displaying the credential.
+
+That's authentication finished. Next we'll clone once in the Terminal and open the project. After that, we'll use RStudio's Git buttons.
+
+Paste the part of `gh auth status` that names your account:
+
+```text
+
+```
+
+# Clone Once
+
+## Clone in the Terminal
+
+Cloning downloads the repository and its history to your laptop. After signing in, run this once, replacing `YOUR-USERNAME` with your GitHub username:
+
+```bash
+gh repo clone uh-pols6394-fall26/course-YOUR-USERNAME
+```
+
+`gh repo clone` downloads the repository. `uh-pols6394-fall26` is our organization; the slash separates it from your repository name. The new folder appears inside the Terminal's current directory.
+
+Choose **File → Open Project**, enter the new `course-YOUR-USERNAME` folder, and open `pols6394.Rproj`.
+
+## RStudio's clone route: watch only
+
+Once `gh auth login` and `gh auth setup-git` are complete, RStudio can use that same authentication to clone a private repository.
+
+I'll show **File → New Project → Version Control → Git**: paste the repository's HTTPS URL, choose a parent folder, and click **Create Project**. RStudio downloads the repository and opens the project.
+
+**Don't do this now.** You've already cloned and opened your course repository. Repeating the clone would create a second copy, making it easy to edit the wrong one. Keep using the project you already opened.
+
+For a future repository, the URL comes from its green **Code → Local → HTTPS** button. If RStudio asks for credentials, cancel and check `gh auth status` and `gh auth setup-git` in the Terminal. GitHub account passwords won't authenticate a clone.
+
+## Confirm the project
+
+Open RStudio's Terminal and run:
+
+```bash
+git status
+```
+
+Paste the short part naming the branch and the state of the working tree:
+
+```text
+
+```
+
+You should see `On branch main` and `nothing to commit, working tree clean`. `main` is this repository's default branch. A clean working tree means that your files match the latest commit.
+
+Before using RStudio's Git buttons, open **Tools → Project Options → Git/SVN** and confirm that **Version control system** is set to **Git**. Then find the **Git** tab in the Environment–History–Git pane. If the tab is missing, close and reopen this RStudio project.
+
+# Save Work with Git
+
+## Pull before you begin
+
+Click **Pull** in RStudio's Git pane. The RStudio Terminal equivalent is:
+
+```bash
+git pull
+```
+
+`pull` downloads commits that are on GitHub but not yet on your laptop. Today it may report `Already up to date.`
+
+Paste the useful part of the result:
+
+```text
+
+```
+
+## Record what this repository is for
+
+Complete this short note with a real use you expect for the repository:
+
+> I expect this repository to help me ________________________________________________.
+
+Fill in “What I want to remember” and “One question I still have” near the end.
+
+## Render the workbook
+
+1. Open `03a-workbook.qmd` in RStudio's Source pane and click **Save**.
+2. Click **Render** at the top of the Source pane.
+3. Wait for the HTML preview to open, then check that your notes appear.
+
+Rendering creates `03a-workbook.html` beside the source file. Render again whenever you change the workbook; the existing HTML doesn't update itself. The HTML is ignored by Git, so you commit the `.qmd` source.
+
+## Inspect before committing
+
+Then inspect what changed:
+
+```bash
+git status
+git diff
+```
+
+`git status` names changed files. `git diff` shows the changed lines that have not yet been staged. Confirm that `03a-workbook.qmd` is the file you intended to change.
+
+## Commit with RStudio
+
+1. Open the **Git** tab in the Environment–History–Git pane.
+2. Check **Staged** beside `03a-workbook.qmd`.
+3. Click **Commit**.
+4. Enter `Complete Workbook 03a`.
+5. Click **Commit**, then close the commit window.
+
+At the top of the Git pane, you should see: **“Your branch is ahead of 'origin/main' by 1 commit.”**
+
+Your project has one saved commit that hasn't been sent to GitHub. `origin/main` is Git's record of the GitHub branch from the last synchronization. Click **Push** in the next step to send your commit; after a successful push, the “ahead” message should disappear.
+
+The equivalent RStudio Terminal commands are shown here for reference:
+
+```bash
+git add .
+git commit -m "Complete Workbook 03a"
+```
+
+`git add .` stages changes under the current project folder. `git commit` records the staged changes, `-m` says that the next value is the message, and the quotation marks keep the message together. Do not run these after making the same commit with RStudio.
+
+Confirm the commit in RStudio's **History** window. You should see `Complete Workbook 03a`. Close History when you've checked it.
+
+## Push to GitHub
+
+Click **Push** in RStudio's Git pane. The RStudio Terminal equivalent is:
+
+```bash
+git push
+```
+
+`push` sends your local commits to your private repository on GitHub.
+
+# See It on GitHub
+
+## Inspect the shared copy
+
+1. Return to your repository in the browser and refresh the page.
+2. Find `Complete Workbook 03a` above the file list.
+3. Click that commit message and inspect the changed file and highlighted lines.
+4. Return to the repository and open `03a-workbook.qmd`.
+5. Return once more and notice that GitHub displays `README.md` on the repository's front page.
+
+This is the copy shared with Amanda and me. You can read files, inspect changes, and link to a specific commit without opening RStudio. The repository remains private.
+
+# The Routine from Here
+
+## How new lessons arrive
+
+Amanda or I will add released files to your private repository on GitHub. At the start of class:
+
+1. Open this existing RStudio project.
+2. Click **Pull**, or run `git pull`.
+3. Open the new workbook.
+
+Do not clone the repository again. We will not replace workbooks from classes you have already completed.
+
+## If something fails
+
+Stop at the first error, leave RStudio's Terminal visible, and ask Amanda or me. Do not run guessed repair commands. The first error usually identifies the stage that failed.
+
+- `command not found` means the program is unavailable to RStudio's Terminal.
+- A username box appearing means the sign-in didn't take; check `gh auth status`.
+- `authentication failed` means GitHub CLI is not connected to the expected account.
+- `repository not found` points to the URL, invitation, or repository permission.
+- `not a git repository` means RStudio's Terminal is in the wrong folder.
+- `nothing to commit` means the file was not saved or did not change.
+
+# If Time Allows
+
+## Mini-project 1: read the history
+
+1. Open the **Git** pane and click **History**.
+2. Select today's `Complete Workbook 03a` commit.
+3. Select `03a-workbook.qmd` in the changed-files list.
+4. Read the highlighted lines in the diff.
+5. Select the repository's first commit and compare what it recorded.
+
+In one sentence, describe what today's commit added or changed:
+
+> 
+
+## Mini-project 2: recover an uncommitted edit
+
+Begin only if `git status` reports a clean working tree.
+
+1. Open `README.md`, add `TEMPORARY TEST — remove me` below its title, and save.
+2. Find the modified `README.md` in the **Git** pane and click **Diff**.
+3. Confirm that the diff shows only the temporary line.
+4. Select `README.md` and choose the Git pane's **Revert** command. It may be under **More**.
+5. Confirm the warning.
+6. Check that the temporary line disappears and the Git pane is clean.
+
+Revert discards an uncommitted edit. Here we use it only on a change made for this exercise.
+
+## What I want to remember
+
+> 
+
+## One question I still have
+
+> 
+
+## Before you leave
+
+If you added notes after your first commit, save, commit, and push those changes too.
+
+- Render this document cleanly.
+- Confirm that `gh auth status` names your GitHub account.
+- Confirm that `git status` reports a clean working tree.
+- Confirm that today's workbook is committed and pushed.
+- Confirm that the latest commit is visible on GitHub.
