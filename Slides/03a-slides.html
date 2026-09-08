@@ -256,6 +256,17 @@
 </table>
 <p>We begin in RStudio’s Terminal so you can see the connection being made. The commands and the Git buttons then stay in the same application.</p>
 </section>
+<section id="what-github-adds" class="slide level2">
+<h2>What GitHub adds</h2>
+<p>Git works on your laptop, even offline. A local commit saves a version there; it doesn’t send a copy anywhere else.</p>
+<p>GitHub gives us:</p>
+<ul>
+<li>An online copy of the commits you <strong>push</strong>, available if your laptop fails</li>
+<li>A shared place to deliver lessons and submit work</li>
+<li>A website where we can read files and compare changes</li>
+</ul>
+<p>Git can work with other hosts too. We’re using GitHub for this course.</p>
+</section>
 <section id="your-private-repository-is-ready" class="slide level2">
 <h2>Your private repository is ready</h2>
 <ul>
@@ -361,6 +372,12 @@
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@example.com"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The quotation marks keep a name or address together as one value. These commands do not sign you into GitHub.</p>
 <p>Run the two check commands again and confirm what Git prints.</p>
+</section>
+<section id="why-we-use-github-cli-to-sign-in" class="slide level2">
+<h2>Why we use GitHub CLI to sign in</h2>
+<p>Authentication tells GitHub which account is connecting and whether it can access a private repository.</p>
+<p>One short Terminal command, <code>gh auth login --web</code>, starts a browser sign-in. You approve access on GitHub; <code>gh</code> stores the credential.</p>
+<p>Then <code>gh auth setup-git</code> lets Git use that login, including through RStudio’s Git buttons. You don’t have to create and copy a personal access token yourself.</p>
 </section>
 <section id="sign-in-with-github-cli" class="slide level2">
 <h2>Sign in with GitHub CLI</h2>

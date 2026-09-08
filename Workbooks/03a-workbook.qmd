@@ -23,6 +23,20 @@ These tools work together but have different jobs.
 | GitHub CLI (`gh`) | connects your computer to your GitHub account |
 | RStudio | supplies buttons for common Git operations |
 
+## What GitHub adds
+
+Git works on your laptop, even offline. A local commit saves a version there; it doesn't send a copy anywhere else.
+
+GitHub gives us:
+
+- An online copy of the commits you **push**, available if your laptop fails
+- A shared place to deliver lessons and submit work
+- A website where we can read files and compare changes
+
+Git can work with other hosts too. We're using GitHub for this course.
+
+## Your private repository is ready
+
 Your repository is named `course-YOUR-USERNAME`. Only you, Amanda, and I can see it.
 
 Clean 01a, 01b, and 02a workbooks are included for reference. They don't contain your earlier answers; you don't need to redo them.
@@ -101,6 +115,14 @@ git config --global user.email "you@example.com"
 ```
 
 The quotation marks keep each value together. These settings identify your commits; they do not sign you into GitHub.
+
+## Why we use GitHub CLI to sign in
+
+Authentication tells GitHub which account is connecting and whether it can access a private repository.
+
+One short Terminal command, `gh auth login --web`, starts a browser sign-in. You approve access on GitHub; `gh` stores the credential.
+
+Then `gh auth setup-git` lets Git use that login, including through RStudio's Git buttons. You don't have to create and copy a personal access token yourself.
 
 ## Authenticate with GitHub CLI
 
