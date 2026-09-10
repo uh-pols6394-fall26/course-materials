@@ -69,7 +69,7 @@ Run the selected code: **Mac Cmd+Return · Windows Ctrl+Enter**.
 
 ## New lines and indentation
 
-```r
+```{r lab03b-formatting}
 policy <- read_csv(
   "Data/state_policy/cspp_states.csv",
   show_col_types = FALSE
