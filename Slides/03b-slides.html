@@ -1627,39 +1627,56 @@ $ turnout &lt;chr&gt; &quot;53.4%&quot;, &quot;59.2%&quot;, NA, &quot;58.4%&quot
 <span id="cb26-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
 <span id="cb26-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb26-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">min_wage_hike =</span> statemin <span class="sc">-</span> <span class="fl">7.25</span>,</span>
-<span id="cb26-5"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">moredem =</span> pid <span class="sc">&gt;</span> <span class="dv">0</span></span>
-<span id="cb26-6"><a href aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb26-7"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, pid, moredem, min_wage_hike) <span class="sc">|&gt;</span></span>
-<span id="cb26-8"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-5"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">min_wage_hike_cents =</span> min_wage_hike <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-6"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">moredem =</span> pid <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb26-7"><a href aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb26-8"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, pid, moredem, min_wage_hike, min_wage_hike_cents) <span class="sc">|&gt;</span></span>
+<span id="cb26-9"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  state         pid moredem min_wage_hike
-  &lt;chr&gt;       &lt;dbl&gt; &lt;lgl&gt;           &lt;dbl&gt;
-1 Alabama     -0.16 FALSE         0      
-2 Arkansas     0.07 TRUE         -1      
-3 Arizona     -0.01 FALSE         0      
-4 California   0.11 TRUE          0.75   
-5 Colorado    -0.1  FALSE        -0.01000
-6 Connecticut  0.11 TRUE          1      </code></pre>
+<pre><code># A tibble: 6 × 5
+  state         pid moredem min_wage_hike min_wage_hike_cents
+  &lt;chr&gt;       &lt;dbl&gt; &lt;lgl&gt;           &lt;dbl&gt;               &lt;dbl&gt;
+1 Alabama     -0.16 FALSE         0                     0    
+2 Arkansas     0.07 TRUE         -1                  -100    
+3 Arizona     -0.01 FALSE         0                     0    
+4 California   0.11 TRUE          0.75                 75    
+5 Colorado    -0.1  FALSE        -0.01000              -1.000
+6 Connecticut  0.11 TRUE          1                   100    </code></pre>
 </div>
 </div>
-<p><code>moredem</code> is a Boolean column. The original <code>policy</code> object remains unchanged because we didn’t assign this result back to it.</p>
+<p><code>mutate()</code> works from top to bottom. A later line can use a column created above it. Here <code>min_wage_hike_cents</code> uses <code>min_wage_hike</code>, and <code>moredem</code> is Boolean.</p>
 </section>
-<section id="more-than-two-categories-with-case_when" class="slide level2 smaller">
-<h2>More than two categories with <code>case_when()</code></h2>
+<section id="your-turn-related-columns" class="slide level2 smaller">
+<h2>Your Turn: related columns</h2>
+<p><span style="font-size: 0.8em;"><em>~4 minutes.</em></span></p>
+<p>For 2010, calculate the state minimum-wage difference from $7.25 in dollars and cents. Then create a Boolean showing whether the state minimum exceeds $7.25.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href aria-hidden="true" tabindex="-1"></a>policy <span class="sc">|&gt;</span></span>
 <span id="cb28-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
 <span id="cb28-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb28-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">partisan_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb28-5"><a href aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(pid) <span class="sc">~</span> <span class="st">&quot;Missing&quot;</span>,</span>
-<span id="cb28-6"><a href aria-hidden="true" tabindex="-1"></a>      pid <span class="sc">&gt;</span> <span class="fl">0.20</span> <span class="sc">~</span> <span class="st">&quot;Democratic&quot;</span>,</span>
-<span id="cb28-7"><a href aria-hidden="true" tabindex="-1"></a>      pid <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Leans Democratic&quot;</span>,</span>
-<span id="cb28-8"><a href aria-hidden="true" tabindex="-1"></a>      <span class="at">.default =</span> <span class="st">&quot;Republican or tied&quot;</span></span>
-<span id="cb28-9"><a href aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-10"><a href aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb28-11"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, pid, partisan_group) <span class="sc">|&gt;</span></span>
-<span id="cb28-12"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb28-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">wage_gap =</span> statemin <span class="sc">-</span> <span class="fl">7.25</span>,</span>
+<span id="cb28-5"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">wage_gap_cents =</span> ___ <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb28-6"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">above_federal =</span> ___ <span class="sc">&gt;</span> <span class="fl">7.25</span></span>
+<span id="cb28-7"><a href aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb28-8"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(above_federal)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Which row counts states with missing minimum-wage data?</p>
+</section>
+<section id="more-than-two-categories-with-case_when" class="slide level2 smaller">
+<h2>More than two categories with <code>case_when()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href aria-hidden="true" tabindex="-1"></a>policy <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb29-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">partisan_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb29-5"><a href aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(pid) <span class="sc">~</span> <span class="st">&quot;Missing&quot;</span>,</span>
+<span id="cb29-6"><a href aria-hidden="true" tabindex="-1"></a>      pid <span class="sc">&gt;</span> <span class="fl">0.20</span> <span class="sc">~</span> <span class="st">&quot;Democratic&quot;</span>,</span>
+<span id="cb29-7"><a href aria-hidden="true" tabindex="-1"></a>      pid <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">&quot;Leans Democratic&quot;</span>,</span>
+<span id="cb29-8"><a href aria-hidden="true" tabindex="-1"></a>      <span class="at">.default =</span> <span class="st">&quot;Republican or tied&quot;</span></span>
+<span id="cb29-9"><a href aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-10"><a href aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb29-11"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, pid, partisan_group) <span class="sc">|&gt;</span></span>
+<span id="cb29-12"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
   state         pid partisan_group    
@@ -1682,12 +1699,12 @@ $ turnout &lt;chr&gt; &quot;53.4%&quot;, &quot;59.2%&quot;, NA, &quot;58.4%&quot
 <section id="a-multi-step-pipeline" class="slide level2 smaller">
 <h2>A multi-step pipeline</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href aria-hidden="true" tabindex="-1"></a>policy <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1990</span>, <span class="dv">2010</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb30-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">moredem =</span> pid <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb30-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, year, pid, moredem, pollib_median) <span class="sc">|&gt;</span></span>
-<span id="cb30-5"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year, <span class="fu">desc</span>(pollib_median)) <span class="sc">|&gt;</span></span>
-<span id="cb30-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href aria-hidden="true" tabindex="-1"></a>policy <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1990</span>, <span class="dv">2010</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">moredem =</span> pid <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, year, pid, moredem, pollib_median) <span class="sc">|&gt;</span></span>
+<span id="cb31-5"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year, <span class="fu">desc</span>(pollib_median)) <span class="sc">|&gt;</span></span>
+<span id="cb31-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   state          year   pid moredem pollib_median
@@ -1712,8 +1729,8 @@ $ turnout &lt;chr&gt; &quot;53.4%&quot;, &quot;59.2%&quot;, NA, &quot;58.4%&quot
 <h2>Lab: Chicago Airbnb listings</h2>
 <p><span style="font-size: 0.8em;"><em>~20 minutes.</em></span></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href aria-hidden="true" tabindex="-1"></a>airbnb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Data/airbnb/airbnb.csv&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb32-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(airbnb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a>airbnb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Data/airbnb/airbnb.csv&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb33-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(airbnb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 1,561
 Columns: 13
@@ -1738,7 +1755,7 @@ $ bike_score    &lt;dbl&gt; 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 
 <section id="lab-tasks" class="slide level2 smaller">
 <h2>Lab tasks</h2>
 <ol type="1">
-<li>Add the missing two-night requirement to the booking screen.</li>
+<li>Fill the four booking conditions in the screen.</li>
 <li>Calculate total cost and each guest’s share. Show five affordable options.</li>
 <li>Use a Boolean for access and <code>case_when()</code> for price groups.</li>
 <li>Write a pipeline for the $450 budget and recommend a listing.</li>
@@ -1776,8 +1793,8 @@ $ bike_score    &lt;dbl&gt; 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 68, 
 <div class="column" style="width:65%;">
 <p>We’ll create our own spreadsheet and read it back into R.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
-<span id="cb34-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">gs4_auth</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
+<span id="cb35-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">gs4_auth</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>library()</code> loads the package. <code>gs4_auth()</code> asks you to choose a Google account and grant access. Follow the browser and Console prompts.</p>
 <p>We sign in because we’re creating a spreadsheet in our own account.</p>
@@ -1809,20 +1826,20 @@ display:block!important;
 <h2>Extension 1, step 2: Create a spreadsheet</h2>
 <p><code>mtcars</code> is built into R: 32 cars with fuel economy and other measurements. Its car names are row names, so make them a column first.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a>cars <span class="ot">&lt;-</span> <span class="fu">rownames_to_column</span>(mtcars, <span class="at">var =</span> <span class="st">&quot;model&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href aria-hidden="true" tabindex="-1"></a>cars <span class="ot">&lt;-</span> <span class="fu">rownames_to_column</span>(mtcars, <span class="at">var =</span> <span class="st">&quot;model&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href aria-hidden="true" tabindex="-1"></a>cars_sheet <span class="ot">&lt;-</span> <span class="fu">gs4_create</span>(</span>
-<span id="cb36-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;POLS 6394 - mtcars&quot;</span>,</span>
-<span id="cb36-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">sheets =</span> <span class="fu">list</span>(<span class="at">Cars =</span> cars)</span>
-<span id="cb36-4"><a href aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href aria-hidden="true" tabindex="-1"></a>cars_sheet <span class="ot">&lt;-</span> <span class="fu">gs4_create</span>(</span>
+<span id="cb37-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;POLS 6394 - mtcars&quot;</span>,</span>
+<span id="cb37-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">sheets =</span> <span class="fu">list</span>(<span class="at">Cars =</span> cars)</span>
+<span id="cb37-4"><a href aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>gs4_create()</code> creates the Google spreadsheet. <code>list(Cars = cars)</code> supplies one tab named <strong>Cars</strong> containing our table. <code>cars_sheet</code> stores its identifier. Run this creation chunk once; rerunning it creates another spreadsheet.</p>
 </section>
 <section id="extension-1-step-3-open-it-on-the-web" class="slide level2 smaller">
 <h2>Extension 1, step 3: Open it on the web</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">gs4_browse</span>(cars_sheet)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">gs4_browse</span>(cars_sheet)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>gs4_browse()</code> opens the spreadsheet in your browser.</p>
 <ul>
@@ -1836,8 +1853,8 @@ display:block!important;
 <section id="extension-1-step-4-read-it-back-into-r" class="slide level2 smaller">
 <h2>Extension 1, step 4: Read it back into R</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href aria-hidden="true" tabindex="-1"></a>cars_back <span class="ot">&lt;-</span> <span class="fu">read_sheet</span>(cars_sheet, <span class="at">sheet =</span> <span class="st">&quot;Cars&quot;</span>)</span>
-<span id="cb38-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cars_back, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href aria-hidden="true" tabindex="-1"></a>cars_back <span class="ot">&lt;-</span> <span class="fu">read_sheet</span>(cars_sheet, <span class="at">sheet =</span> <span class="st">&quot;Cars&quot;</span>)</span>
+<span id="cb39-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cars_back, <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>read_sheet()</code> downloads the tab into a new R object. <code>sheet = &quot;Cars&quot;</code> chooses the tab. <code>head(..., 3)</code> displays the first three rows.</p>
 <p>Confirm that the edited <code>mpg</code> value appears. Restore the original value in Google Sheets and rerun this read chunk. The original <code>cars</code> object in R still contains that value.</p>
@@ -1846,7 +1863,7 @@ display:block!important;
 <section id="extension-1-step-5-save-a-local-csv-copy" class="slide level2 smaller">
 <h2>Extension 1, step 5: Save a local CSV copy</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cars_back, <span class="st">&quot;Data/import/mtcars-from-sheets.csv&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(cars_back, <span class="st">&quot;Data/import/mtcars-from-sheets.csv&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>write_csv()</code> writes the downloaded table to the named file inside this project. Open the CSV from RStudio’s Files pane.</p>
 <p>You can also download it through Google Sheets: <strong>File → Download → Comma-separated values (.csv)</strong>. That saves the current tab through your browser, usually into Downloads.</p>
@@ -1856,11 +1873,11 @@ display:block!important;
 <h2>Extension 2: Stata value labels</h2>
 <p>A labelled column can store numbers such as 1 and 2 alongside labels such as “Democrat” and “Republican.”</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href aria-hidden="true" tabindex="-1"></a>party_codes <span class="ot">&lt;-</span> <span class="fu">labelled</span>(</span>
-<span id="cb40-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
-<span id="cb40-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Democrat =</span> <span class="dv">1</span>, <span class="at">Republican =</span> <span class="dv">2</span>)</span>
-<span id="cb40-4"><a href aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb40-5"><a href aria-hidden="true" tabindex="-1"></a>party_codes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href aria-hidden="true" tabindex="-1"></a>party_codes <span class="ot">&lt;-</span> <span class="fu">labelled</span>(</span>
+<span id="cb41-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb41-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Democrat =</span> <span class="dv">1</span>, <span class="at">Republican =</span> <span class="dv">2</span>)</span>
+<span id="cb41-4"><a href aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-5"><a href aria-hidden="true" tabindex="-1"></a>party_codes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;labelled&lt;double&gt;[3]&gt;
 [1] 1 2 1
@@ -1870,7 +1887,7 @@ Labels:
      1   Democrat
      2 Republican</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">as_factor</span>(party_codes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">as_factor</span>(party_codes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Democrat   Republican Democrat  
 Levels: Democrat Republican</code></pre>
@@ -1881,10 +1898,10 @@ Levels: Democrat Republican</code></pre>
 <section id="extension-3-repair-a-text-column" class="slide level2 smaller">
 <h2>Extension 3: Repair a text column</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href aria-hidden="true" tabindex="-1"></a>turnout <span class="ot">&lt;-</span> turnout_raw <span class="sc">|&gt;</span></span>
-<span id="cb44-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">turnout =</span> <span class="fu">parse_number</span>(turnout))</span>
-<span id="cb44-3"><a href aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(turnout)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href aria-hidden="true" tabindex="-1"></a>turnout <span class="ot">&lt;-</span> turnout_raw <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">turnout =</span> <span class="fu">parse_number</span>(turnout))</span>
+<span id="cb45-3"><a href aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(turnout)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 4
 Columns: 2
@@ -1899,12 +1916,12 @@ $ turnout &lt;dbl&gt; 53.4, 59.2, NA, 58.4</code></pre>
 <p><span style="font-size: 0.8em;"><em>~8–10 minutes.</em></span></p>
 <p>This teaching file uses <code>&quot;Missing&quot;</code> for unavailable turnout, percent signs for turnout, and dollar signs for spending.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href aria-hidden="true" tabindex="-1"></a>election_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
-<span id="cb46-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Data/import/election-repair.csv&quot;</span>,</span>
-<span id="cb46-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">na =</span> <span class="st">&quot;Missing&quot;</span>,</span>
-<span id="cb46-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb46-5"><a href aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb46-6"><a href aria-hidden="true" tabindex="-1"></a>election_raw</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href aria-hidden="true" tabindex="-1"></a>election_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb47-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Data/import/election-repair.csv&quot;</span>,</span>
+<span id="cb47-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">na =</span> <span class="st">&quot;Missing&quot;</span>,</span>
+<span id="cb47-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb47-5"><a href aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-6"><a href aria-hidden="true" tabindex="-1"></a>election_raw</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 4
   state      turnout spending   registered
@@ -1927,13 +1944,13 @@ $ turnout &lt;dbl&gt; 53.4, 59.2, NA, 58.4</code></pre>
 <p><span style="font-size: 0.8em;"><em>~8–10 minutes.</em></span></p>
 <p>A survey accepts adults aged 18 or older who choose either online or phone participation. This screen lets an ineligible person through.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href aria-hidden="true" tabindex="-1"></a>applicants <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb48-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>, <span class="st">&quot;E&quot;</span>),</span>
-<span id="cb48-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">17</span>, <span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">16</span>, <span class="dv">30</span>),</span>
-<span id="cb48-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="fu">c</span>(<span class="st">&quot;phone&quot;</span>, <span class="st">&quot;online&quot;</span>, <span class="st">&quot;mail&quot;</span>, <span class="st">&quot;online&quot;</span>, <span class="st">&quot;phone&quot;</span>)</span>
-<span id="cb48-5"><a href aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-6"><a href aria-hidden="true" tabindex="-1"></a>applicants <span class="sc">|&gt;</span></span>
-<span id="cb48-7"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">&gt;=</span> <span class="dv">18</span> <span class="sc">&amp;</span> mode <span class="sc">==</span> <span class="st">&quot;online&quot;</span> <span class="sc">|</span> mode <span class="sc">==</span> <span class="st">&quot;phone&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href aria-hidden="true" tabindex="-1"></a>applicants <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb49-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>, <span class="st">&quot;E&quot;</span>),</span>
+<span id="cb49-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">17</span>, <span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">16</span>, <span class="dv">30</span>),</span>
+<span id="cb49-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="fu">c</span>(<span class="st">&quot;phone&quot;</span>, <span class="st">&quot;online&quot;</span>, <span class="st">&quot;mail&quot;</span>, <span class="st">&quot;online&quot;</span>, <span class="st">&quot;phone&quot;</span>)</span>
+<span id="cb49-5"><a href aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-6"><a href aria-hidden="true" tabindex="-1"></a>applicants <span class="sc">|&gt;</span></span>
+<span id="cb49-7"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">&gt;=</span> <span class="dv">18</span> <span class="sc">&amp;</span> mode <span class="sc">==</span> <span class="st">&quot;online&quot;</span> <span class="sc">|</span> mode <span class="sc">==</span> <span class="st">&quot;phone&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   id      age mode  

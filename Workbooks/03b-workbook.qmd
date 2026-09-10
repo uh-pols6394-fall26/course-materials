@@ -367,13 +367,37 @@ policy |>
   filter(year == 2010) |>
   mutate(
     min_wage_hike = statemin - 7.25,
+    min_wage_hike_cents = min_wage_hike * 100,
     moredem = pid > 0
   ) |>
-  select(state, pid, moredem, min_wage_hike) |>
+  select(state, pid, moredem, min_wage_hike, min_wage_hike_cents) |>
   head(6)
 ```
 
-`moredem` is a Boolean column. The original `policy` object remains unchanged because we didn't assign this result back to it.
+`mutate()` works from top to bottom. A later line can use a column created above it, so `min_wage_hike_cents` uses the new `min_wage_hike` column. `moredem` is a Boolean column.
+
+The original `policy` object remains unchanged because we didn't assign this result back to it.
+
+## Your Turn: related columns
+
+[*~4 minutes.*]{style="font-size: 0.8em;"}
+
+For 2010, calculate the state minimum-wage difference from $7.25 in dollars and cents. Then create a Boolean showing whether the state minimum exceeds $7.25.
+
+```{r lab03b-yt-mutate}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+policy |>
+  filter(year == 2010) |>
+  mutate(
+    wage_gap = statemin - 7.25,
+    wage_gap_cents = ___ * 100,
+    above_federal = ___ > 7.25
+  ) |>
+  count(above_federal)
+```
+
+Which row counts states with missing minimum-wage data? ___
 
 ## More than two categories with `case_when()`
 
@@ -425,20 +449,20 @@ Four people are traveling to Chicago for two nights. Find an entire-home listing
 
 
 
-Run this starting screen. `candidates` saves the result so later tasks can use it.
+Keep listings that meet all four conditions: the room is an entire home or apartment, it accommodates at least four guests, its rating is at least 4.5, and its minimum stay allows a two-night booking. `candidates` saves the result so later tasks can use it.
 
 ```{r lab03b-count}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
 glimpse(airbnb)
 
 candidates <- airbnb |>
   filter(
-    room_type == "Entire home/apt" & accommodates >= 4 &
-      rating >= 4.5
+    room_type == "___" & accommodates >= ___ &
+      rating >= ___ & minimum_stay <= ___
   )
 candidates
 ```
-
-The screen overlooks one booking requirement. Add a condition using `minimum_stay` so a two-night booking is allowed. Keep the rating requirement and inspect the result.
 
 Explain why a listing with `minimum_stay == 3` fails this screen: ___
 
@@ -448,21 +472,26 @@ Explain why a listing with `minimum_stay == 3` fails this screen: ___
 
 
 
-Starting with `candidates`, calculate the two-night total and each guest's share, keep trips within $600, and show the five cheapest. Retain a listing identifier, neighborhood, and both cost columns.
+Starting with `candidates`, calculate `trip_total` as the nightly price times two nights. On the next line of the same `mutate()`, calculate `cost_per_guest` from the new `trip_total` column divided by four guests. A column created earlier in `mutate()` is immediately available to the lines below it.
 
-The column `rownames` identifies a listing in this file. Divide by the four people actually traveling, not the listing's maximum capacity.
+Keep trips within $600 and show the five cheapest. Retain the listing identifier, neighborhood, `trip_total`, and `cost_per_guest`.
+
+The column `rownames` identifies a listing in this file.
 
 ```{r lab03b-expensive}
 #| eval: false
 # Fill in, then delete the eval:false line and re-render.
 priced <- candidates |>
-  mutate(trip_total = ___, cost_per_guest = ___)
+  mutate(
+    trip_total = price * ___,
+    cost_per_guest = ___ / ___
+  )
 
 priced |>
-  filter(___) |>
-  select(rownames, neighborhood, trip_total, cost_per_guest) |>
+  filter(___ <= ___) |>
+  select(rownames, neighborhood, ___, ___) |>
   arrange(___) |>
-  head(5)
+  head(___)
 ```
 
 Cheapest listing ID and cost per guest: ___
