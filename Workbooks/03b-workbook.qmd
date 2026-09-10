@@ -1,0 +1,714 @@
+---
+title: "Workbook 03b — Import and the Pipe"
+subtitle: "POLS 6394 · Thursday, September 10"
+format:
+  html:
+    embed-resources: true
+---
+
+## Today's goal
+
+Import CSV and Stata data, then use pipes and logical conditions to prepare a table. The final four tasks apply the tools to Chicago Airbnb listings.
+
+## RStudio keyboard shortcuts
+
+| Action | Mac | Windows |
+|---|---|---|
+| Save | **Cmd+S** | **Ctrl+S** |
+| Run the current line or selection | **Cmd+Return** | **Ctrl+Enter** |
+| Insert `<-` | **Option+−** | **Alt+−** |
+| Insert a pipe | **Cmd+Shift+M** | **Ctrl+Shift+M** |
+| Insert an R chunk | **Cmd+Option+I** | **Ctrl+Alt+I** |
+| Render | **Cmd+Shift+K** | **Ctrl+Shift+K** |
+
+If the pipe shortcut inserts `%>%`, enable **Use native pipe operator** in RStudio's Code options.
+
+## Setup
+
+Run this setup chunk as written. It loads the tidyverse and reads the Airbnb data for the later lab. We'll read the state-policy file together in the first section.
+
+```{r lab03b-setup}
+#| message: false
+library(tidyverse)
+airbnb <- read_csv("Data/airbnb/airbnb.csv", show_col_types = FALSE)
+```
+
+
+# Importing Data
+
+## The tidyverse
+
+The **tidyverse** is a collection of R packages with a shared approach to working with data.
+
+- Tidy tables: one observation per row, one variable per column.
+- Named operations connect importing, transforming, and presenting data.
+- We'll mainly use tidyverse code, with occasional **base R** examples.
+
+Base R comes with R itself. Tidyverse packages add to it.
+
+Hadley Wickham is a coauthor of [dplyr](https://dplyr.tidyverse.org/authors.html), whose verbs we'll use to transform tables.
+
+## `read_csv()`: the default CSV reader
+
+A CSV is a plain-text table with columns separated by commas. `read_csv()` from `readr` reads one into R.
+
+```{r lab03b-read-csv}
+#| message: false
+library(tidyverse)
+
+policy <- read_csv(
+  "Data/state_policy/cspp_states.csv",
+  show_col_types = FALSE
+)
+```
+
+`<-` assigns the imported table to `policy`. The path starts inside this project. `show_col_types = FALSE` hides a report we'll examine in a moment.
+
+Insert `<-`: **Mac Option+− · Windows Alt+−** (minus key).
+Run the selected code: **Mac Cmd+Return · Windows Ctrl+Enter**.
+
+## New lines and indentation
+
+```r
+policy <- read_csv(
+  "Data/state_policy/cspp_states.csv",
+  show_col_types = FALSE
+)
+```
+
+- Short calls can stay on one line. Split longer calls after `(`, with one argument per line.
+- Indent continued lines **two spaces**. Align the closing `)` with the start of the call.
+- Keep commas between arguments. A new line doesn't replace a comma.
+- Put spaces around `<-` and `=`. Use a blank line between separate steps.
+
+Indentation is the space at the start of a line. Use spaces rather than literal tab characters; the Tab key can insert spaces when configured that way in RStudio. Match the two-space indentation shown here.
+
+The open `(` tells R the call continues. Indentation makes it easier for us to read.
+
+Reformat selected R code: **Mac Cmd+Shift+A · Windows Ctrl+Shift+A**.
+
+## Vectors
+
+A **vector** is an ordered collection of values. The columns we've been working with are vectors.
+
+```{r lab03b-vectors}
+scores <- c(0.2, -0.1, NA)
+scores
+```
+
+- `c()` combines values; commas separate them.
+- `<-` saves this three-element vector as `scores`.
+- `NA` marks a missing value. It still occupies a position.
+- The printed `[1]` marks the first position, not another value.
+- R's functions often operate on a whole vector at once. This is usually simpler and faster than processing its values one at a time.
+
+These simple vectors hold one type of value: numbers, text, or logical values.
+
+## Data frames and tibbles
+
+A **data frame** is a rectangular table: named columns of equal length. Each column is a vector; different columns can hold different types.
+
+A **tibble** is a kind of data frame used by the tidyverse. `read_csv()` returns one.
+
+| Behavior | Base data frame | Tibble |
+|---|---|---|
+| Printing | Can fill the Console | Compact preview with column types |
+| Row labels | Can store special row names | Keep identifiers in a regular column |
+
+Most R tools accept either. `as_tibble(x)` converts to a tibble; `as.data.frame(x)` converts to a base data frame. Here `x` means your table.
+
+In base R, `policy$year` identifies both the data frame and its `year` column. Inside a dplyr verb, the data frame has already been supplied, so we can refer to `year` by itself.
+
+[More about tibbles](https://tibble.tidyverse.org/articles/tibble.html). We'll explain dollar-sign column selection in the base-R comparison later.
+
+## Inspecting a tibble
+
+```{r lab03b-glimpse}
+glimpse(policy)
+```
+
+`glimpse()` lists the dimensions, column names, types, and a few values from every column. `<chr>` means text; `<dbl>` means numbers stored as doubles.
+
+## Read the table before changing it
+
+- **Observational unit:** one state in one year
+- **Identifiers:** `st` and `year` together locate a row
+- **Measurements:** `pid`, `ideo`, and `statemin` describe that state-year
+- Storage type doesn't determine meaning. A numeric case number still identifies a row.
+
+Write down the unit before calculating anything. It determines what your results describe.
+
+::: {.callout-note}
+[Sources]
+- https://moderndive.com/v2/01-getting-started.html#sec-exploredataframes
+:::
+
+## Import functions
+
+| Source | Package | Function |
+|---|---|---|
+| CSV | readr | `read_csv()` |
+| Excel | readxl | `read_excel()` |
+| Stata / SPSS | haven | `read_dta()` / `read_sav()` |
+| Google Sheets | googlesheets4 | `read_sheet()` |
+| One saved R object | base R | `readRDS()` |
+
+You may see `readr::read_csv()`: `::` selects a function from a specific package without loading it with `library()`. We've loaded readr through `library(tidyverse)`, so `read_csv()` is enough.
+
+After importing, use `glimpse()` to check the table.
+
+## Stata data in R
+
+```{r lab03b-stata}
+library(haven)
+
+states_stata <- read_dta(
+  "Data/state_policy/state_data_1993_2016.dta"
+)
+glimpse(states_stata)
+```
+
+`library(haven)` loads the Stata reader and its label-handling functions.
+
+`read_dta()` reads Stata's file format into a tibble. Use the same inspection and dplyr verbs as with a CSV.
+
+Use `glimpse()` to check the imported column names and types.
+
+## RDS and `.RData`
+
+```{r lab03b-rds}
+#| eval: false
+dir.create("Processed/03b", recursive = TRUE, showWarnings = FALSE)
+saveRDS(policy, "Processed/03b/policy.rds")
+policy_again <- readRDS("Processed/03b/policy.rds")
+save(policy, file = "Processed/03b/policy.RData")
+load("Processed/03b/policy.RData")
+```
+
+`dir.create()` makes this lesson's subfolder. `recursive = TRUE` also creates the parent `Processed` folder if needed; `showWarnings = FALSE` suppresses the warning if it exists.
+
+`saveRDS()` writes one object; `readRDS()` returns it for assignment.
+
+`save()` stores named objects; `load()` restores those names. An `.RData` file may be a deliberate bundle, not a whole workspace. It's fine to use, but `load()` doesn't return a table for a pipeline.
+
+## Parsing during import
+
+R must decide whether each column contains numbers, dates, text, or something else. Here the percent sign makes `turnout` text.
+
+```{r lab03b-parse-read}
+turnout_raw <- read_csv(
+  "Data/import/turnout-messy.csv",
+  na = "N/A"
+)
+
+glimpse(turnout_raw)
+```
+
+`na = "N/A"` identifies the file's missing-value code. If `read_csv()` reports parsing failures, inspect them with `problems()`.
+
+# The Pipe
+
+## Why use a pipe?
+
+A pipe starts with the table and passes it to a function. Here both forms display the first three rows.
+
+```{r lab03b-pipe}
+# Function call
+head(policy, 3)
+
+# Piped
+policy |>
+  head(3)
+```
+
+`|>` passes the result on its left into the first argument of the function on its right.
+
+Put each pipeline step on a new line, indented two spaces, with `|>` at the end of the preceding line.
+
+## Two pipes you will encounter
+
+```{r lab03b-two-pipes}
+# Base R pipe, built into R 4.1 and later
+policy |>
+  head(3)
+
+# magrittr pipe, loaded with the tidyverse
+policy %>%
+  head(3)
+```
+
+Both pipelines give the same result. Older code often uses `%>%`; we'll use `|>`.
+
+Insert a pipe: **Mac Cmd+Shift+M · Windows Ctrl+Shift+M**.
+If this inserts `%>%`, enable **Use native pipe operator** in RStudio's Code options to get `|>`.
+
+# Logic and the Verbs
+
+## Boolean values
+
+A comparison returns a **Boolean**, also called a logical value: `TRUE`, `FALSE`, or `NA` when R can’t tell.
+
+| Operator | Meaning | Example |
+|---|---|---|
+| `==`, `!=` | equal, not equal | `year == 2010` |
+| `>`, `>=`, `<`, `<=` | numeric comparison | `pid > 0` |
+| `&`, `\|` | and, or | `year == 2010 & pid > 0` |
+| `!` | not | `!is.na(pid)` |
+| `%in%` | matches any value in a vector | `year %in% c(2000, 2010)` |
+
+One `=` names an argument or assigns inside `mutate()`. Two `==` test equality.
+
+`is.na(pid)` tests whether `pid` is missing. The `!` reverses the result, so `!is.na(pid)` means that `pid` is present.
+
+## `filter()`: keep rows
+
+`filter()` evaluates a comparison for every row and keeps the rows where the result is `TRUE`.
+
+```{r lab03b-filter}
+policy |>
+  filter(year == 2010 & pid > 0) |>
+  head(6)
+```
+
+`&` requires both comparisons to be true. Use `|` when either comparison may be true, and `%in%` when several exact values are acceptable.
+
+## Missing comparisons
+
+```{r lab03b-missing-comparisons}
+scores > 0
+!is.na(scores)
+```
+
+The first line compares each element of `scores` with zero and returns a logical vector of the same length: `TRUE`, `FALSE`, `NA`.
+
+`is.na()` identifies missing values; `!` reverses the result. `filter()` keeps only `TRUE`, so a missing comparison drops that row too.
+
+## Combining conditions
+
+```{r lab03b-combine-conditions}
+policy |>
+  filter(year == 2010 & (st == "TX" | st == "CA"))
+```
+
+`&` requires both sides. `|` accepts either side. Parentheses keep the two state choices together.
+
+Change `"CA"` to another state abbreviation and run it once. `st %in% c("TX", "CA")` is a shorter way to express the original state choices.
+
+## Your Turn: filter
+
+[*~4 minutes.*]{style="font-size: 0.8em;"}
+
+Keep 2010 observations from either the South or the West (`"south"` and `"west"` in `region.name`). Write the condition using `&`, `|`, and parentheses.
+
+```{r lab03b-yt-filter}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+policy |>
+  filter(___)
+```
+
+Check that every row meets both requirements: the year and one of the two regions. Could you use `%in%` instead?
+
+## `select()` and `arrange()`
+
+`select()` keeps columns. `arrange()` orders rows.
+
+```{r lab03b-select}
+policy |>
+  filter(year == 2010) |>
+  select(state, pollib_median) |>
+  arrange(desc(pollib_median))
+```
+
+`arrange()` sorts from low to high. `desc()` reverses the order.
+
+## Your Turn: select and arrange
+
+[*~4 minutes.*]{style="font-size: 0.8em;"}
+
+For those same regions in 2010, show `state` and `statemin` (recorded state minimum wage), highest first. Then add a condition keeping only wages of at least $8.
+
+```{r lab03b-yt-select}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+policy |>
+  filter(___) |>
+  select(state, ___) |>
+  arrange(___)
+```
+
+Which entries remain? The data include DC as well as states.
+
+## Base R and tidyverse
+
+The same row-and-column operation can be written either way.
+
+```{r lab03b-base-versus-tidy}
+base_result <- policy[
+  policy$year == 2010,
+  c("state", "pid")
+]
+
+tidy_result <- policy |>
+  filter(year == 2010) |>
+  select(state, pid)
+head(base_result)
+head(tidy_result)
+```
+
+Inside base R's brackets, the row instruction comes before the comma and the column instruction comes after it. `$year` extracts the `year` column. We use dplyr because the named verbs remain readable as pipelines grow.
+
+## `mutate()`: calculations and comparisons
+
+`mutate()` creates or replaces columns. The expression on the right can calculate a number or run a comparison.
+
+```{r lab03b-mutate}
+policy |>
+  filter(year == 2010) |>
+  mutate(
+    min_wage_hike = statemin - 7.25,
+    moredem = pid > 0
+  ) |>
+  select(state, pid, moredem, min_wage_hike) |>
+  head(6)
+```
+
+`moredem` is a Boolean column. The original `policy` object remains unchanged because we didn't assign this result back to it.
+
+## More than two categories with `case_when()`
+
+```{r lab03b-case-when}
+policy |>
+  filter(year == 2010) |>
+  mutate(
+    partisan_group = case_when(
+      is.na(pid) ~ "Missing",
+      pid > 0.20 ~ "Democratic",
+      pid > 0 ~ "Leans Democratic",
+      .default = "Republican or tied"
+    )
+  ) |>
+  select(state, pid, partisan_group) |>
+  head(6)
+```
+
+`case_when()` checks from top to bottom and uses the first true condition. `~` separates each condition from its result. `.default` handles everything that has not matched.
+
+# Combining Transformations
+
+## A multi-step pipeline
+
+```{r lab03b-pipeline}
+policy |>
+  filter(year %in% c(1990, 2010)) |>
+  mutate(moredem = pid > 0) |>
+  select(state, year, pid, moredem, pollib_median) |>
+  arrange(year, desc(pollib_median)) |>
+  head(6)
+```
+
+The pipeline keeps two years, creates a Boolean column, selects five columns, and sorts the result. Each line changes one part of the table.
+
+`c(1990, 2010)` combines the two years into one vector. `%in%` tests whether each value of `year` appears in that vector.
+
+# Lab
+
+[*~20 minutes.*]{style="font-size: 0.8em;"}
+
+
+
+Four people are traveling to Chicago for two nights. Find an entire-home listing they could book for at most $600 total. Treat `price` as the nightly listing price for this exercise, excluding fees and taxes. This is a historical dataset, not a current booking search.
+
+## Task 1: Screen the listings
+
+[*~4 minutes.*]{style="font-size: 0.8em;"}
+
+
+
+Run this starting screen. `candidates` saves the result so later tasks can use it.
+
+```{r lab03b-count}
+glimpse(airbnb)
+
+candidates <- airbnb |>
+  filter(
+    room_type == "Entire home/apt" & accommodates >= 4 &
+      rating >= 4.5
+  )
+candidates
+```
+
+The screen overlooks one booking requirement. Add a condition using `minimum_stay` so a two-night booking is allowed. Keep the rating requirement and inspect the result.
+
+Explain why a listing with `minimum_stay == 3` fails this screen: ___
+
+## Task 2: Calculate the cost of the trip
+
+[*~5 minutes.*]{style="font-size: 0.8em;"}
+
+
+
+Starting with `candidates`, calculate the two-night total and each guest's share, keep trips within $600, and show the five cheapest. Retain a listing identifier, neighborhood, and both cost columns.
+
+The column `rownames` identifies a listing in this file. Divide by the four people actually traveling, not the listing's maximum capacity.
+
+```{r lab03b-expensive}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+priced <- candidates |>
+  mutate(trip_total = ___, cost_per_guest = ___)
+
+priced |>
+  filter(___) |>
+  select(rownames, neighborhood, trip_total, cost_per_guest) |>
+  arrange(___) |>
+  head(5)
+```
+
+Cheapest listing ID and cost per guest: ___
+
+## Task 3: Classify access
+
+[*~6 minutes.*]{style="font-size: 0.8em;"}
+
+
+
+Use `priced` to create a Boolean `high_access` that is true when either the walk score or transit score is at least 90. Then use `case_when()` to classify the two-night cost:
+
+- `"Under $200"`
+- `"$200 to $399"`
+- `"$400 or more"`
+
+Put the lowest cutoff first because `case_when()` uses the first true condition.
+
+```{r lab03b-categories}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+classified <- priced |>
+  mutate(
+    high_access = ___,
+    price_group = case_when(
+      ___ ~ "Under $200",
+      ___ ~ "$200 to $399",
+      .default = "$400 or more"
+    )
+  )
+
+classified |>
+  filter(high_access) |>
+  select(rownames, trip_total, walk_score, transit_score,
+         high_access, price_group) |>
+  head(10)
+```
+
+Find one row where `high_access` is true. Check its scores to confirm why.
+
+Answer: ___
+
+## Task 4: Make a recommendation
+
+[*~5 minutes.*]{style="font-size: 0.8em;"}
+
+
+
+The group cuts its budget to $450 total and still wants `high_access`. Starting with `classified`, write your own pipeline to show five qualifying options, cheapest first. Keep the listing ID, neighborhood, trip cost, both access scores, and price group.
+
+Add a new R chunk for your pipeline: **Mac Cmd+Option+I · Windows Ctrl+Alt+I**. Recommend one listing by ID and explain its cost and access. You may prefer something other than the cheapest option, but it must meet every requirement.
+
+Recommendation and reason: ___
+
+# If Time Remains
+
+## Extension 1: Google Sheets
+
+[*~12–15 minutes.*]{style="font-size: 0.8em;"}
+
+
+
+### Step 1: Sign in
+
+We'll create our own spreadsheet and read it back into R using Jenny Bryan's [googlesheets4](https://googlesheets4.tidyverse.org/authors.html) package.
+
+```{r lab03b-sheet-auth}
+#| eval: false
+library(googlesheets4)
+gs4_auth()
+```
+
+`library()` loads the package. `gs4_auth()` asks you to choose a Google account and grant access. Follow the browser and Console prompts.
+
+Your account needs permission to create the spreadsheet. We use authentication for this exercise; `gs4_deauth()` is only useful when reading public sheets without signing in.
+
+### Step 2: Create a spreadsheet from mtcars
+
+`mtcars` is built into R: 32 cars with fuel economy and other measurements. Its car names are row names, so make them a column first.
+
+```{r lab03b-sheet-data}
+cars <- rownames_to_column(mtcars, var = "model")
+```
+
+```{r lab03b-sheet-create}
+#| eval: false
+cars_sheet <- gs4_create(
+  "POLS 6394 - mtcars",
+  sheets = list(Cars = cars)
+)
+```
+
+`gs4_create()` creates the Google spreadsheet. `list(Cars = cars)` supplies one tab named **Cars** containing our table. `cars_sheet` stores its identifier. Run this creation chunk once; rerunning it creates another spreadsheet.
+
+### Step 3: Open your spreadsheet on the web
+
+```{r lab03b-sheet-browse}
+#| eval: false
+gs4_browse(cars_sheet)
+```
+
+`gs4_browse()` opens the spreadsheet in your browser.
+
+- Find the **Cars** tab and the **model** column.
+- Change the first car's `mpg` value to 99, an obvious practice edit.
+- Wait for Google Sheets to save the change.
+- Copy the spreadsheet URL into your workbook so you can return to it.
+
+Spreadsheet URL: `___`
+
+The spreadsheet belongs to your signed-in Google account. You don't need to make it public.
+
+### Step 4: Read the spreadsheet back into R
+
+```{r lab03b-sheet-read}
+#| eval: false
+cars_back <- read_sheet(cars_sheet, sheet = "Cars")
+head(cars_back, 3)
+```
+
+`read_sheet()` downloads the tab into a new R object. `sheet = "Cars"` chooses the tab. `head(..., 3)` displays the first three rows.
+
+Confirm that the edited `mpg` value appears. Restore the original value in Google Sheets and rerun this read chunk. The original `cars` object in R still contains that value.
+
+After restarting R, use the quoted spreadsheet URL in place of `cars_sheet`; you don't need to create the spreadsheet again.
+
+### Step 5: Save a local CSV copy
+
+```{r lab03b-sheet-save}
+#| eval: false
+write_csv(cars_back, "Data/import/mtcars-from-sheets.csv")
+```
+
+`write_csv()` writes the downloaded table to the named file inside this project. Open the CSV from RStudio's Files pane.
+
+You can also download it through Google Sheets: **File → Download → Comma-separated values (.csv)**. That saves the current tab through your browser, usually into Downloads.
+
+Keep the Google calls marked `eval: false`: run them manually during class so rendering won't trigger authentication or create another spreadsheet.
+
+
+If Google sign-in fails in RStudio Server or Posit Cloud, try `gs4_auth(use_oob = TRUE)`. This requests the browser-based sign-in route for a remote R session. Follow its prompts, then continue with the same spreadsheet.
+
+## Extension 2: Stata value labels
+
+A labelled column can store numbers such as 1 and 2 alongside labels such as “Democrat” and “Republican.”
+
+```{r lab03b-stata-labels}
+party_codes <- labelled(
+  c(1, 2, 1),
+  labels = c(Democrat = 1, Republican = 2)
+)
+party_codes
+as_factor(party_codes)
+```
+
+This small example constructs labels for demonstration. `as_factor()` turns value labels into categories. Keep numeric measurements numeric.
+
+## Extension 3: Repair a text column
+
+```{r lab03b-parse-number}
+turnout <- turnout_raw |>
+  mutate(turnout = parse_number(turnout))
+
+glimpse(turnout)
+```
+
+`parse_number()` keeps the numeric part of values such as `"53.4%"`. The result is measured in percentage points. Divide by 100 only when a later calculation needs proportions from 0 to 1.
+
+## Extension 4: Repair an import
+
+[*~8–10 minutes.*]{style="font-size: 0.8em;"}
+
+This teaching file uses `"Missing"` for unavailable turnout, percent signs for turnout, and dollar signs for spending.
+
+```{r lab03b-extra-import}
+election_raw <- read_csv(
+  "Data/import/election-repair.csv",
+  na = "Missing",
+  show_col_types = FALSE
+)
+election_raw
+```
+
+Inspect the types. Repair `turnout` and `spending`, then find the state with the highest spending per registered voter.
+
+### Check the repaired values
+
+Write a pipeline that parses the two text columns, calculates `spending_per_voter`, and sorts it highest first. Keep the state and the columns needed to check the calculation.
+
+Explain why the row with missing turnout can still have a spending estimate. Does `parse_number()` convert a percentage to a proportion, or just remove the percent sign?
+
+Add your pipeline in a new R chunk, then explain the missing value and percentage handling below.
+
+Explanation: ___
+
+## Extension 5: Repair a screening rule
+
+[*~8–10 minutes.*]{style="font-size: 0.8em;"}
+
+A survey accepts adults aged 18 or older who choose either online or phone participation. This screen lets an ineligible person through.
+
+```{r lab03b-extra-screen}
+applicants <- tibble(
+  id = c("A", "B", "C", "D", "E"),
+  age = c(17, 25, 40, 16, 30),
+  mode = c("phone", "online", "mail", "online", "phone")
+)
+applicants |>
+  filter(age >= 18 & mode == "online" | mode == "phone")
+```
+
+`tibble()` builds the table from named columns; each `c()` supplies that column's values. Identify the incorrect inclusion before editing the condition.
+
+### Check the corrected screen
+
+- Add parentheses to repair the rule. Keep both participation modes.
+- Check every returned row against the written requirements.
+- Rewrite the condition with `%in%`. Does it return the same IDs?
+- Explain why sorting the original result would not fix it.
+
+Add a new R chunk with both repaired versions.
+
+Incorrect inclusion and explanation: ___
+
+These extensions are optional.
+
+## What I want to remember
+
+- `___`
+
+## What broke, and why
+
+- `___`
+
+## One question I still have
+
+- `___`
+
+## Finalize 03b
+
+- Save and render the workbook as far as you got. Leave unfinished starter chunks at `eval: false`; put `#| eval: false` in any unfinished new chunk so it doesn't run during rendering.
+  Save: **Mac Cmd+S · Windows Ctrl+S**. Render: **Mac Cmd+Shift+K · Windows Ctrl+Shift+K**.
+- Inspect the changed files in RStudio's Git pane.
+- Commit with a specific message, such as `"03b airbnb pipelines"`.
+- Push, then open your repository on GitHub and confirm that the commit appears.
+
+If rendering fails, record the error under **What broke, and why** and ask us for help. Still commit and push your saved QMD before leaving; fix the render afterward.
+
+[Keyboard shortcut reference](https://docs.posit.co/ide/user/ide/reference/shortcuts.html). These assume RStudio's default keybindings.
