@@ -1077,7 +1077,8 @@ margin-right: 0; }
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If naniar isn’t installed, run <code>install.packages(&quot;naniar&quot;)</code> once in the R Console. The quoted name identifies the package to install.</p>
+<p>Before class, open <code>install_packages.R</code> and click <strong>Source</strong> above the editor. It installs missing packages for lessons through 04b. Save your work and use <strong>Session → Restart R</strong> before and after running it; then run Setup above.</p>
+<p>Restarting clears loaded packages and objects, but keeps installed packages and saved files. Send Amanda and me any installation or loading errors.</p>
 </section>
 <section>
 <section id="first-look" class="title-slide slide level1 center">
@@ -1125,6 +1126,16 @@ margin-right: 0; }
 </div>
 </div>
 <p><code>names()</code> displays the column names. <code>clean_names()</code> returns a table with standardized names, including lowercase letters and underscores. The column values stay unchanged. Assign the result to keep the cleaned table.</p>
+</section>
+<section id="when-would-i-use-tidylog" class="slide level2 smaller">
+<h2>When would I use tidylog?</h2>
+<p>Use tidylog while writing or checking a data-cleaning pipeline. Its messages help you compare what happened with what you intended.</p>
+<ul>
+<li><strong>Filtering:</strong> you expect to remove 34 missing Medicaid answers. A log showing hundreds of rows removed tells you to inspect the condition.</li>
+<li><strong>Creating variables:</strong> a new Boolean column is unexpectedly mostly missing. The <code>mutate()</code> log makes that visible.</li>
+<li><strong>Joining files:</strong> next class, we’ll check whether adding regional information leaves the number of state-years unchanged.</li>
+</ul>
+<p>Tidylog reports the operation; you decide whether the result makes sense. You can use it on a troublesome step without changing the whole script.</p>
 </section>
 <section id="checking-changes-with-tidylog" class="slide level2 smaller">
 <h2>Checking changes with tidylog</h2>
@@ -1365,7 +1376,7 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 1                806               966</code></pre>
 </div>
 </div>
-<p><code>drop_na(health)</code> checks every column. Naming <code>medicaid_2</code> checks only that item. <code>nrow()</code> counts the rows left in each table.</p>
+<p><code>drop_na()</code> comes from <strong>tidyr</strong>, which is loaded by <code>library(tidyverse)</code>. <code>drop_na(health)</code> checks every column. Naming <code>medicaid_2</code> checks only that item. <code>nrow()</code> counts the rows left in each table.</p>
 <p>How many additional respondents would you lose by requiring every item to be present? Which rule fits our Medicaid question?</p>
 </section>
 <section id="your-turn-repair-a-missing-data-filter" class="slide level2 smaller">
@@ -1506,12 +1517,12 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 </ul>
 </section></section>
 <section>
-<section id="if-time-remains" class="title-slide slide level1 center">
-<h1>If Time Remains</h1>
-
+<section id="if-time-remains-additional-teaching" class="title-slide slide level1 center">
+<h1>If Time Remains: Additional Teaching</h1>
+<p>These are examples I may teach if time permits. They are not extra-credit tasks.</p>
 </section>
-<section id="extension-1-frequency-tables-with-tabyl" class="slide level2 smaller">
-<h2>Extension 1: frequency tables with tabyl</h2>
+<section id="additional-example-1-frequency-tables-with-tabyl" class="slide level2 smaller">
+<h2>Additional example 1: frequency tables with tabyl</h2>
 <p><span style="font-size: 0.8em;"><em>~8–10 minutes for this activity.</em></span></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href aria-hidden="true" tabindex="-1"></a>health <span class="sc">|&gt;</span></span>
@@ -1525,8 +1536,8 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 </div>
 <p><code>tabyl()</code> returns counts and proportions. Compare its <code>n</code> column with <code>count(party)</code>. For base R frequency counts, use <code>table(health$party)</code>; <code>$</code> extracts the column.</p>
 </section>
-<section id="extension-1-build-a-two-way-table" class="slide level2 smaller">
-<h2>Extension 1: build a two-way table</h2>
+<section id="additional-example-1-build-a-two-way-table" class="slide level2 smaller">
+<h2>Additional example 1: build a two-way table</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href aria-hidden="true" tabindex="-1"></a>support_table <span class="ot">&lt;-</span> health <span class="sc">|&gt;</span></span>
 <span id="cb48-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(medicaid_2) <span class="sc">|&gt;</span></span>
@@ -1542,8 +1553,8 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 <p><code>drop_na(medicaid_2)</code> keeps recorded answers. Two arguments to <code>tabyl()</code> cross-tabulate party and response. Column <code>0</code> counts opponents; column <code>1</code> counts supporters.</p>
 <p>We save the counts as <code>support_table</code> and reuse them below.</p>
 </section>
-<section id="extension-1-row-or-column-percentages" class="slide level2 smaller">
-<h2>Extension 1: row or column percentages?</h2>
+<section id="additional-example-1-row-or-column-percentages" class="slide level2 smaller">
+<h2>Additional example 1: row or column percentages?</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href aria-hidden="true" tabindex="-1"></a>support_table <span class="sc">|&gt;</span> janitor<span class="sc">::</span><span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1564,8 +1575,8 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 <p><code>adorn_percentages(&quot;col&quot;)</code> divides by the column total. Among opponents or supporters, the party proportions sum to 1.</p>
 <p>The output uses proportions: multiply by 100 to read them as percentages.</p>
 </section>
-<section id="extension-1-explain-the-two-percentages" class="slide level2 smaller">
-<h2>Extension 1: explain the two percentages</h2>
+<section id="additional-example-1-explain-the-two-percentages" class="slide level2 smaller">
+<h2>Additional example 1: explain the two percentages</h2>
 <p>Use the tables to explain both statements:</p>
 <ul>
 <li><strong>42.8% of Republicans oppose expansion.</strong></li>
@@ -1586,8 +1597,8 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 </div>
 <p><code>adorn_pct_formatting()</code> adds percent signs and rounds the display; <code>digits = 1</code> keeps one decimal place.</p>
 </section>
-<section id="extension-2-averaging-party-averages" class="slide level2 smaller">
-<h2>Extension 2: averaging party averages</h2>
+<section id="additional-example-2-averaging-party-averages" class="slide level2 smaller">
+<h2>Additional example 2: averaging party averages</h2>
 <p><span style="font-size: 0.8em;"><em>~7–10 minutes for this activity.</em></span></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href aria-hidden="true" tabindex="-1"></a>party_support <span class="ot">&lt;-</span> health <span class="sc">|&gt;</span></span>
@@ -1608,8 +1619,8 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 </div>
 <p>The overall support rate is 73.1%; the average of the three party rates is 71.4%. Inspect <code>party_support</code>: why does giving each party rate equal weight change the result?</p>
 </section>
-<section id="extension-2-recover-the-overall-percentage" class="slide level2 smaller">
-<h2>Extension 2: recover the overall percentage</h2>
+<section id="additional-example-2-recover-the-overall-percentage" class="slide level2 smaller">
+<h2>Additional example 2: recover the overall percentage</h2>
 <p>Use the party-level table to recover the overall percentage. Add up supporters across parties, add up answered responses, then divide the totals.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href aria-hidden="true" tabindex="-1"></a><span class="co"># Fill in, then delete the eval:false line and re-render.</span></span>
@@ -1640,6 +1651,29 @@ select: dropped 4 variables (st, ideo7, medicaid_2, prolifeprochoice)</code></pr
 </div>
 </div>
 <p><code>.by = party</code> groups this operation without leaving the result grouped. It gives the same means as the earlier <code>group_by()</code> example. This is a reference; the lesson’s exercises use <code>group_by()</code> and <code>summarize()</code>.</p>
+</section></section>
+<section>
+<section id="optional-extra-credit" class="title-slide slide level1 center">
+<h1>Optional Extra Credit</h1>
+
+</section>
+<section id="grouped-binary-summary" class="slide level2 smaller">
+<h2>Grouped binary summary</h2>
+<p>Worth up to <strong>one point beyond the regular three-point lab score</strong>.</p>
+<p>Using <code>prolifeprochoice</code>, create one row per party with total respondents, answered and missing responses, the share coded 1 among those who answered, and the missing share among all respondents.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href aria-hidden="true" tabindex="-1"></a>binary_summary <span class="ot">&lt;-</span> health <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(___) <span class="sc">|&gt;</span></span>
+<span id="cb63-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb63-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">respondents =</span> <span class="fu">n</span>(),</span>
+<span id="cb63-5"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">answered =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(___)),</span>
+<span id="cb63-6"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(___)),</span>
+<span id="cb63-7"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">share_coded_1 =</span> <span class="fu">mean</span>(___, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb63-8"><a href aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_share =</span> ___ <span class="sc">/</span> respondents</span>
+<span id="cb63-9"><a href aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb63-10"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(___))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Identify the largest value of each share and explain its denominator. Without a codebook, call the outcome “coded 1.”</p>
 
 </section></section>
     </div>
