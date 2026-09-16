@@ -1,0 +1,103 @@
+---
+title: "Problem Set 1 — Democracy Data: Wide to Long"
+subtitle: "POLS 6394 · Due Thursday, September 24 at 10:00 AM"
+format:
+  html:
+    embed-resources: true
+---
+
+This problem set extends the democracy-data example from 04b. Complete it without AI assistance. You may use the course materials, package documentation, books, Stack Overflow, your classmates, Amanda, and me.
+
+## Setup
+
+Run this chunk as written.
+
+```{r pset01-setup}
+#| message: false
+library(tidyverse)
+
+dem_wide <- read_csv("Data/dem_score.csv", show_col_types = FALSE)
+dem_wide
+```
+
+The source is the democracy-score example adapted from [ModernDive, Chapter 4](https://moderndive.com/v2/04-tidy.html#sec-case-study-tidy). Scores run from -10 to 10, with larger values representing more democratic political systems.
+
+## Task 1: Describe the original table
+
+Before reshaping, answer three questions:
+
+1. What does one row represent?
+2. Which column identifies the row?
+3. Why do the year columns make this a wide rather than tidy table?
+
+Answer: `___`
+
+## Task 2: Reshape the table
+
+Create `dem_long` with three columns: `country`, `year`, and `democracy_score`. Convert `year` from text to an integer.
+
+```{r pset01-long}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+dem_long <- dem_wide |>
+  pivot_longer(
+    cols = ___,
+    names_to = "year",
+    values_to = "democracy_score"
+  ) |>
+  mutate(year = ___)
+
+dem_long
+```
+
+## Task 3: Verify the reshape
+
+Show both checks in code:
+
+1. The long table should contain `nrow(dem_wide) * (ncol(dem_wide) - 1)` rows.
+2. Each combination of `country` and `year` should occur exactly once.
+
+Report the expected and observed row counts. The duplicate-key check should return no rows.
+
+```{r pset01-checks}
+#| eval: false
+# Add both validation checks, then delete the eval:false line and re-render.
+```
+
+What did the checks show? `___`
+
+## Task 4: Calculate change from 1952 to 1992
+
+Starting with `dem_long`:
+
+1. Keep 1952 and 1992.
+2. Reshape those two years into columns named `score_1952` and `score_1992`.
+3. Calculate `change = score_1992 - score_1952`.
+4. Display the three largest increases and the three largest decreases.
+
+Add the code below. Preserve enough output to verify the country names and changes.
+
+```{r pset01-change}
+#| eval: false
+# Add the change calculation and both ranked results, then delete the eval:false line and re-render.
+```
+
+Largest increases: `___`
+
+Largest decreases: `___`
+
+## Task 5: Explain the representation
+
+In two or three sentences, explain why the long table is easier to group by year and would be easier to plot than the original wide table.
+
+Answer: `___`
+
+## Submit
+
+1. Render this document successfully.
+2. Inspect the rendered output and confirm that both validation checks appear.
+3. Commit the completed QMD with a specific message.
+4. Push before **10:00 AM Thursday, September 24**.
+5. Open your private repository on GitHub and confirm that the commit appears.
+
+If rendering fails, record the exact error here, commit the QMD, and push what you completed: `___`
