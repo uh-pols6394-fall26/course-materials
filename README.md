@@ -12,6 +12,5 @@ Public course materials for Fall 2026 at the University of Houston.
 - [Lesson 03a slides](https://uh-pols6394-fall26.github.io/course-materials/Slides/03a-slides.html)
 - [Lesson 03b slides](https://uh-pols6394-fall26.github.io/course-materials/Slides/03b-slides.html)
 - [Clean workbooks](Workbooks/)
-- [Problem Set 1: Democracy Data—Wide to Long](Problem%20Sets/pset-01/pset-01.qmd), due September 24 at 10:00 AM
 
 To render a workbook, open its `.qmd` in your course RStudio project, click **Save**, then **Render** at the top of the Source pane. Check your notes in the HTML preview. Render again after editing to update the HTML.
