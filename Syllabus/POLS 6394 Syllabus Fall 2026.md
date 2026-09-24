@@ -20,7 +20,7 @@
 
 This course teaches the practical side of working with data and computing resources — the craft that surrounds statistics but is rarely taught alongside it. Our methods sequence teaches you the minimum R needed to estimate models; this course teaches everything around that: writing real programs, managing and acquiring data, producing publication-quality documents and websites, collaborating and version-controlling your work, and using modern AI tools productively and critically. These are the skills academics otherwise pick up slowly, badly, or never — and for students headed to non-academic careers, they are concrete, marketable skills that belong on a CV.
 
-The semester has two parts. In **Part I (weeks 1–10), AI tools are strictly prohibited.** You'll learn to do the work by hand: the tidyverse, programming, version control, the command line, APIs, and interactive applications. In **Part II (weeks 11–15), AI tools are required.** You'll use chat assistants, IDE copilots, and programmatic LLM access, with three sessions centered on **agentic coding through Codex**. You'll use it on real work, including your own final project. You'll also use LLMs as research instruments, including live demonstrations of synthetic survey respondents from my forthcoming Cambridge book on LLMs for public opinion research.
+The semester has two parts. In **Part I (through October 27), AI tools are strictly prohibited.** You'll learn to do the work by hand: the tidyverse, programming, version control, the command line, APIs, and interactive applications. In **Part II (beginning October 29), AI tools are required.** You'll use chat assistants, IDE copilots, and programmatic LLM access, with three sessions centered on **agentic coding through Codex**. You'll use it on real work, including your own final project. You'll also use LLMs as research instruments, including live demonstrations of synthetic survey respondents from my forthcoming Cambridge book on LLMs for public opinion research.
 
 Here's why: you cannot supervise a tool you cannot understand at a deep level. AI coding tools are enormously productive for someone who can read code, debug it, and recognize wrong output. For someone who can't do those things yet, they're risky because the errors look just like the successes. Part I gives you the skills you need for Part II.
 
@@ -42,7 +42,7 @@ By the end of the semester, students will be able to:
 - Wrangle, join, reshape, and visualize data with the tidyverse at a professional level
 - Acquire data through web APIs — authentication, rate limits, JSON, and the political science API landscape — and supervise AI-written scrapers for sites without one
 - Work hands-on at the command line and, if the course server is available, through SSH on a shared Linux system—not just in a GUI on a laptop
-- Build a simple Quarto dashboard; read and modify a small Shiny application; and share work through GitHub Pages or Posit Connect Cloud
+- Build a simple Quarto dashboard and share work through GitHub Pages or Posit Connect Cloud
 - Work with an agentic coding tool (Codex) on a real research project: scoping tasks, steering with project conventions, reviewing agent-written code, and verifying results
 - Write a full academic paper in Quarto — sections, cross-references, and a managed BibTeX bibliography (JabRef + Google Scholar) — rendered to journal-ready formats
 - Use AI tools — chat, copilots, and programmatic LLM APIs — productively, verifiably, and critically, including as research instruments for measurement and annotation
@@ -56,7 +56,7 @@ By the end of the semester, students will be able to:
 |-----------|--------|
 | In-class lab work (committed and pushed before leaving class) | 10% |
 | Take-home problem sets (6, submitted via GitHub) | 15% |
-| Part I midterm practical (in class, October 29 — AI off) | 15% |
+| Part I midterm practical (in class, October 27 — AI off) | 15% |
 | Part II final practical (exam period, December 14 — AI required) | 15% |
 | Problem-set walkthroughs | 5% |
 | Part II AI-critique assignments (2) | 10% |
@@ -78,10 +78,10 @@ Six take-home problem sets extend the lab work. Each is due at **10:00 AM** on t
 | 2 | Thu Oct 1 | Thu Oct 8 | Two versions of a figure; explain which design choices mislead |
 | 3 | Tue Oct 13 | Tue Oct 20 | A reusable function and a small iteration task |
 | 4 | Tue Oct 20 | Tue Oct 27 | Run and check another researcher's small repository from a clean clone |
-| 5 | Thu Oct 29 | Tue Nov 3 | Extend the Quarto dashboard; the Shiny extension is optional |
+| 5 | Thu Oct 29 | Tue Nov 3 | Extend the Quarto dashboard with AI assistance and verify the result |
 | 6 | Thu Nov 12 | Tue Nov 17 | Use Codex on one bounded piece of your project; show the diff and checks |
 
-The release dates for Sets 2–6 are planned; the due dates are set. I'll put each prompt in your private repository on its release date. Sets 1–5 are Part I work and must be completed without AI, including Set 5 even though it is due the morning Part II begins. Set 6 requires AI.
+The release dates for Sets 2–6 are planned; the due dates are set. I'll put each prompt in your private repository on its release date. Sets 1–4 must be completed without AI. Sets 5–6 require AI. For Set 5, include what you asked the tool to do, the changes you accepted, and how you checked the rendered dashboard.
 
 You can also bookmark the [course deadline calendar](https://uh-pols6394-fall26.github.io/course-materials/Resources/Deadlines.html).
 
@@ -91,7 +91,7 @@ The Part I AI rule applies to take-home problem sets. These sets prepare you for
 
 ### Part I Midterm Practical (15%)
 
-The second half of class on **Thursday, October 29** — the last day of Part I — is a supervised practical: a realistic task (import a dataset you have not seen, clean it, summarize it, produce one polished figure) done solo, in the room, with AI off. Documentation and your own past work are fair game. Committed, sensible, unfinished work earns most of the credit; time pressure is handled generously.
+Class on **Tuesday, October 27** begins with a supervised practical: a realistic task (import a dataset you have not seen, clean it, summarize it, produce one polished figure) done solo, in the room, with AI off. It takes about 40 minutes; the dashboard lesson follows. Documentation and your own past work are fair game. Committed, sensible, unfinished work earns most of the credit; time pressure is handled generously.
 
 ### Part II Final Practical (15%)
 
@@ -111,7 +111,7 @@ In Part II, AI use is required. Two take-home assignments are graded on your sup
 
 ### Semester Research and Portfolio Project (30%)
 
-The capstone is **a paper of your own that you work on throughout the semester**. You can use a dissertation prospectus (or a chapter of one), a seminar paper you owe another course, a working paper, an MPP capstone, or whatever else you actually need to write this semester. **You must author it end-to-end with this course's tools.** By December you'll have a reproducible repository, a managed bibliography, the paper rendered to PDF, a revealjs presentation, and a simple Quarto dashboard. A suitable Shiny app may substitute if your project benefits from server-side interaction. **If your project does not naturally support a data pipeline, first figure, or dashboard, propose an alternative computational artifact in your October 1 project plan for instructor approval.**
+The capstone is **a paper of your own that you work on throughout the semester**. You can use a dissertation prospectus (or a chapter of one), a seminar paper you owe another course, a working paper, an MPP capstone, or whatever else you actually need to write this semester. **You must author it end-to-end with this course's tools.** By December you'll have a reproducible repository, a managed bibliography, the paper rendered to PDF, a revealjs presentation, and a simple Quarto dashboard. **If your project does not naturally support a data pipeline, first figure, or dashboard, propose an alternative computational artifact in your October 1 project plan for instructor approval.**
 
 The package also includes your data-driven CV and academic website, first made functional in Week 7 and then maintained through the semester. The site must render correctly, but public deployment is your choice; posting the rendered CV is also optional. By December the site should present you and the work you would want to make public. You present the research project during the final exam period. AI tools are permitted from Part II onward, and the repo must include an AI-use statement. **If an LLM measures anything in your paper—annotations, classifications, synthetic responses—your repository must contain the eval that justifies it** (the human-labeled subset, the scoring code, the agreement numbers).
 
@@ -171,7 +171,7 @@ You'll also need: a laptop you can bring to every class, a free GitHub account, 
 
 *The first meeting of each instructional pair introduces; the second extends and practices. There is no class on September 3. Readings are listed as preparation; the working materials are Quarto documents distributed via the course repository.*
 
-## Part I: Computing Without a Copilot (Weeks 1–10)
+## Part I: Computing Without a Copilot (August 25–October 27)
 
 *Strict no-AI policy in effect — see AI Policy below.*
 
@@ -221,19 +221,23 @@ Tuesday covers vectorization, loops, and iteration with purrr. Thursday covers d
 
 ### Week 9 (October 20, 22): Reproduction and API Fundamentals
 
-Tuesday runs R non-interactively with `Rscript`, then reproduces a small repository created by someone else from a clean clone using its README and `renv.lock`. Parallel execution remains a short demonstration. Thursday introduces APIs, httr2, JSON, authentication and keys, rate limits, pagination, and nested responses. Posit Cloud's terminal is the guaranteed baseline environment; SSH practice is conditional on the course Linux server being available.
+Tuesday runs R non-interactively with `Rscript`, then reproduces a small repository created by someone else from a clean clone using its README and `renv.lock`. Parallel execution remains a short demonstration. Thursday introduces APIs through one political-science data source: a request, a JSON response, and the steps from response to tibble. We cover API keys, rate limits, and where AI can help read unfamiliar documentation. Posit Cloud's terminal is the guaranteed baseline environment; SSH practice is conditional on the course Linux server being available.
 
-### Week 10 (October 27, 29): Political Science APIs; Dashboards, Shiny, and the Midterm
+### Week 10 (October 27): Midterm and Dashboards
 
-Tuesday tours APIs political scientists use, including Congress.gov, the Census through tidycensus, and FRED, and compares direct REST calls with client packages. Thursday's first half builds a simple Quarto dashboard and modifies a small Shiny app with one selector and one plot. The second half is the Part I midterm practical. The dashboard problem set is due at **10:00 AM November 3** and remains AI-free.
+The class begins with the AI-off Part I midterm practical. Afterward, we build a simple Quarto dashboard with headline values, a chart, and a table. The dashboard problem set is released October 29; it requires AI assistance and is due at **10:00 AM November 3**.
 
-## Part II: Computing With AI (Weeks 11–15)
+## Part II: Computing With AI (October 29–December 3)
 
 *AI tools are now required—see the policy below. Part II includes sustained, supervised work with Codex.*
 
+### Week 10 (October 29): First Supervised AI Work
+
+We review the rules for AI-accessible research data and make one bounded AI-assisted change to a course example or your project. You inspect the result, run a check, and record what you accepted or rejected. Amanda and I will give feedback while you work. The dashboard problem set begins after this session.
+
 ### Week 11 (November 3, 5): The Controversy; LLMs and Assisted Coding
 
-Part II opens by **teaching the controversy** over AI in research. This course allows it, but that should be a considered position rather than a default. We read working quantitative social scientists on both sides: the adoption case (Andrew Hall's *Free Systems*; Alexander Kustov's *Popular by Design*), the skeptics' case (peer-reviewed critiques of LLMs in research), and the standard that adjudicates between them, **replication** (King's classic statement; Gentzkow & Shapiro's *Code and Data*). Allowing AI in *research* is separate from allowing it in *training*; Part I's ban was pedagogy, not research ethics. We then cover how LLMs work well enough to know when to distrust them, the three interfaces (chat, IDE copilots, in-editor tools), prompting patterns, and the verification loop. In the lab, AI writes a web scraper and you verify its output against the page. *Specific readings are listed in the course repository (`Resources/`).*
+Tuesday teaches the controversy over AI in research. We read working quantitative social scientists on both sides: the adoption case (Andrew Hall's *Free Systems*; Alexander Kustov's *Popular by Design*), the skeptics' case (peer-reviewed critiques of LLMs in research), and the standard that adjudicates between them, **replication** (King's classic statement; Gentzkow & Shapiro's *Code and Data*). Allowing AI in *research* is separate from allowing it in *training*; Part I's ban was pedagogy, not research ethics. We then cover how LLMs work well enough to know when to distrust them, the three interfaces (chat, IDE copilots, in-editor tools), prompting patterns, and the verification loop. On Thursday, AI writes a web scraper and you verify its output against the page. *Specific readings are listed in the course repository (`Resources/`).*
 
 ### Week 12 (November 10, 12): Agentic AI with Codex
 
@@ -247,9 +251,9 @@ Tuesday is a supervised project day: bring a functioning final-project repositor
 
 Thanksgiving week.
 
-### Week 15 (December 1, 3): Text Annotation; RAG, Local Models, and Wrap
+### Week 15 (December 1, 3): Topic Classification; RAG and Project Work
 
-Tuesday covers LLM text annotation at scale: defining a codebook, classifying documents, validating against human labels, and measuring agreement. Thursday introduces retrieval-augmented generation with a political-text corpus, then turns to local models, privacy, cost, reproducibility, and the course wrap. Office hours this week and next are project clinics for the paper.
+Tuesday covers topic classification: defining categories, classifying a small set of political texts with a generative model and the specialized Jev decision model, and checking both against human labels. Thursday gives a brief retrieval-augmented generation demonstration, then turns to supervised work on your paper with immediate feedback from Amanda and me. We close with privacy, cost, and reproducibility. Office hours this week and next are project clinics for the paper.
 
 ---
 
@@ -277,9 +281,9 @@ I may use AI agents to assist with grading under rubrics I write and supervise. 
 
 ### AI Policy
 
-**Part I assignments, including the dashboard problem set due at 10:00 AM on November 3: AI tools are prohibited.** No ChatGPT, no Claude, no Copilot, no AI autocomplete, no "just checking one error message." This includes problem sets done at home. Before Part I work begins, disable any generative autocomplete or assistant built into your editor or browser; Amanda or I will help you find the setting. Ordinary non-AI resources—documentation, books, Stack Overflow, package vignettes, and your classmates—are all fair game and encouraged. Amanda and I help during class exercises, but not while a take-home problem set is open.
+**Part I assignments, including Problem Sets 1–4 and the October 27 practical: AI tools are prohibited.** No ChatGPT, no Claude, no Copilot, no AI autocomplete, no "just checking one error message." This includes problem sets done at home. Before Part I work begins, disable any generative autocomplete or assistant built into your editor or browser; Amanda or I will help you find the setting. Ordinary non-AI resources—documentation, books, Stack Overflow, package vignettes, and your classmates—are all fair game and encouraged. Amanda and I help during class exercises, but not while a take-home problem set is open.
 
-**Part II (beginning with class on November 3): AI tools are required.** Assignments must be done with AI assistance, and the graded artifact is your supervision of it: verification, critique, and correction. You remain fully responsible for everything you submit — "the AI did it" is not a defense; catching what the AI did is the assignment.
+**Part II (beginning with class on October 29): AI tools are required.** Problem Sets 5–6 and other Part II assignments must be done with AI assistance, and the graded artifact is your supervision of it: verification, critique, and correction. You remain fully responsible for everything you submit — "the AI did it" is not a defense; catching what the AI did is the assignment.
 
 **Data used with AI tools:** work from public, synthetic, or anonymized copies that would be safe to release publicly. Remove names, email addresses, phone numbers, street addresses, respondent contact information, and any key that connects records back to people. Random case ID numbers may remain when the linking key is not included. Check whether combinations such as a rare occupation, precise location, and exact age could still identify someone; coarsen, alter, or replace those fields in the AI-facing copy when needed. Keep the protected original outside any repository or folder an AI tool can access, and document any changes made to the working copy.
 
