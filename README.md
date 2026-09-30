@@ -2,6 +2,9 @@
 
 Public course materials for Fall 2026 at the University of Houston.
 
+- [Course homepage](https://uh-pols6394-fall26.github.io/course-materials/)
+- [Private class announcements](https://github.com/uh-pols6394-fall26/course-discussions/discussions/categories/announcements) — sign in with your class GitHub account; no clone or Pull needed.
+
 - Instructor: Boris Shor
 - Class meetings: Tuesday and Thursday, 1:00–2:20 PM
 - Student coursework is submitted through individual private repositories in this organization.
