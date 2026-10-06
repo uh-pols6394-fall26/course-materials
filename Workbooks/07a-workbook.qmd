@@ -1,0 +1,326 @@
+---
+title: "Workbook 07a — Publish Yourself"
+subtitle: "POLS 6394 · Tuesday, October 6"
+format:
+  html:
+    embed-resources: true
+---
+
+## Today's goal
+
+You'll build two things that belong to you rather than to the course: a PDF CV made from plain-text data files, and a one-page website made from the course starter. Both live in new repositories in your own GitHub account. Today you start both; by Thursday, October 15, both render and Amanda and I can see them.
+
+## Setup
+
+There's no R code today. Everything happens in RStudio and on GitHub, so this workbook is your record of what you did and decided. Have these open:
+
+- your GitHub account in a browser tab
+- this workbook
+
+Your paper skeleton is due today. If it isn't pushed yet, push what you have after class and tell me where it stands.
+
+# Your CV and website
+
+## Why build these now?
+
+You'll need a CV for job applications, fellowships, grants, and conferences. Starting it now gives you a place to keep track of research, teaching, and service as you do them.
+
+A website gives potential collaborators and employers one link to your work and contact information. A working paper belongs there even before it's published, as long as you describe its status accurately.
+
+You don't need a long publication list to start. Today we'll use your education, current work, and semester paper.
+
+## What the CV and website each do
+
+| CV | Website |
+|---|---|
+| A detailed record of education and experience | A short introduction with selected work and links |
+| A PDF you can send with an application | A page you can update without sending a new attachment |
+| Useful even if you keep it private | Can link to your CV PDF, if you want |
+
+Both projects live in your own GitHub account and stay with you after the course. The CV repository is private; the website can be public or private. Today's CV and site don't go in your coursework repository.
+
+## What Quarto and Typst do
+
+You've rendered Typst PDFs since 01b. Quarto builds the document from your source and supporting files; **Typst** arranges the text on the PDF pages.
+
+This CV uses the same route, with the template's extension supplying its layout.
+
+You'll edit the Quarto, YAML, and BibTeX files, then click Render. You don't need to write Typst code today.
+
+## A CV template supplies the layout
+
+A Quarto template is a starter you download: an example document, supporting files, and any extension needed for its format. It gives you something that already renders, which you then adapt.
+
+Christopher Kenny's [`quarto-cv`](https://github.com/christopherkenny/quarto-cv) (MIT license) supplies sample entries in YAML and BibTeX, plus an extension that controls the PDF layout.
+
+Replace the sample entries with yours. The template handles the formatting, while Git records changes to your source files. The bibliography uses the BibTeX skills from 06b.
+
+A GitHub Pages site is on the open web and search engines index it, so leave off anything you wouldn't put on a conference name badge: home address, personal phone number, student ID.
+
+## What's a fork, and when would you use one?
+
+A **fork** is a separate GitHub repository copied from someone else's, including its history. GitHub keeps a connection to the original, called the **upstream** repository. You can edit your fork without changing the original.
+
+Fork when you want to adapt someone else's research code, maintain your own version of a tool, or propose a bug fix to a package. A **pull request** asks the original project's maintainers to review and incorporate your changes. I forked Christopher Kenny's CV template to prepare our course starter.
+
+Today, choose **Use this template**, not Fork. It creates your own CV or website project from the starter files with a fresh history. Neither route automatically applies later changes from the original; bringing those changes in is a separate action. **Cloning** then downloads your repository to your computer, whether it began as a fork or from a template.
+
+# Part 1: Your CV
+
+## Make your own copy and open it
+
+Go to [github.com/bshor/cv-starter](https://github.com/bshor/cv-starter), a fork of Christopher Kenny's `quarto-cv` template, and choose **Use this template → Create a new repository**. Pick your own account as owner, name it `cv`, choose **Private**, and create it.
+
+On the new repository's page, click the green **Code** button and copy the HTTPS URL. In RStudio, choose **File → New Project → Version Control → Git** and paste the URL. Set **Create project as subdirectory of** to `~`, check **Open in new session**, and choose **Create Project**. `~` is your home folder: RStudio creates `~/cv` beside your coursework folder, not inside it. Keep your coursework window open for this workbook.
+
+Which folder did RStudio put your `cv` project in? It's shown at the top of the CV window's Files pane: `___`
+
+The starter has `cv.qmd`, `cv.Rproj`, `education.yaml`, `honors.yaml`, `positions.yaml`, `working_papers.bib`, three publication `.bib` files, two citation styles, and the `_extensions/cv/` layout. You edit the YAML and BibTeX files; the extension handles the layout.
+
+## Render it once before editing
+
+In the CV window, open `cv.qmd` from the Files pane and click **Render**. You get a sample CV for the political scientist Sidney Verba. A warning about an unknown font family is harmless.
+
+## The author block and education.yaml
+
+The `author:` block at the top of `cv.qmd` is the YAML list format from 06b: the hyphen starts an entry, the indented lines belong to it, and `affiliations` is a list inside that entry. Delete lines you don't want, such as `url`.
+
+The body is mostly shortcodes. `{{{< cv education >}}}` is a placeholder that Quarto fills in from the `education` entries in `education.yaml`:
+
+```yaml
+education:
+  University of Houston:
+    - degree: Ph.D. student, Political Science
+      year:
+        start: 2025
+  Rice University:
+    - degree: B.A., Political Science
+      year:
+        end: 2021
+```
+
+Each institution name ends with a colon and holds a list of degrees. A `start` year without an `end` prints as "Present." Put the most recent first.
+
+## Your Turn: put yourself in the CV
+
+*~6 minutes.*
+
+- Replace the author block with your name, UH email, department, and current title.
+- Replace `education.yaml` with your own degrees, most recent first.
+- Put one real honor, fellowship, or award in `honors.yaml`, or delete the Honors section for now.
+- Render and check your name, degrees, and dates.
+
+## One bibliography per section
+
+```yaml
+bibliography:
+  books: "books.bib"
+  bookchapters: "book_chapters.bib"
+  articles: "journal_articles.bib"
+  workingpapers: "working_papers.bib"
+nocite: '@*'
+```
+
+Each name on the left labels one `.bib` file, and `:::{#refs-articles}` in the body lists the entries from the file labeled `articles`. In 06b, only cited sources appeared in the reference list; `nocite: '@*'` lists every entry instead, without any citations.
+
+## Working papers, and publications if you have them
+
+`working_papers.bib` holds a placeholder. Replace it with your semester paper, in RStudio or JabRef:
+
+```bibtex
+@unpublished{ruiz_turnout_2026,
+  author = {Ruiz, Ana},
+  title = {Early Voting and Turnout in Texas Counties},
+  year = {2026}
+}
+```
+
+`@unpublished` is the BibTeX type for a paper that isn't published yet. The `workingpapers` label and the `:::{#refs-workingpapers}` block are already connected.
+
+If you have publications, keep `articles` (and `books` or `bookchapters` if they apply), export your papers from your Google Scholar profile with **Export → BibTeX** or import them as in 06b, and check each entry in JabRef. If you don't, delete those lines under `bibliography:` and their `:::{#refs-...}` blocks.
+
+## Your Turn: your research section
+
+*~6 minutes.*
+
+- Put your semester paper in `working_papers.bib`.
+- Keep or delete Peer-Reviewed Articles, Books, and Book Chapters, depending on what you have.
+- Delete sections you can't fill yet, such as Service. An empty heading looks worse than no heading.
+- Render and check that every section heading has entries under it.
+
+List each section on your CV and the file its entries come from: `___`
+
+## Commit, push, and share the CV
+
+In the CV window's Git pane, check the box next to each changed file, choose **Commit**, write a message that says what changed, commit, and **Push**, as in your coursework. Refresh the repository's GitHub page to check.
+
+Then, on that page, choose **Settings → Collaborators → Add people** and add `bshor` and `ataustin06`.
+
+Your CV repository's URL: `___`
+
+# Part 2: Your website
+
+## Choose your route
+
+| Route | Repository name | Who can see the site |
+|---|---|---|
+| Public | `YOURUSERNAME.github.io` | anyone, at `https://YOURUSERNAME.github.io` |
+| Private | `site` | invited collaborators, viewing a local copy |
+
+Which route are you taking, and why? `___`
+
+## The repository name determines the URL
+
+For the account `borisshor`:
+
+| Repository name | Published website URL |
+|---|---|
+| `borisshor.github.io` | `https://borisshor.github.io/` |
+| `beta-web-f26` | `https://borisshor.github.io/beta-web-f26/` |
+
+For your main professional site, name the repository **your GitHub username plus `.github.io`**, exactly. That gives you the shorter URL without an extra repository name at the end. A beta or other project repository instead publishes at `https://YOURUSERNAME.github.io/REPOSITORY/`.
+
+After enabling Pages, check **Settings → Pages** for the actual published URL and wait for deployment to finish. A newly enabled site can briefly return 404 even when the settings are correct.
+
+## Create your copy and open it
+
+Go to [github.com/bshor/cv-minimal-site](https://github.com/bshor/cv-minimal-site) and choose **Use this template → Create a new repository**. Public route: name it `YOURUSERNAME.github.io`, with your GitHub username exactly, and choose **Public**. Private route: name it `site` and choose **Private**.
+
+Copy the new repository's HTTPS URL from the green **Code** button. In RStudio, choose **File → New Project → Version Control → Git** and paste the URL. Check these fields before creating the project:
+
+- **Project directory name:** `YOURUSERNAME.github.io` for the public route, or `site` for the private route. For a beta repository with another name, use that actual repository name.
+- **Create project as subdirectory of:** `~`.
+- Check **Open in new session**, then choose **Create Project**.
+
+This puts the website folder beside your CV and coursework folders. Use the site window for editing, rendering, and Git; keep your coursework window open for these notes. The repository name on GitHub determines the website URL; the local folder name doesn't change it.
+
+## The site settings and the CV link
+
+In `_quarto.yml`, `output-dir: docs` writes the finished site into `docs/`; `resources` copies `files/` into it. Keep the navbar. Choose how people will view your website:
+
+1. **Public website:** enable GitHub Pages in the later publishing step. Anyone can see the page and any files copied into it, including the CV.
+2. **Private website:** leave Pages off and invite Amanda and me. We view a downloaded copy locally. The navbar and its CV link still work in that local copy.
+
+Including the CV is a separate choice in either route. The starter's CV menu item points to `files/cv.pdf`. To use it, copy your actual rendered PDF there using one of the routes below.
+
+## Keep the navbar without a CV link
+
+If you aren't including the PDF, change just the menu item's two lines in `_quarto.yml` to:
+
+```yaml
+      - text: "Home"
+        href: index.qmd
+```
+
+Keep `navbar:` and `right:` above them; don't delete the whole navbar. The menu now opens your front page instead of a missing PDF. If you've already copied the PDF, delete both `files/cv.pdf` and `docs/files/cv.pdf` in the site's Files pane, then render, commit, and push. Changing the link doesn't remove files or earlier public Git history.
+
+On a public site, a linked CV is public too. What did you choose, and why? `___`
+
+## Copy the PDF through the Files pane
+
+Skip copying if you aren't linking your CV. Otherwise, choose this GUI route **or** the Terminal route below; you only need to copy once.
+
+1. In the **CV window's Files pane**, locate the rendered PDF and check the box beside it. Don't select the QMD source.
+2. Choose **More → Copy To**. In the folder dialog, navigate to your website project folder and open its `files` folder. Confirm the copy. If both projects are siblings, go up to their parent folder, then into the website folder and `files`.
+3. Return to the **site window's Files pane** and open `files`. Confirm the PDF appears. If it has another name, check its box, click **Rename**, and name the copy `cv.pdf`, matching the site's link.
+4. Render the website, check its CV link in the browser, then commit and push the site changes.
+
+Use **Copy**, not Move: keep the original PDF in the CV project. Repeat the copy after updating your CV. This works within RStudio Desktop or RStudio Server; you don't need Finder or File Explorer.
+
+## Find and copy your CV PDF
+
+Skip this step if you aren't linking your CV. Otherwise, in the **site window's Terminal**, run:
+
+```bash
+ls -l ..
+```
+
+`ls` lists files and folders; `-l` shows details; `..` means the parent folder. Read the names at the end of the lines. Find the CV folder you created earlier; use its actual name, not necessarily `cv`. For example, Boris's is `fall26-6394`.
+
+Replace `CV_FOLDER` below with that name and run:
+
+```bash
+ls -l "../CV_FOLDER"
+```
+
+This lists the files inside your CV folder. Find the rendered PDF. Then copy it:
+
+```bash
+cp "../CV_FOLDER/cv.pdf" files/cv.pdf
+```
+
+`cp` copies a file. The first path is the source: replace `CV_FOLDER` and, if necessary, `cv.pdf` with your actual folder and PDF names. Keep the destination `files/cv.pdf` unchanged because the site's link expects that name. Quotes allow spaces in the source path. For example, if the folder is `fall26-6394` and the PDF is `cv.pdf`, run `cp "../fall26-6394/cv.pdf" files/cv.pdf`.
+
+If your CV folder isn't listed, check the location you recorded in the CV step; don't guess. Confirm `cv.pdf` appears in the site's `files/` folder. Copy the PDF again whenever your CV changes, then render the website before committing and pushing.
+
+## Your Turn: write your front page
+
+*~6 minutes.*
+
+- In `index.qmd`, replace the name, subtitle, email, and GitHub link; in `_quarto.yml`, replace `Your Name`.
+- Write two or three sentences under About.
+- List your working paper. Rename or delete sections that don't fit you yet.
+- Keep the placeholder picture for now.
+
+## Render, commit, and push
+
+In the site window's **Build** pane, click **Render Website**. It renders the whole site into `docs/`. Open `docs/index.html` from the Files pane with **View in Web Browser**. Then, in the Git pane, stage everything, including `docs/`, commit with a message such as `Personalize my site`, and push. Commit `docs/` too: here it's the published site, not throwaway output.
+
+Rendering only creates `docs/` on your computer. The website won't appear online until you commit and push the entire folder, including `docs/index.html`. After pushing, open the repository on GitHub and confirm that `docs/index.html` is there. If the website returns 404, check the latest deployment under **Actions**; enabling Pages alone doesn't upload your rendered files.
+
+**Predict:** you edit `index.qmd`, commit, and push, but forget to click **Render Website** first. What does the public site show? `___`
+
+## Public or private: finish the route
+
+- **Public:** on GitHub, **Settings → Pages**, set Source to *Deploy from a branch* and Branch to `main`, folder `/docs`, then **Save**. Wait for deployment to finish and open the URL shown there; its form depends on the repository name, as explained above.
+- **Private:** keep the repository private. Under **Settings → Collaborators → Add people**, invite `bshor` and `ataustin06`, then send us the repository's URL. Don't enable Pages: this route has no hosted URL, and a private repository doesn't make a Pages website private.
+
+## Check the deployment in Actions
+
+For a public site, open the website repository's **Actions** tab after enabling Pages or pushing an update. Click the newest **pages build and deployment** run. Yellow means queued or running; a green check means deployment succeeded; a red X means it failed. Click a failed job to read its error.
+
+Check the run's time and commit: an old red run doesn't describe your latest push. If no new run appears, confirm your push succeeded. If the error says `docs/` is missing, check that `docs/index.html` reached GitHub, then commit and push the complete folder if needed. Once the deployment succeeds, open the link in **Settings → Pages**.
+
+## Private route: open the page locally
+
+In the site's RStudio window, open **Files → docs**, click `index.html`, and choose **View in Web Browser**. Check the picture and links. Clicking the HTML file on GitHub shows source code rather than the finished page.
+
+Your site's URL, or its repository's URL if private: `___`
+
+# If Time Remains
+
+## Extension 1: add a section to your CV
+
+*~8–10 minutes.*
+
+Add a section you deleted or never had, such as Service, Teaching, or Conference Presentations. From YAML: fill `positions.yaml` and add `{{{< cv positions >}}}` under a heading. From BibTeX: create `presentations.bib`, add `presentations: "presentations.bib"` under `bibliography:`, and add a `:::{#refs-presentations}` block. Render, check, commit, and push.
+
+Which section did you add, and from which kind of file? `___`
+
+## Extension 2: a real picture and a theme
+
+Browse [Quarto's HTML themes](https://quarto.org/docs/output-formats/html-themes.html#overview) and the [Bootswatch gallery](https://bootswatch.com/) for previews. Try `darkly` for a dark theme.
+
+*~8–10 minutes.*
+
+Put a photo in `files/`, point `image:` in `index.qmd` to it, and update `image-alt`. Change `theme: cosmo` in `_quarto.yml` to another Bootswatch theme, such as `flatly` or `litera`. Render, check the page in your browser, then commit and push.
+
+## What I want to remember
+
+- `___`
+
+## What broke, and why
+
+- `___`
+
+## One question I still have
+
+- `___`
+
+## Finalize 07a
+
+- Push today's work in both new repositories, even if it's unfinished.
+- Return to your original coursework window, render this workbook, commit it with a message such as `"07a CV and site notes"`, and push.
+- Confirm all three commits on GitHub.
+- By 7:00 PM Wednesday, October 7, push this workbook with your progress and both repository URLs.
+- By Thursday, October 15, your CV renders to PDF, your website renders, and Amanda and I can see both.
