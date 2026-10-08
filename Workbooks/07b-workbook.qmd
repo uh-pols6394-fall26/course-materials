@@ -1,0 +1,610 @@
+---
+title: "Workbook 07b — Functions and Lists"
+subtitle: "POLS 6394 · Thursday, October 8"
+format:
+  html:
+    embed-resources: true
+---
+
+## Today's goal
+
+You'll write functions, including ones that accept column names using <code>{{ }}</code>; choose between `if` and `if_else()`; store data frames and models in lists; and save functions in an `.R` script you can load with `source()`. In the lab, `message()` and tidylog show what your code did.
+
+## Setup
+
+Run this setup chunk as written. The files are bundled with this lesson.
+
+```{r lab07b-setup}
+#| message: false
+library(tidyverse)
+
+sp <- read_csv(file = "Data/state_policy/cspp_states.csv", show_col_types = FALSE) |>
+  filter(!is.na(pollib_median))
+```
+
+One row of `sp` is a state-year. `pollib_median` is Caughey and Warshaw's state policy liberalism measure, distributed through the Correlates of State Policy Project; higher values mean more liberal state policy. `pid` is the public's party identification (higher is more Democratic) and `ideo` its ideology (higher is more liberal); both are missing for 2012–2014.
+
+## Inspect the imported data
+
+This chunk shows 10 randomly sampled rows. The fixed seed keeps the sample the same every time you render.
+
+```{r lab07b-sample}
+set.seed(6394)
+sp |>
+  slice_sample(n = 10) |>
+  select(st, state, region.name, year, pollib_median, pid, ideo)
+```
+
+Region names are lowercase: `"south"`, not `"South"`.
+
+# Why functions
+
+If you repeat similar code in three places, consider writing a function. You can then change the calculation in one place rather than editing each copy.
+
+# The parts of a function
+
+## Name, arguments, body
+
+```{r lab07b-anatomy}
+pct_change <- function(new, old) {
+  return(100 * (new - old) / old)
+}
+```
+
+`pct_change` is the name, `new` and `old` are the arguments, and the line between the braces is the body. Running the chunk creates the function without computing anything.
+
+```{r lab07b-call}
+pct_change(150, 100)
+pct_change(new = 80, old = 100)
+```
+
+`return()` sends a value back to the caller and ends that function call. You can print the returned value, save it, or use it in another calculation. The first call matches arguments by position; the second names them.
+
+## The last-line shorthand
+
+R also returns the last expression automatically. This version gives the same results without `return()`:
+
+```{r lab07b-implicit-return}
+pct_change <- function(new, old) {
+  100 * (new - old) / old
+}
+
+pct_change(new = 80, old = 100)
+```
+
+We'll usually write `return()` so you can see exactly what comes back.
+
+## Vectors in, vectors out
+
+**Predict before you run the next chunk:** what does `pct_change(new = c(150, 80), old = c(100, 100))` return? `___`
+
+```{r lab07b-vector}
+pct_change(new = c(150, 80), old = c(100, 100))
+```
+
+## Your Turn: your first function
+
+Write `center()`, which subtracts a vector's mean from every value so the result is centered on zero. `summary()` shows whether the mean is now 0.
+
+```{r lab07b-yt-center}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+center <- function(x) {
+  return(___)
+}
+
+center(x = sp$pid) |> summary()
+```
+
+What did `center(x = sp$pid)` give you before you told `mean()` to skip missing values, and why? `___`
+
+## Defaults
+
+```{r lab07b-defaults}
+mean_round <- function(x, digits = 2) {
+  return(round(x = mean(x = x, na.rm = TRUE), digits = digits))
+}
+
+mean_round(x = sp$ideo)
+mean_round(x = sp$ideo, digits = 1)
+```
+
+`digits = 2` sets a default that applies when the caller leaves `digits` out. Use named arguments in your calls: `x = sp$ideo` identifies the input and `digits = 1` identifies the rounding setting. A pipe supplies the first argument, so you don't need to name it there.
+
+## Changes inside a function stay local
+
+```{r lab07b-scope}
+x <- 100
+
+double_it <- function(x) {
+  x <- x * 2
+  return(x)
+}
+
+double_it(x = 5)
+x
+```
+
+`double_it(x = 5)` returns 10, but `x` is still 100. Inside the function, `x` is a local copy of what you passed, so assigning to it changes only that copy.
+
+## Why keep objects local?
+
+Local objects let you reuse names such as `x` or `result` without overwriting your data outside the function. Temporary calculations stay out of the Environment pane. Use `return()` to send back the result, then save it if you want to keep it.
+
+## A function can return a tibble
+
+Save the pipeline's tibble in a local object called `result`, then return it to the caller.
+
+```{r lab07b-return-df}
+region_summary <- function(df) {
+  result <- df |>
+    group_by(region.name) |>
+    summarize(mean_lib = mean(x = pollib_median))
+  return(result)
+}
+
+region_summary(df = sp)
+```
+
+## Your Turn: replace the copies
+
+When code works for one state, it's natural to copy it and change the state name. With several copies, it's easy to miss an edit. Here the third line labels New York's result as Texas. The code runs without an error, so you might not notice.
+
+```r
+sp |> filter(st == "CA") |> summarize(state = "CA", mean_lib = mean(x = pollib_median))
+sp |> filter(st == "NY") |> summarize(state = "NY", mean_lib = mean(x = pollib_median))
+sp |> filter(st == "NY") |> summarize(state = "TX", mean_lib = mean(x = pollib_median))
+```
+
+Turn them into one function. The value that changes from copy to copy becomes the argument.
+
+```{r lab07b-yt-state}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+state_summary <- function(df, ___) {
+  result <- df |>
+    filter(st == ___) |>
+    summarize(state = ___, mean_lib = mean(x = pollib_median))
+  return(result)
+}
+
+state_summary(df = sp, state_abb = "CA")
+state_summary(df = sp, state_abb = "TX")
+```
+
+# Functions over data
+
+## A column name is different
+
+This version tries to take the column as an argument. It fails on purpose; `error: true` lets the document render and show the error.
+
+```{r lab07b-bare-fail}
+#| error: true
+region_mean <- function(df, yvar) {
+  result <- df |>
+    group_by(region.name) |>
+    summarize(mean = mean(x = yvar, na.rm = TRUE))
+  return(result)
+}
+
+region_mean(df = sp, yvar = ideo)
+```
+
+Inside `summarize()`, dplyr looks up bare names in the data. But `ideo` passed into a function arrives as an argument, so R looks for an object called `ideo` in your Environment, finds none, and stops.
+
+## Embrace it: <code>{{ }}</code>
+
+Wrap the argument in <code>{{ }}</code>, which we call embracing it, everywhere it touches the data.
+
+```{r lab07b-embrace}
+region_mean <- function(df, yvar) {
+  result <- df |>
+    group_by(region.name) |>
+    summarize(mean = mean(x = {{ yvar }}, na.rm = TRUE))
+  return(result)
+}
+
+region_mean(df = sp, yvar = ideo)
+```
+
+```{r lab07b-embrace-two}
+region_mean(df = sp, yvar = pollib_median)
+region_mean(df = sp, yvar = pid)
+```
+
+| Argument | Example | Inside the function |
+|---|---|---|
+| A **value**, such as a state | `"CA"` | Use it as is: `st == state_abb` |
+| A **column name** | `pollib_median` | Embrace it: <code>{{ yvar }}</code> |
+
+## A plot function
+
+<code>{{ }}</code> works inside `aes()` too. `paste()` combines the state and the rest of the title into one string. ggplot already uses the mapped column name for the y-axis label. We can replace it with a clearer label using `labs(y = ...)`.
+
+```{r lab07b-plot-fn}
+policy_trend <- function(df, yvar, state_abb) {
+  result <- df |>
+    filter(st == state_abb) |>
+    ggplot(aes(x = year, y = {{ yvar }})) +
+    geom_line(color = "steelblue", linewidth = 1) +
+    geom_point(color = "steelblue", size = 1.5) +
+    labs(title = paste(state_abb, "policy trend over time"),
+         x = NULL) +
+    theme_minimal()
+  return(result)
+}
+```
+
+```{r lab07b-plot-use}
+policy_trend(
+  df = sp, yvar = pollib_median,
+  state_abb = "CA"
+)
+```
+
+## Guided practice: add a subtitle
+
+Add a `subtitle` argument with the default `"State policy over time"`, and use it in `labs()`.
+
+```{r lab07b-yt-subtitle}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+policy_trend <- function(df, yvar, state_abb, ___) {
+  result <- df |>
+    filter(st == state_abb) |>
+    ggplot(aes(x = year, y = {{ yvar }})) +
+    geom_line(color = "steelblue", linewidth = 1) +
+    geom_point(color = "steelblue", size = 1.5) +
+    labs(title = paste(state_abb, "policy trend over time"),
+         subtitle = ___, x = NULL) +
+    theme_minimal()
+  return(result)
+}
+```
+
+Once your new `policy_trend()` runs, call it relying on the default, then with a subtitle of your own.
+
+```{r lab07b-yt-subtitle-use}
+#| eval: false
+# Run this after your new policy_trend() works, then delete the eval:false line and re-render.
+policy_trend(df = sp, yvar = pollib_median, state_abb = "NY")
+policy_trend(
+  df = sp, yvar = pollib_median, state_abb = "NY",
+  subtitle = "New York, 1976–2014"
+)
+```
+
+## Change the outcome and title
+
+The default title describes policy. When you change the outcome, update the title and axis label too. Filter missing `pid` values first, then use `+ labs()` to replace the plot text. The function itself stays the same.
+
+```{r lab07b-plot-labels}
+sp |>
+  filter(!is.na(pid)) |>
+  policy_trend(yvar = pid, state_abb = "NY") +
+  labs(title = "Party identification in New York",
+       subtitle = "1976–2011",
+       y = "Party ID (higher = more Democratic)")
+```
+
+# One decision or many
+
+## `if` makes one decision
+
+```{r lab07b-if}
+lean_label <- function(score) {
+  if (score > 0) {
+    return("liberal")
+  } else {
+    return("conservative")
+  }
+}
+
+lean_label(score = 2.5)
+lean_label(score = -0.8)
+```
+
+R checks the condition in `( )`. If it's `TRUE`, R runs the first block; otherwise it runs the block after `else`.
+
+```{r lab07b-if-column}
+#| error: true
+lean_label(score = sp$pollib_median)
+```
+
+`if` needs a single `TRUE` or `FALSE`, and a column has hundreds of values.
+
+## `if_else()` decides for every row
+
+```{r lab07b-if-else}
+sp |>
+  filter(year == 2010) |>
+  mutate(lean = if_else(pollib_median > 0, "liberal", "conservative")) |>
+  count(lean)
+```
+
+| Tool | Decisions | Where it goes |
+|---|---|---|
+| `if ()` | one, about one value such as an argument | inside a function, to control what it does next |
+| `if_else()` / `case_when()` | one per row | inside `mutate()` |
+
+If R says "the condition has length > 1", the condition contains multiple values.
+
+# Lists
+
+## A list holds anything
+
+A vector holds values of one type. A list holds anything, including vectors of different lengths, data frames, and models. In 06b, `list()` collected two regression models for `modelsummary()`.
+
+```{r lab07b-list}
+ca <- list(
+  state = "CA",
+  years = c(1980, 2000, 2014),
+  scores = c(1.4, 2.5, 2.5)
+)
+ca
+```
+
+## Getting things out
+
+```{r lab07b-list-get}
+ca$state
+ca[["years"]]
+ca["years"]
+```
+
+`$` and `[[ ]]` give you the element itself. `[ ]` gives you a smaller list containing that element, which is why its output has a `$years` header. Use `[[ ]]` or `$` unless you want a list back.
+
+## A function that reads one file
+
+Data often come in pieces: one file per region, year, or survey wave. `paste0()` is `paste()` with no spaces between the pieces, which is what a file path needs. `message("Reading ", path)` prints `Reading ` followed by the file path, so you can see which file the function is processing. It doesn't change the returned data.
+
+```{r lab07b-read-region}
+read_region <- function(region) {
+  path <- paste0("Data/state_policy/regions/", region, ".csv")
+  message("Reading ", path)
+  return(read_csv(file = path, show_col_types = FALSE))
+}
+```
+
+## A list of data frames
+
+```{r lab07b-region-list}
+region_list <- list(
+  midwest = read_region(region = "midwest"),
+  northeast = read_region(region = "northeast"),
+  south = read_region(region = "south"),
+  west = read_region(region = "west")
+)
+
+names(region_list)
+```
+
+Each list element contains a data frame. `region_list$south` retrieves the South's data.
+
+## Stack tibbles with `bind_rows()`
+
+`bind_rows()` stacks rows vertically and lines up columns **by name**, not position. If a column occurs in only one tibble, it keeps that column and fills the other rows with `NA`. It doesn't overwrite existing rows.
+
+Here are two small tibbles with made-up values. Only the second has a `year` column:
+
+```{r lab07b-bind-example}
+first <- tibble(st = "CA", pid = 0.1)
+second <- tibble(year = 2000, st = "TX", pid = -0.1)
+
+bind_rows(first, second)
+```
+
+## Stack them
+
+The files have no region column; the region is only in each file's name. `bind_rows()` stacks the list into one data frame, and `.id = "region"` turns the list names into a column.
+
+```{r lab07b-stack}
+regions <- bind_rows(region_list, .id = "region")
+
+regions |>
+  count(region)
+```
+
+```{r lab07b-stack-sample}
+set.seed(6394)
+regions |>
+  slice_sample(n = 10)
+```
+
+## Model results as a tibble
+
+`lm()` returns a model object, not a data set you can filter or stack. The **broom** package's `tidy()` extracts its coefficient results into a tibble, with one row per term:
+
+- `term`: the intercept or predictor name.
+- `estimate`: the estimated coefficient.
+- `std.error`: its standard error.
+- `statistic`: the t statistic.
+- `p.value`: the p-value.
+
+In `broom::tidy(models[["both"]])`, `[["both"]]` retrieves the model and `broom::tidy()` extracts its results. It doesn't fit the model again.
+
+## Your Turn: a list of models
+
+Fit three models of policy liberalism, keep them in a named list, and use `broom::tidy()` to inspect the one with both predictors.
+
+```{r lab07b-yt-models}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+models <- list(
+  pid = lm(formula = pollib_median ~ pid, data = regions),
+  ideo = lm(formula = pollib_median ~ ___, data = regions),
+  both = lm(formula = pollib_median ~ ___, data = regions)
+)
+
+broom::tidy(models[[___]])
+```
+
+Reading all four files required four calls to `read_region()`. Inspecting all three models would require three calls to `broom::tidy()`. Repeated calls like these can be automated with `map()`.
+
+## A tidylog reminder
+
+Load tidylog after the tidyverse to report what each verb changes. `warn.conflicts = FALSE` skips the list of replaced functions.
+
+```{r lab07b-tidylog}
+#| message: true
+library(tidylog, warn.conflicts = FALSE)
+```
+
+In the lab, tidylog reports the pipeline's changes; your own `message()` reports the number of groups.
+
+## Save functions in an R script
+
+*~8–10 minutes.*
+
+To use these functions in another document, save their definitions in a plain `.R` file and load it with `source()`.
+
+1. **File → New File → R Script.** Paste your final `policy_trend()` and `region_mean()` into it.
+2. Save it as `R/07b-functions.R`. Create the `R` folder when RStudio asks where to save.
+3. Run the chunk below. `rm()` deletes the two functions from your Environment, so you can tell that `source()` really loads them. `source()` runs every line of the `.R` file. The path is relative to this workbook, like the `Data/` paths.
+
+```{r lab07b-source}
+#| eval: false
+# Run this after you save R/07b-functions.R, then delete the eval:false line and re-render.
+rm(policy_trend, region_mean)
+source("R/07b-functions.R")
+policy_trend(df = sp, yvar = pollib_median, state_abb = "OH")
+```
+
+# Lab
+
+*~20 minutes total. Spend 5–10 minutes starting in class; finish by 7:00 PM Monday, October 12.*
+
+## Task 1: a summary function you can reuse
+
+*~5 minutes.*
+
+Run `tidy_summary()` as written. It returns one row per group, with a count, mean, median, and standard deviation. The two column arguments use <code>{{ }}</code>. For `n`, `!is.na()` identifies non-missing values and `sum()` counts them. `sd()` calculates the standard deviation.
+
+```{r lab07b-task1}
+tidy_summary <- function(df, group_var, yvar) {
+  result <- df |>
+    group_by({{ group_var }}) |>
+    summarize(
+      n = sum(!is.na({{ yvar }})),
+      mean = mean(x = {{ yvar }}, na.rm = TRUE),
+      median = median(x = {{ yvar }}, na.rm = TRUE),
+      sd = sd(x = {{ yvar }}, na.rm = TRUE)
+    ) |>
+    arrange(desc(mean))
+  return(result)
+}
+
+tidy_summary(df = regions, group_var = region, yvar = pollib_median)
+```
+
+Now summarize another column by region.
+
+```{r lab07b-task1-mod}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+tidy_summary(df = regions, group_var = region, yvar = ___)
+```
+
+## Task 2: report the number of groups
+
+*~7 minutes.*
+
+Add messages to `tidy_summary()` that report the number of groups and flag when there's only one. A previous filter may have removed groups you wanted to include. Use `distinct()` to keep one row per group, then `nrow()` to count them.
+
+```{r lab07b-task2}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+tidy_summary <- function(df, group_var, yvar) {
+  n_groups <- df |> distinct({{ ___ }}) |> nrow()
+  message("Groups found: ", n_groups)
+  if (n_groups ___ 1) {
+    message("Only one group. Did an earlier filter remove the others?")
+  }
+  result <- df |>
+    group_by({{ group_var }}) |>
+    summarize(
+      n = sum(!is.na({{ yvar }})),
+      mean = mean(x = {{ yvar }}, na.rm = TRUE),
+      median = median(x = {{ yvar }}, na.rm = TRUE),
+      sd = sd(x = {{ yvar }}, na.rm = TRUE)
+    ) |>
+    arrange(desc(mean))
+  return(result)
+}
+
+tidy_summary(
+  df = filter(regions, region == "south"),
+  group_var = region, yvar = pollib_median
+)
+tidy_summary(df = regions, group_var = region, yvar = pollib_median)
+```
+
+## Task 3: a list of summaries
+
+*~8 minutes.*
+
+Summarize three columns by region, keep the three tibbles in a named list, and stack them. The list names become a column that says which variable each row describes.
+
+```{r lab07b-task3}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+summaries <- list(
+  pollib_median = tidy_summary(df = regions, group_var = region, yvar = pollib_median),
+  pid = tidy_summary(df = regions, group_var = region, yvar = ___),
+  ideo = ___
+)
+
+summaries$pid
+bind_rows(summaries, .id = ___)
+```
+
+Which region has the most Democratic public, and does it also have the most liberal policy? `___`
+
+# If Time Remains
+
+## Extension 1: a vectorized classifier
+
+*~10 minutes.*
+
+`lean_label()` used `if`, so it takes one value at a time. Write `policy_tier()` with `case_when()` so it works on a whole column and inside `mutate()`. Use the same cutoffs on both sides of zero.
+
+```{r lab07b-ext1}
+#| eval: false
+# Fill in, then delete the eval:false line and re-render.
+policy_tier <- function(score) {
+  result <- case_when(
+    score > 1.5 ~ "very liberal",
+    score > 0 ~ ___,
+    score > ___ ~ "conservative",
+    .default = "very conservative"
+  )
+  return(result)
+}
+
+sp |>
+  filter(year == 2010) |>
+  mutate(tier = policy_tier(score = pollib_median)) |>
+  tidy_summary(group_var = tier, yvar = pid)
+```
+
+Which tier has the most Democratic public? Is that what you expected? `___`
+
+## What I want to remember
+
+- `___`
+
+## What broke, and why
+
+- `___`
+
+## One question I still have
+
+- `___`
+
+## Finalize 07b
+
+Save, render this document, inspect your changes, commit with a specific message, push, and confirm the commit on GitHub. If unfinished code stops the render, put `#| eval: false` back on that chunk and still push.
+
+- **By 7:00 PM Monday, October 12:** finish the lab and push.
+- **Tuesday, October 13, 10:00 AM:** Problem Set 02 is due.
+- **Thursday, October 15:** your CV and website both render.
