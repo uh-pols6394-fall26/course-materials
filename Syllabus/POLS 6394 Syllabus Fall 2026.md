@@ -136,7 +136,7 @@ Milestones are progress checks, not polished submissions. The milestone portion 
 | Thu Oct 1, 10:00 AM (Week 6) | **Project plan** (1 page): question, materials, intended analyses, and outputs; request approval here for any alternative to the default pipeline, figure, or dashboard |
 | Tue Oct 6 (Week 7) | **Paper skeleton** renders to PDF with a managed `.bib`, at least three real citations, and a first figure or approved equivalent |
 | Tue Oct 13 (Week 8) | **Professional materials**: CV and minimal website both render; public deployment and a public CV link are optional |
-| Thu Nov 5 (Week 11) | **First real result**: the current pipeline runs end-to-end on your own materials and produces one real result or approved equivalent |
+| Mon Nov 9, 7:00 PM (Week 12) | **First real result** (moved from November 5): one real result from your own project, in a paper that renders end-to-end. A table or figure of your data, a first estimate, coded texts, a replication, or a written section citing your bibliography all count |
 | Thu Nov 19 (Week 13) | **Repository check**: pipeline runs end-to-end from a clean clone and a full draft renders. A good-faith complete attempt may correct reproducibility problems identified by this check through December 1 without penalty. |
 | Mon Dec 14, 2:00–4:00 PM | Exam period: **final practical** (~35–40 min, AI required) + **presentation** (revealjs, from your repo); final paper, repository, dashboard or approved alternative, AI-use statement, and **updated CV + website** due |
 
