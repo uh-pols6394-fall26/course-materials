@@ -107,7 +107,7 @@ The aim is explanation and diagnosis, with no reward for speed. Finding an error
 
 ### Part II AI-Critique Assignments (10%)
 
-In Part II, AI use is required. Two take-home assignments are graded on your supervision of the tool rather than the tool's output. **Assignment 1** (assigned November 5; due before class November 10) is the written version of the November 5 scraper lab: submit the scraper and a critique memo explaining what the AI got wrong, how you caught it, and what you verified by hand. For **Assignment 2** (assigned November 19; due December 3), you **build your own eval**: design 10–20 test prompts with ground truth and a scoring rule on a task from your own research domain, run it with GPT-5.6 Luna and GPT-5.6 Terra, and submit the mini leaderboard plus a memo on what the gap means. An eval is a systematic, quantified test of a model on *your* task.
+In Part II, AI use is required. Two take-home assignments are graded on your supervision of the tool rather than the tool's output. **Assignment 1** (assigned November 10; due November 17 at 10:00 AM) is the written version of the scraper lab in the 11b workbook: submit the scraper and a critique memo explaining what the AI got wrong, how you caught it, and what you verified by hand. For **Assignment 2** (assigned November 19; due December 3), you **build your own eval**: design 10–20 test prompts with ground truth and a scoring rule on a task from your own research domain, run it with GPT-5.6 Luna and GPT-5.6 Terra, and submit the mini leaderboard plus a memo on what the gap means. An eval is a systematic, quantified test of a model on *your* task.
 
 ### Semester Research and Portfolio Project (30%)
 
@@ -241,7 +241,7 @@ Tuesday teaches the controversy over AI in research. We read working quantitativ
 
 ### Week 12 (November 10, 12): Agentic AI with Codex
 
-The first session introduces the Codex terminal workflow, approval modes, and supervised tasks, with git as the safety net. The second covers AGENTS.md project conventions, planning before coding, manageable tasks, reviewing diffs, and checking whether the agent did what it claims.
+The first session begins with Posit Assistant, carried over from November 5, and assigns Assignment 1. It then introduces the Codex terminal workflow, approval modes, and supervised tasks, with git as the safety net. The second covers AGENTS.md project conventions, planning before coding, manageable tasks, reviewing diffs, and checking whether the agent did what it claims.
 
 ### Week 13 (November 17, 19): Agentic Project Work and Silicon Sampling
 
