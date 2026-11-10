@@ -40,7 +40,7 @@ By the end of the semester, students will be able to:
 - Use git and GitHub fluently for version control, collaboration, and reproducible research
 - Write real programs in R using functions, iteration, vectorization, and error handling
 - Wrangle, join, reshape, and visualize data with the tidyverse at a professional level
-- Acquire data through web APIs — authentication, rate limits, JSON, and the political science API landscape — and supervise AI-written scrapers for sites without one
+- Acquire data through web APIs — authentication, rate limits, JSON, and the political science API landscape — and supervise AI-written code that reads other public sources, such as shared spreadsheets
 - Treat text as data: count words, build keyword dictionaries, and fit a simple topic model, then compare those measures with LLM annotation in Part II
 - Build a simple Quarto dashboard and share work through GitHub Pages or Posit Connect Cloud
 - Work with an agentic coding tool (Codex) on a real research project: scoping tasks, steering with project conventions, reviewing agent-written code, and verifying results
@@ -80,12 +80,12 @@ Six graded take-home problem sets extend the lab work, and Set 4 is optional, un
 | 3 | Thu Oct 15 | Tue Oct 20 | Functions and iteration on text: extract respondents' words from AI-conducted tariff interviews, count words, and check a keyword classifier against hand codes |
 | 4 | Tue Oct 20 | Optional; not graded | Practice midterm: import an unfamiliar dataset, clean it, summarize it, and make one polished figure in about 40 minutes |
 | 5 | Thu Oct 22 | Tue Nov 3 | Build your own two-page Quarto dashboard of Congress.gov bills by hand, started in class |
-| 6 | Tue Nov 10 | Tue Nov 17 | Then and now: an AI-written scraper and a join to 1995 data, checked against known answers, with a critique memo |
+| 6 | Tue Nov 10 | Tue Nov 17 | Last week's votes: AI-written code reads the 2026 election results, compares them with 2024, and is checked against known answers, with a critique memo |
 | 7 | Thu Nov 19 | Thu Dec 3 | Build your own eval on a task from your research and compare two models |
 
 I'll put each prompt in your private repository on its release date. Sets 1–5 must be completed without AI, including Set 5, which is due after Part II begins.
 
-Sets 6 and 7 require AI and are graded on your supervision of the tool rather than the tool's output. **Set 6** starts in class on November 10: Posit Assistant scrapes a saved web page and joins it to 1995 data, and you submit the checks plus a critique memo explaining what the AI got wrong, how you caught it, and what you verified by hand. In **Set 7** you **build your own eval**: design 10–20 test prompts with ground truth and a scoring rule on a task from your own research domain, run it with GPT-5.6 Luna and GPT-5.6 Terra, and submit the mini leaderboard plus a memo on what the gap means. An eval is a systematic, quantified test of a model on *your* task.
+Sets 6 and 7 require AI and are graded on your supervision of the tool rather than the tool's output. **Set 6** is released November 10: Posit Assistant reads the 2026 House results from a public Google Sheet and compares each district with 2024, and you submit the checks plus a critique memo explaining what the AI got wrong, how you caught it, and what you verified by hand. In **Set 7** you **build your own eval**: design 10–20 test prompts with ground truth and a scoring rule on a task from your own research domain, run it with GPT-5.6 Luna and GPT-5.6 Terra, and submit the mini leaderboard plus a memo on what the gap means. An eval is a systematic, quantified test of a model on *your* task.
 
 You can also bookmark the [course deadline calendar](https://uh-pols6394-fall26.github.io/course-materials/Resources/Deadlines.html).
 
@@ -237,11 +237,11 @@ After the midterm, we introduce the AI landscape: models versus applications, we
 
 ### Week 11 (November 3, 5): The Controversy; LLMs and Assisted Coding
 
-Tuesday teaches the controversy over AI in research. We read working quantitative social scientists on both sides: the adoption case (Andrew Hall's *Free Systems*; Alexander Kustov's *Popular by Design*), the skeptics' case (peer-reviewed critiques of LLMs in research), and the standard that adjudicates between them, **replication** (King's classic statement; Gentzkow & Shapiro's *Code and Data*). Allowing AI in *research* is separate from allowing it in *training*; Part I's ban was pedagogy, not research ethics. We then cover how LLMs work well enough to know when to distrust them, the three interfaces (chat, IDE copilots, in-editor tools), prompting patterns, and the verification loop. On Thursday, AI writes a web scraper and you verify its output against the page. *Specific readings are listed in the course repository (`Resources/`).*
+Tuesday teaches the controversy over AI in research. We read working quantitative social scientists on both sides: the adoption case (Andrew Hall's *Free Systems*; Alexander Kustov's *Popular by Design*), the skeptics' case (peer-reviewed critiques of LLMs in research), and the standard that adjudicates between them, **replication** (King's classic statement; Gentzkow & Shapiro's *Code and Data*). Allowing AI in *research* is separate from allowing it in *training*; Part I's ban was pedagogy, not research ethics. We then cover how LLMs work well enough to know when to distrust them, the three interfaces (chat, IDE copilots, in-editor tools), prompting patterns, and the verification loop. On Thursday, you meet Posit Assistant, an AI assistant inside RStudio. *Specific readings are listed in the course repository (`Resources/`).*
 
 ### Week 12 (November 10, 12): Agentic AI with Codex
 
-The first session begins with Posit Assistant, carried over from November 5, and starts Problem Set 6. It then introduces the Codex terminal workflow, approval modes, and supervised tasks, with git as the safety net. The second covers AGENTS.md project conventions, planning before coding, manageable tasks, reviewing diffs, and checking whether the agent did what it claims.
+The first session begins with Posit Assistant, carried over from November 5, and introduces Problem Set 6. It then introduces the Codex terminal workflow, approval modes, and supervised tasks, with git as the safety net. The second covers AGENTS.md project conventions, planning before coding, manageable tasks, reviewing diffs, and checking whether the agent did what it claims.
 
 ### Week 13 (November 17, 19): Agentic Project Work and Silicon Sampling
 
