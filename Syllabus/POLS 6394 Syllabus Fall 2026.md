@@ -71,16 +71,16 @@ Before class, you'll receive that session's Quarto workbook. Keep it open for gu
 
 ### Take-Home Problem Sets (15%)
 
-Six graded take-home problem sets extend the lab work, and Set 4 is optional, ungraded practice for the midterm. Sets 1–5 are AI-off; Sets 6 and 7 require AI. Each graded set is due at **10:00 AM** on the date below. Commit and push it to your private course repository. The sets are graded for good-faith completion rather than polish; we may begin class by discussing approaches, common errors, or questions from the submitted work.
+Six graded take-home problem sets extend the lab work, and Set 4 is optional, ungraded practice for the midterm. Sets 1–5 are AI-off; Sets 6 and 7 require AI. Each graded set is due at **10:00 AM** on the date below unless another time is listed; **Set 6 is due November 17 at 7:00 PM Central**. Commit and push it to your private course repository. The sets are graded for good-faith completion rather than polish; we may begin class by discussing approaches, common errors, or questions from the submitted work.
 
-| Set | Released | Due at 10:00 AM | Focus |
+| Set | Released | Due (10:00 AM unless noted) | Focus |
 |-----|----------|-----------------|-------|
 | 1 | Sep 23 | Tue Sep 29 | Reshape and validate democracy data |
 | 2 | Oct 5 | Tue Oct 13 | Compare fixed and separate panel scales; explain what each figure supports |
 | 3 | Thu Oct 15 | Tue Oct 20 | Functions and iteration on text: extract respondents' words from AI-conducted tariff interviews, count words, and check a keyword classifier against hand codes |
 | 4 | Tue Oct 20 | Optional; not graded | Practice midterm: import an unfamiliar dataset, clean it, summarize it, and make one polished figure in about 40 minutes |
 | 5 | Thu Oct 22 | Tue Nov 3 | Build your own two-page Quarto dashboard of Congress.gov bills by hand, started in class |
-| 6 | Tue Nov 10 | Tue Nov 17 | Last week's votes: AI-written code reads the 2026 election results, compares them with 2024, and is checked against known answers, with a critique memo |
+| 6 | Tue Nov 10 | Tue Nov 17, 7:00 PM Central | Last week's votes: AI-written code reads the 2026 election results, compares them with 2024, and is checked against known answers, with a critique memo |
 | 7 | Thu Nov 19 | Thu Dec 3 | Build your own eval on a task from your research and compare two models |
 
 I'll put each prompt in your private repository on its release date. Sets 1–5 must be completed without AI, including Set 5, which is due after Part II begins.
