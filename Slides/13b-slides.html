@@ -1314,7 +1314,7 @@ display:block!important;
 <h2>Works on my computer</h2>
 <p>Your report rendered on your laptop. Would it render for a coauthor, a reviewer, or you on a new laptop?</p>
 <p>They start from what’s on GitHub. A file you never pushed, or a path that only exists on your laptop, breaks for them.</p>
-<p>A script in <code>Labs/w13</code> tests exactly that. It downloads a fresh copy of your repository from GitHub into an empty folder and renders one file there. You don’t run it yourself; you ask Codex.</p>
+<p>A script in <code>Labs/w13</code>, <code>13a-clean-clone-check.sh</code>, tests exactly that. It downloads a fresh copy of your repository from GitHub into an empty folder and renders one file there. You don’t run it yourself; you ask Codex.</p>
 <div class="cue">
 <p>Stay on slides through <em>When the data are too big for GitHub</em></p>
 </div>
@@ -1322,7 +1322,7 @@ display:block!important;
 <section id="how-the-check-works" class="slide level2 smaller">
 <h2>How the check works</h2>
 <pre class="text"><code>your laptop  ──push──▶  GitHub  ──fresh copy──▶  an empty folder  ──▶  render</code></pre>
-<p>The script in <code>Labs/w13</code>, in order:</p>
+<p><code>13a-clean-clone-check.sh</code>, in order:</p>
 <ol type="1">
 <li>Warns you about anything you haven’t pushed, since the copy won’t have it.</li>
 <li>Downloads a fresh copy of your repository from GitHub into an empty folder.</li>
@@ -1336,7 +1336,7 @@ display:block!important;
 </section>
 <section id="watch-a-paper-that-fails" class="slide level2 smaller">
 <h2>Watch: a paper that fails</h2>
-<p>A sample paper I built. It renders fine on my laptop. The check says:</p>
+<p>A sample paper I built, <code>Paper/Rough Draft.qmd</code>, renders fine on my laptop. I ask Codex to run <code>13a-clean-clone-check.sh</code> on it. The check says:</p>
 <pre class="text"><code>NOTE: you have changes that aren&#39;t committed. The clean copy won&#39;t
 include them. Changed or new files on your computer:
   ?? Paper/Data/
