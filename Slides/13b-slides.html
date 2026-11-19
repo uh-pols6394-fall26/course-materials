@@ -1310,55 +1310,22 @@ display:block!important;
 <h1>Would it run anywhere else?</h1>
 
 </section>
-<section id="works-on-my-computer" class="slide level2">
+<section id="works-on-my-computer" class="slide level2 smaller">
 <h2>Works on my computer</h2>
-<p>Your report rendered on your laptop. Would it render for a coauthor, a reviewer, or you on a new laptop?</p>
-<p>They start from what’s on GitHub. A file you never pushed, or a path that only exists on your laptop, breaks for them.</p>
-<p>A script in <code>Labs/w13</code>, <code>13a-clean-clone-check.sh</code>, tests exactly that. It downloads a fresh copy of your repository from GitHub into an empty folder and renders one file there. You don’t run it yourself; you ask Codex.</p>
-<div class="cue">
-<p>Stay on slides through <em>When the data are too big for GitHub</em></p>
-</div>
-</section>
-<section id="how-the-check-works" class="slide level2 smaller">
-<h2>How the check works</h2>
+<p>Your report renders on your laptop. A coauthor, a reviewer, or you on a new laptop start from what’s on GitHub.</p>
 <pre class="text"><code>your laptop  ──push──▶  GitHub  ──fresh copy──▶  an empty folder  ──▶  render</code></pre>
-<p><code>13a-clean-clone-check.sh</code>, in order:</p>
-<ol type="1">
-<li>Warns you about anything you haven’t pushed, since the copy won’t have it.</li>
-<li>Downloads a fresh copy of your repository from GitHub into an empty folder.</li>
-<li>Renders the file you name, there.</li>
-<li>Says <code>OK</code> or <code>FAIL</code>, and where to look.</li>
-</ol>
-<p>It never changes your repository. It runs on your laptop, so a path like <code>/Users/you/Downloads</code> still works there, and so do your installed packages. <code>OK</code> means nothing you forgot to push is missing. The script also lists computer-specific paths under <strong>Hints</strong>: fix those even after <code>OK</code>.</p>
+<p><code>Labs/w13/13a-clean-clone-check.sh</code> does exactly that, then says <code>OK</code> or <code>FAIL</code>. It never changes your repository. You don’t run it yourself; you ask Codex.</p>
 <div class="cue">
-<p>Stay on slides through <em>When the data are too big for GitHub</em></p>
+<p>Stay on slides through <em>Your Turn: test your report</em></p>
 </div>
 </section>
-<section id="watch-a-paper-that-fails" class="slide level2 smaller">
+<section id="watch-a-paper-that-fails" class="slide level2">
 <h2>Watch: a paper that fails</h2>
-<p>A sample paper I built, <code>Paper/Rough Draft.qmd</code>, renders fine on my laptop. I ask Codex to run <code>13a-clean-clone-check.sh</code> on it. The check says:</p>
-<pre class="text"><code>NOTE: you have changes that aren&#39;t committed. The clean copy won&#39;t
-include them. Changed or new files on your computer:
-  ?? Paper/Data/
-
-FAIL: the render stopped with an error.
-! &#39;Data/cces21.csv&#39; does not exist in current working directory</code></pre>
-<p>The paper reads <code>Data/cces21.csv</code>. The file is on my laptop, but I never committed it, so the fresh copy doesn’t have it. The <code>NOTE</code> said so before the render even started.</p>
-<p>It’s one of the most common ways research code breaks for the next person, and code an agent writes breaks the same way.</p>
+<p>My sample paper renders on my laptop. In the fresh copy, it stops:</p>
+<pre class="text"><code>! &#39;Data/cces21.csv&#39; does not exist in current working directory</code></pre>
+<p>I never committed the data file. I ask Codex to commit and push it, run the check again, and get <code>OK</code>.</p>
 <div class="cue">
-<p>Stay on slides through <em>When the data are too big for GitHub</em></p>
-</div>
-</section>
-<section id="the-fix-one-request" class="slide level2 smaller">
-<h2>The fix: one request</h2>
-<p>A job for Codex:</p>
-<pre class="text"><code>The check fails because Paper/Data/cces21.csv was never committed.
-Commit and push it, then run the check again.</code></pre>
-<p>Read the commands before you approve. Then:</p>
-<pre class="text"><code>OK: Paper/Rough Draft.qmd rendered from a clean copy.</code></pre>
-<p>Now the pushed files are enough to render the paper.</p>
-<div class="cue">
-<p>Stay on slides through <em>When the data are too big for GitHub</em></p>
+<p>Stay on slides through <em>Your Turn: test your report</em></p>
 </div>
 </section>
 <section id="what-usually-breaks" class="slide level2 smaller">
@@ -1380,35 +1347,22 @@ Commit and push it, then run the check again.</code></pre>
 <td>The data were never pushed</td>
 </tr>
 <tr class="even">
-<td>A <strong>Hints</strong> line: <code>setwd()</code>, or a path starting <code>/Users</code> or <code>C:</code></td>
-<td>A folder only your computer has. It passes here and breaks everywhere else</td>
+<td>A path starting <code>/Users</code> or <code>C:</code>, or <code>setwd()</code></td>
+<td>A folder only your computer has. The check lists these under <strong>Hints</strong></td>
 </tr>
 <tr class="odd">
 <td>There is no package called …</td>
 <td>A package isn’t installed; the README should list it</td>
 </tr>
 <tr class="even">
-<td>Object not found</td>
-<td>The code relied on something already loaded in your RStudio session</td>
+<td>A file is over 100 MB</td>
+<td>GitHub refuses it. Commit a small extract, and say in the README where the full file comes from</td>
 </tr>
 </tbody>
 </table>
-<p>You don’t have to diagnose it alone. Ask Codex what the first error means before it changes anything.</p>
+<p>Ask Codex what the first error means before it changes anything.</p>
 <div class="cue">
-<p>Stay on slides through <em>When the data are too big for GitHub</em></p>
-</div>
-</section>
-<section id="when-the-data-are-too-big-for-github" class="slide level2 smaller">
-<h2>When the data are too big for GitHub</h2>
-<p>GitHub refuses any file over 100 MB. A full survey file, like the ANES or the full CES, often won’t fit.</p>
-<p>The fix has two parts, both good jobs for Codex:</p>
-<ul>
-<li><strong>A small analysis file in the repository.</strong> A script reads the full file, keeps the rows and variables the paper uses, and saves the result. The paper reads the small file.</li>
-<li><strong>A README line for the full file:</strong> where to download it, what to name it, where to put it.</li>
-</ul>
-<p>Check it the usual way: do the row counts match what you expect?</p>
-<div class="cue">
-<p>Then ▸ 13a workbook: <strong>Would it run anywhere else?</strong></p>
+<p>Stay on slides through <em>Your Turn: test your report</em></p>
 </div>
 </section>
 <section id="your-turn-test-your-report" class="slide level2 smaller">
@@ -1417,8 +1371,7 @@ Commit and push it, then run the check again.</code></pre>
 <pre class="text"><code>Run the clean-copy check in Labs/w13 on my report in divides. Ask me
 before you run it. Tell me whether it passed, and if it failed, what
 the first error means.</code></pre>
-<p>Approve the command when it asks. A minute or more is normal.</p>
-<p>Passed? Paste the <code>OK</code> line into the workbook. Failed? Read Codex’s explanation. Did it write something that only works where it ran?</p>
+<p>Approve the command. A minute or more is normal. Paste the <code>OK</code> or <code>FAIL</code> line into the workbook.</p>
 <div class="cue">
 <p>▸ 13a workbook: <strong>Would it run anywhere else?</strong>. While the check runs: questions about Herdr</p>
 </div>
@@ -1488,13 +1441,13 @@ the first error means.</code></pre>
 </section>
 <section id="a-good-notes.md-entry" class="slide level2">
 <h2>A good <code>NOTES.md</code> entry</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">## November 18</span></span>
-<span id="cb10-2"><a href aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asked Codex to read the survey from Paper/Data instead of my</span>
-<span id="cb10-4"><a href aria-hidden="true" tabindex="-1"></a>  Downloads folder, which the check listed under Hints.</span>
-<span id="cb10-5"><a href aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Checked: the row count matched the raw file (1,204), and the</span>
-<span id="cb10-6"><a href aria-hidden="true" tabindex="-1"></a>  clean-copy check said OK.</span>
-<span id="cb10-7"><a href aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Codex also renamed a variable I hadn&#39;t asked about. I undid that.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">## November 18</span></span>
+<span id="cb8-2"><a href aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Asked Codex to read the survey from Paper/Data instead of my</span>
+<span id="cb8-4"><a href aria-hidden="true" tabindex="-1"></a>  Downloads folder, which the check listed under Hints.</span>
+<span id="cb8-5"><a href aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Checked: the row count matched the raw file (1,204), and the</span>
+<span id="cb8-6"><a href aria-hidden="true" tabindex="-1"></a>  clean-copy check said OK.</span>
+<span id="cb8-7"><a href aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Codex also renamed a variable I hadn&#39;t asked about. I undid that.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three lines: what you asked, what you checked, what it got wrong. They’re one of the four things the paper check looks for, and the start of the AI-use statement your final paper needs.</p>
 <div class="cue">
 <p>▸ 13a workbook: <strong>Your paper</strong> › Fix one thing</p>
@@ -1503,9 +1456,9 @@ the first error means.</code></pre>
 <section id="no-paper-ready-use-the-fallback" class="slide level2 smaller">
 <h2>No paper ready? Use the fallback</h2>
 <p>A small task with a known answer. <code>Labs/w13/fallback/model-labels.csv</code> holds a person’s label and a model’s label for 20 short comments. Type <code>/exit</code>, then:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href aria-hidden="true" tabindex="-1"></a><span class="ex">course</span></span>
-<span id="cb11-2"><a href aria-hidden="true" tabindex="-1"></a><span class="ex">z</span> Labs/w13</span>
-<span id="cb11-3"><a href aria-hidden="true" tabindex="-1"></a><span class="ex">codex</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href aria-hidden="true" tabindex="-1"></a><span class="ex">course</span></span>
+<span id="cb9-2"><a href aria-hidden="true" tabindex="-1"></a><span class="ex">z</span> Labs/w13</span>
+<span id="cb9-3"><a href aria-hidden="true" tabindex="-1"></a><span class="ex">codex</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>The CSV in fallback/ has a human label and a model label for 20
 short comments. Write fallback/score.R to work out how often the
 model agrees with the human. I&#39;ll run it from this folder with
@@ -1555,18 +1508,18 @@ it; I&#39;ll run it.</code></pre>
 <h2>The data</h2>
 <p>The CCES file has one person per row. <code>caseid</code> identifies a respondent; a second file supplies issue IDs and questions.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb13-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ellmer)</span>
-<span id="cb13-3"><a href aria-hidden="true" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Data/cces/cces21.csv&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb13-4"><a href aria-hidden="true" tabindex="-1"></a>issues <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Data/cces/cces21_issues.csv&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ellmer)</span>
+<span id="cb11-3"><a href aria-hidden="true" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Data/cces/cces21.csv&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-4"><a href aria-hidden="true" tabindex="-1"></a>issues <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;Data/cces/cces21_issues.csv&quot;</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="inspect-people" class="slide level2">
 <h2>Inspect people</h2>
 <p>We fix the seed and sample ten records; selected columns keep the display readable.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
-<span id="cb14-2"><a href aria-hidden="true" tabindex="-1"></a>people <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(caseid, age, gender, pid_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
+<span id="cb12-2"><a href aria-hidden="true" tabindex="-1"></a>people <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(caseid, age, gender, pid_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 4
        caseid   age gender pid_text   
@@ -1587,8 +1540,8 @@ it; I&#39;ll run it.</code></pre>
 <section id="inspect-questions" class="slide level2">
 <h2>Inspect questions</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
-<span id="cb16-2"><a href aria-hidden="true" tabindex="-1"></a>issues <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(issue, question)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
+<span id="cb14-2"><a href aria-hidden="true" tabindex="-1"></a>issues <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(issue, question)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 2
    issue question                                                               
@@ -1610,12 +1563,12 @@ it; I&#39;ll run it.</code></pre>
 <h2>A public-data persona</h2>
 <p><code>i</code> selects a row. <code>glue::glue()</code> substitutes values inside braces. The function returns a description, not the person’s answer.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href aria-hidden="true" tabindex="-1"></a>persona <span class="ot">&lt;-</span> <span class="cf">function</span>(i) {</span>
-<span id="cb18-2"><a href aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;It is 2021. You are {people$age[i]} years old, &quot;</span>,</span>
-<span id="cb18-3"><a href aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;{people$gender[i]}, and a {people$pid_text[i]}. &quot;</span>,</span>
-<span id="cb18-4"><a href aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Answer from this person&#39;s perspective.&quot;</span>)</span>
-<span id="cb18-5"><a href aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-6"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">persona</span>(<span class="dv">7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href aria-hidden="true" tabindex="-1"></a>persona <span class="ot">&lt;-</span> <span class="cf">function</span>(i) {</span>
+<span id="cb16-2"><a href aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;It is 2021. You are {people$age[i]} years old, &quot;</span>,</span>
+<span id="cb16-3"><a href aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;{people$gender[i]}, and a {people$pid_text[i]}. &quot;</span>,</span>
+<span id="cb16-4"><a href aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Answer from this person&#39;s perspective.&quot;</span>)</span>
+<span id="cb16-5"><a href aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-6"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">persona</span>(<span class="dv">7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>It is 2021. You are 54 years old, Female, and a Republican. Answer from this person&#39;s perspective.</code></pre>
 </div>
@@ -1629,19 +1582,19 @@ it; I&#39;ll run it.</code></pre>
 <h2>Structured output</h2>
 <p>An enum restricts <code>opinion</code> to the listed categories. Confidence is the model’s self-report, not an observed chance of correctness.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href aria-hidden="true" tabindex="-1"></a>schema <span class="ot">&lt;-</span> <span class="fu">type_object</span>(</span>
-<span id="cb20-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">opinion =</span> <span class="fu">type_enum</span>(<span class="st">&quot;Policy position&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Support&quot;</span>, <span class="st">&quot;Oppose&quot;</span>)),</span>
-<span id="cb20-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">confidence =</span> <span class="fu">type_enum</span>(<span class="st">&quot;Confidence&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;High&quot;</span>, <span class="st">&quot;Medium&quot;</span>, <span class="st">&quot;Low&quot;</span>))</span>
-<span id="cb20-4"><a href aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href aria-hidden="true" tabindex="-1"></a>schema <span class="ot">&lt;-</span> <span class="fu">type_object</span>(</span>
+<span id="cb18-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">opinion =</span> <span class="fu">type_enum</span>(<span class="st">&quot;Policy position&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Support&quot;</span>, <span class="st">&quot;Oppose&quot;</span>)),</span>
+<span id="cb18-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="at">confidence =</span> <span class="fu">type_enum</span>(<span class="st">&quot;Confidence&quot;</span>, <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;High&quot;</span>, <span class="st">&quot;Medium&quot;</span>, <span class="st">&quot;Low&quot;</span>))</span>
+<span id="cb18-4"><a href aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ask-once-if-you-have-a-key" class="slide level2">
 <h2>Ask once, if you have a key</h2>
 <p><code>chat_openai()</code> creates a chat with the persona; <code>chat_structured()</code> requests the schema. Use the workbook’s green chunk arrow once if you have a key; it costs credit. Leave it disabled for rendering. If it fails, the lab has a no-key fallback.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>(<span class="at">model =</span> <span class="st">&quot;gpt-5.6-luna&quot;</span>, <span class="at">system_prompt =</span> <span class="fu">persona</span>(<span class="dv">7</span>))</span>
-<span id="cb21-2"><a href aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> chat<span class="sc">$</span><span class="fu">chat_structured</span>(issues<span class="sc">$</span>question[<span class="dv">1</span>], <span class="at">type =</span> schema)</span>
-<span id="cb21-3"><a href aria-hidden="true" tabindex="-1"></a>answer</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href aria-hidden="true" tabindex="-1"></a>chat <span class="ot">&lt;-</span> <span class="fu">chat_openai</span>(<span class="at">model =</span> <span class="st">&quot;gpt-5.6-luna&quot;</span>, <span class="at">system_prompt =</span> <span class="fu">persona</span>(<span class="dv">7</span>))</span>
+<span id="cb19-2"><a href aria-hidden="true" tabindex="-1"></a>answer <span class="ot">&lt;-</span> chat<span class="sc">$</span><span class="fu">chat_structured</span>(issues<span class="sc">$</span>question[<span class="dv">1</span>], <span class="at">type =</span> schema)</span>
+<span id="cb19-3"><a href aria-hidden="true" tabindex="-1"></a>answer</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="read-the-output-carefully" class="slide level2">
@@ -1657,15 +1610,15 @@ it; I&#39;ll run it.</code></pre>
 <h2>The archived comparison</h2>
 <p>This file contains an earlier <strong>GPT-5.4 Mini</strong> run, not the GPT-5.6 Luna call. Each row pairs one person and one issue; <code>match</code> compares the model’s label to the recorded human response.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;Data/silicon/gpt-5.4-mini-combined_results.Rdata&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;Data/silicon/gpt-5.4-mini-combined_results.Rdata&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ten-sampled-comparisons" class="slide level2">
 <h2>Ten sampled comparisons</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
-<span id="cb23-2"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(respondent, issue, real_response, llm_response, match, confidence)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
+<span id="cb21-2"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(respondent, issue, real_response, llm_response, match, confidence)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 6
    respondent issue real_response llm_response match     confidence
@@ -1690,8 +1643,8 @@ it; I&#39;ll run it.</code></pre>
 <section id="individual-accuracy" class="slide level2">
 <h2>Individual accuracy</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">correct =</span> <span class="fu">sum</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>), <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb25-2"><a href aria-hidden="true" tabindex="-1"></a>                               <span class="at">accuracy =</span> <span class="fu">mean</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">correct =</span> <span class="fu">sum</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>), <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb23-2"><a href aria-hidden="true" tabindex="-1"></a>                               <span class="at">accuracy =</span> <span class="fu">mean</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   correct     n accuracy
@@ -1704,9 +1657,9 @@ it; I&#39;ll run it.</code></pre>
 <section id="confidence-versus-accuracy" class="slide level2">
 <h2>Confidence versus accuracy</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">group_by</span>(confidence) <span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">correct =</span> <span class="fu">sum</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>), <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb27-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">accuracy =</span> <span class="fu">mean</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">group_by</span>(confidence) <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">correct =</span> <span class="fu">sum</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>), <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb25-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">accuracy =</span> <span class="fu">mean</span>(match <span class="sc">==</span> <span class="st">&quot;Correct&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 4
   confidence correct     n accuracy
@@ -1721,9 +1674,9 @@ it; I&#39;ll run it.</code></pre>
 <h2>A concrete miss</h2>
 <p>For issue <code>320b</code>, the model supports repeal in 1/100 answers; 48/100 people did. These are sample fractions, not national estimates.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">filter</span>(issue <span class="sc">==</span> <span class="st">&quot;320b&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">model =</span> <span class="fu">mean</span>(llm_response <span class="sc">==</span> <span class="st">&quot;Support&quot;</span>),</span>
-<span id="cb29-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">people =</span> <span class="fu">mean</span>(real_response <span class="sc">==</span> <span class="st">&quot;Support&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a>combined_results <span class="sc">|&gt;</span> <span class="fu">filter</span>(issue <span class="sc">==</span> <span class="st">&quot;320b&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">model =</span> <span class="fu">mean</span>(llm_response <span class="sc">==</span> <span class="st">&quot;Support&quot;</span>),</span>
+<span id="cb27-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">people =</span> <span class="fu">mean</span>(real_response <span class="sc">==</span> <span class="st">&quot;Support&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   model people
@@ -1803,8 +1756,8 @@ it; I&#39;ll run it.</code></pre>
 <h2>Extension 2: a cached polarization comparison</h2>
 <p>The book jointly estimated a one-dimensional scale from the stacked human and model responses to these ten questions. This is a model-based summary of this small sample, not a population estimate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
-<span id="cb31-2"><a href aria-hidden="true" tabindex="-1"></a>ideal_points <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(source, party, ideal_point)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6394</span>)</span>
+<span id="cb29-2"><a href aria-hidden="true" tabindex="-1"></a>ideal_points <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(source, party, ideal_point)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 3
    source party       ideal_point
@@ -1825,10 +1778,10 @@ it; I&#39;ll run it.</code></pre>
 <section id="extension-2-compare-median-gaps" class="slide level2">
 <h2>Extension 2: compare median gaps</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a>ideal_points <span class="sc">|&gt;</span> <span class="fu">filter</span>(party <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Democrat&quot;</span>, <span class="st">&quot;Republican&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb33-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, party) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">median_score =</span> <span class="fu">median</span>(ideal_point)) <span class="sc">|&gt;</span></span>
-<span id="cb33-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> party, <span class="at">values_from =</span> median_score) <span class="sc">|&gt;</span></span>
-<span id="cb33-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gap =</span> Republican <span class="sc">-</span> Democrat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href aria-hidden="true" tabindex="-1"></a>ideal_points <span class="sc">|&gt;</span> <span class="fu">filter</span>(party <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Democrat&quot;</span>, <span class="st">&quot;Republican&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source, party) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">median_score =</span> <span class="fu">median</span>(ideal_point)) <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> party, <span class="at">values_from =</span> median_score) <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gap =</span> Republican <span class="sc">-</span> Democrat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 4
 # Groups:   source [2]
@@ -1851,30 +1804,30 @@ it; I&#39;ll run it.</code></pre>
 <section id="extension-3-a-choice-request" class="slide level2">
 <h2>Extension 3: a choice request</h2>
 <p>Shared input is evidence; the question specifies the choices. This is a <strong>synthetic illustration</strong>, not an observed API result.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb35-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;It is 2021. You are 54, female, and Republican.&quot;</span><span class="fu">,</span></span>
-<span id="cb35-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;question&quot;</span><span class="fu">:</span> <span class="st">&quot;Support or oppose expanding Medicare to cover all Americans?&quot;</span><span class="fu">,</span></span>
-<span id="cb35-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;choices&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Support&quot;</span><span class="ot">,</span> <span class="st">&quot;Oppose&quot;</span><span class="ot">]</span></span>
-<span id="cb35-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb33-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;input&quot;</span><span class="fu">:</span> <span class="st">&quot;It is 2021. You are 54, female, and Republican.&quot;</span><span class="fu">,</span></span>
+<span id="cb33-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;question&quot;</span><span class="fu">:</span> <span class="st">&quot;Support or oppose expanding Medicare to cover all Americans?&quot;</span><span class="fu">,</span></span>
+<span id="cb33-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;choices&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Support&quot;</span><span class="ot">,</span> <span class="st">&quot;Oppose&quot;</span><span class="ot">]</span></span>
+<span id="cb33-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="extension-3-a-choice-response" class="slide level2">
 <h2>Extension 3: a choice response</h2>
 <p>Illustrative shape, invented numbers:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb36-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb36-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;choice&quot;</span><span class="fu">:</span> <span class="st">&quot;Support&quot;</span><span class="fu">,</span></span>
-<span id="cb36-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;probabilities&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb36-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Support&quot;</span><span class="fu">,</span> <span class="dt">&quot;probability&quot;</span><span class="fu">:</span> <span class="fl">0.8</span><span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb36-5"><a href aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Oppose&quot;</span><span class="fu">,</span> <span class="dt">&quot;probability&quot;</span><span class="fu">:</span> <span class="fl">0.2</span><span class="fu">}</span></span>
-<span id="cb36-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
-<span id="cb36-7"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb34-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb34-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;choice&quot;</span><span class="fu">:</span> <span class="st">&quot;Support&quot;</span><span class="fu">,</span></span>
+<span id="cb34-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;probabilities&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb34-4"><a href aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Support&quot;</span><span class="fu">,</span> <span class="dt">&quot;probability&quot;</span><span class="fu">:</span> <span class="fl">0.8</span><span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb34-5"><a href aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Oppose&quot;</span><span class="fu">,</span> <span class="dt">&quot;probability&quot;</span><span class="fu">:</span> <span class="fl">0.2</span><span class="fu">}</span></span>
+<span id="cb34-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb34-7"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>These numbers aren’t automatically calibrated probabilities, truth, or fractions of humans.</p>
 </section>
 <section id="extension-3-parse-the-synthetic-example" class="slide level2">
 <h2>Extension 3: parse the synthetic example</h2>
 <p><code>jsonlite::fromJSON()</code> reads the supplied file; <code>simplifyVector = FALSE</code> keeps nested arrays as lists. <code>[[1]]</code> selects the first answer.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href aria-hidden="true" tabindex="-1"></a>example <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(<span class="st">&quot;Demos/decision-example.json&quot;</span>, <span class="at">simplifyVector =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb37-2"><a href aria-hidden="true" tabindex="-1"></a>example<span class="sc">$</span>answers[[<span class="dv">1</span>]]<span class="sc">$</span>choice</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a>example <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(<span class="st">&quot;Demos/decision-example.json&quot;</span>, <span class="at">simplifyVector =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb35-2"><a href aria-hidden="true" tabindex="-1"></a>example<span class="sc">$</span>answers[[<span class="dv">1</span>]]<span class="sc">$</span>choice</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] &quot;Support&quot;</code></pre>
 </div>
@@ -1892,11 +1845,11 @@ it; I&#39;ll run it.</code></pre>
 <h2>Extension 3: a runnable call, if available</h2>
 <p>We reuse <code>persona(7)</code> and the first survey question, Medicare expansion (<code>320a</code>). <code>source()</code> loads the helper; each <code>list()</code> gives an option’s value and meaning. Optional live call; leave it disabled when rendering.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;Demos/decisions.R&quot;</span>)</span>
-<span id="cb39-2"><a href aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">decide_choice</span>(<span class="fu">persona</span>(<span class="dv">7</span>), issues<span class="sc">$</span>question[<span class="dv">1</span>],</span>
-<span id="cb39-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">value =</span> <span class="st">&quot;Support&quot;</span>, <span class="at">description =</span> <span class="st">&quot;Supports the proposal&quot;</span>),</span>
-<span id="cb39-4"><a href aria-hidden="true" tabindex="-1"></a>       <span class="fu">list</span>(<span class="at">value =</span> <span class="st">&quot;Oppose&quot;</span>, <span class="at">description =</span> <span class="st">&quot;Opposes the proposal&quot;</span>)))</span>
-<span id="cb39-5"><a href aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>answers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;Demos/decisions.R&quot;</span>)</span>
+<span id="cb37-2"><a href aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">decide_choice</span>(<span class="fu">persona</span>(<span class="dv">7</span>), issues<span class="sc">$</span>question[<span class="dv">1</span>],</span>
+<span id="cb37-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">value =</span> <span class="st">&quot;Support&quot;</span>, <span class="at">description =</span> <span class="st">&quot;Supports the proposal&quot;</span>),</span>
+<span id="cb37-4"><a href aria-hidden="true" tabindex="-1"></a>       <span class="fu">list</span>(<span class="at">value =</span> <span class="st">&quot;Oppose&quot;</span>, <span class="at">description =</span> <span class="st">&quot;Opposes the proposal&quot;</span>)))</span>
+<span id="cb37-5"><a href aria-hidden="true" tabindex="-1"></a>result<span class="sc">$</span>answers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="extension-3-other-systems" class="slide level2">
@@ -1908,10 +1861,10 @@ it; I&#39;ll run it.</code></pre>
 <h2>Extension 3: one person, three systems</h2>
 <p><em>~2 minutes.</em> Person 7, Medicare expansion (<code>320a</code>). The helper reads Boris’s saved calls for four pairs on three systems; it makes no request.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;Demos/silicon-comparison.R&quot;</span>)</span>
-<span id="cb40-2"><a href aria-hidden="true" tabindex="-1"></a>decision_comparison <span class="ot">&lt;-</span> <span class="fu">read_silicon_comparison</span>(combined_results)</span>
-<span id="cb40-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">silicon_comparison_table</span>(decision_comparison) <span class="sc">|&gt;</span></span>
-<span id="cb40-4"><a href aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">&quot;Person 7, issue 320a. Boris&#39;s cached calls.&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;Demos/silicon-comparison.R&quot;</span>)</span>
+<span id="cb38-2"><a href aria-hidden="true" tabindex="-1"></a>decision_comparison <span class="ot">&lt;-</span> <span class="fu">read_silicon_comparison</span>(combined_results)</span>
+<span id="cb38-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">silicon_comparison_table</span>(decision_comparison) <span class="sc">|&gt;</span></span>
+<span id="cb38-4"><a href aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">&quot;Person 7, issue 320a. Boris&#39;s cached calls.&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top">
 <caption>Person 7, issue 320a. Boris’s cached calls.</caption>
