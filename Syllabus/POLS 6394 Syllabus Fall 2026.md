@@ -81,11 +81,11 @@ Six graded take-home problem sets extend the lab work, and Set 4 is optional, un
 | 4 | Tue Oct 20 | Optional; not graded | Practice midterm: import an unfamiliar dataset, clean it, summarize it, and make one polished figure in about 40 minutes |
 | 5 | Thu Oct 22 | Tue Nov 3 | Build your own two-page Quarto dashboard of Congress.gov bills by hand, started in class |
 | 6 | Tue Nov 10 | Tue Nov 17, 7:00 PM Central | Last week's votes: AI-written code reads the 2026 election results, compares them with 2024, and is checked against known answers, with a critique memo |
-| 7 | Thu Nov 19 | Thu Dec 3 | Build your own eval on a task from your research and compare two models |
+| 7 | Fri Nov 20 | Tue Dec 1 | Code 20 survey answers with two models in ellmer and score them against a human coder |
 
 I'll put each prompt in your private repository on its release date. Sets 1–5 must be completed without AI, including Set 5, which is due after Part II begins.
 
-Sets 6 and 7 require AI and are graded on your supervision of the tool rather than the tool's output. **Set 6** is released November 10: Posit Assistant reads the 2026 House results from a public Google Sheet and compares each district with 2024, and you submit the checks plus a critique memo explaining what the AI got wrong, how you caught it, and what you verified by hand. In **Set 7** you **build your own eval**: design 10–20 test prompts with ground truth and a scoring rule on a task from your own research domain, run it with GPT-5.6 Luna and GPT-5.6 Terra, and submit the mini leaderboard plus a memo on what the gap means. An eval is a systematic, quantified test of a model on *your* task.
+Sets 6 and 7 require AI and are graded on your supervision of the tool rather than the tool's output. **Set 6** is released November 10: Posit Assistant reads the 2026 House results from a public Google Sheet and compares each district with 2024, and you submit the checks plus a critique memo explaining what the AI got wrong, how you caught it, and what you verified by hand. In **Set 7** you code 20 open-ended survey answers about tariffs with GPT-6 Luna and GPT-6.1 Terra through ellmer, with Posit Assistant or Codex helping write the code, then score both models against a human coder's labels and write a memo on where they disagree and what you checked.
 
 You can also bookmark the [course deadline calendar](https://uh-pols6394-fall26.github.io/course-materials/Resources/Deadlines.html).
 
@@ -137,7 +137,7 @@ Milestones are progress checks, not polished submissions. The milestone portion 
 | Tue Oct 6 (Week 7) | **Paper skeleton** renders to PDF with a managed `.bib`, at least three real citations, and a first figure or approved equivalent |
 | Thu Oct 15 (Week 8) | **Professional materials**: CV and minimal website both render; public deployment and a public CV link are optional |
 | Mon Nov 9, 7:00 PM (Week 12) | **First real result** (moved from November 5): one real result from your own project, in a paper that renders end-to-end. A table or figure of your data, a first estimate, coded texts, a replication, or a written section citing your bibliography all count |
-| Thu Nov 19 (Week 13) | **Repository check**: pipeline runs end-to-end from a clean clone and a full draft renders. A good-faith complete attempt may correct reproducibility problems identified by this check through December 1 without penalty. |
+| Thu Dec 3 (Week 15) | **Repository check** (moved from November 19): pipeline runs end-to-end from a clean clone. A good-faith complete attempt may correct reproducibility problems identified by this check through Friday, December 11 without penalty. |
 | Mon Dec 14, 2:00–4:00 PM | Exam period: **final practical** (~35–40 min, AI required) + **presentation** (revealjs, from your repo); final paper, repository, dashboard or approved alternative, AI-use statement, and **updated CV + website** due |
 
 ---
@@ -245,7 +245,7 @@ The first session begins with Posit Assistant, carried over from November 5, and
 
 ### Week 13 (November 17, 19): Agentic Project Work and Silicon Sampling
 
-Tuesday is a supervised project day: bring a functioning final-project repository and use Codex to build and verify one real piece of the pipeline. Thursday introduces silicon sampling through ellmer and structured output, validated against real CCES respondents using material from Kennedy, Shor, and Austin, *Large Language Models for Public Opinion Research* (Cambridge). The diagnostic repository check is due Thursday; good-faith attempts have through December 1 to correct reproducibility problems found by the check.
+Tuesday is a supervised project day: bring a functioning final-project repository and use Codex to build and verify one real piece of the pipeline. Thursday introduces silicon sampling through ellmer and structured output, validated against real CCES respondents using material from Kennedy, Shor, and Austin, *Large Language Models for Public Opinion Research* (Cambridge).
 
 ### Week 14 (November 24, 26): No Class
 
@@ -253,7 +253,7 @@ Thanksgiving week.
 
 ### Week 15 (December 1, 3): Topic Classification; RAG and Project Work
 
-Tuesday covers topic classification: defining categories, classifying a small set of political texts with a generative model and the specialized Jev decision model, and checking both against human labels. Thursday gives a brief retrieval-augmented generation demonstration, then turns to supervised work on your paper with immediate feedback from Amanda and me. We close with privacy, cost, and reproducibility. Office hours this week and next are project clinics for the paper.
+Tuesday covers topic classification: defining categories, classifying a small set of political texts with a generative model and the specialized Jev decision model, and checking both against human labels. Thursday gives a brief retrieval-augmented generation demonstration, then turns to supervised work on your paper with immediate feedback from Amanda and me. We close with privacy, cost, and reproducibility. The diagnostic repository check is due Thursday. Office hours this week and next are project clinics for the paper.
 
 ---
 
